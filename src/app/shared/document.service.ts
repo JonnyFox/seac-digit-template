@@ -1,0 +1,13 @@
+import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
+
+@Injectable()
+export class DocumentService {
+
+    constructor(private db: AngularFireDatabase) { }
+
+    documents(): Observable<Document> { 
+        
+    }
+}
