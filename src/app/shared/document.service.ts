@@ -6,8 +6,4 @@ import { Observable } from 'rxjs/Observable';
 export class DocumentService {
 
     constructor(private db: AngularFireDatabase) { }
-
-    documents(): Observable<Document> { 
-        
-    }
 }
