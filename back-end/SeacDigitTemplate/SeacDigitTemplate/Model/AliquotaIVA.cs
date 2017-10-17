@@ -7,7 +7,7 @@ namespace SeacDigitTemplate.Model
 {
     public class AliquotaIVA
     {
-        public int Id;
-        public int Percentuale;
+        public int Id { get; set; }
+        public int Percentuale { get; set; }
     }
 }

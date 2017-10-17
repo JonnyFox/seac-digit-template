@@ -7,8 +7,10 @@ namespace SeacDigitTemplate.Model
 {
     public class SituazioneConto
     {
-        public int ContoId;
-        public int Valore;
-        public int Variazione;
+        public int ContoId { get; set; }
+        public Conto Conto { get; set; }
+
+        public int Valore { get; set; }
+        public int Variazione { get; set; }
     }
 }

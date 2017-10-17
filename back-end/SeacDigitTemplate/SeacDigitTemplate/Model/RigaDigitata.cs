@@ -7,19 +7,30 @@ namespace SeacDigitTemplate.Model
 {
     public class RigaDigitata
     {
-        public int Id;
-        public int DocumentId;
-        public int ContoDareId;
-        public int ContoAvereId;
-        public int VoceIVAId;
-        public TrattamentoEnum Trattamento;
-        public int TitoloInapplicabilita;
-        public int AliquotaIVAId;
-        public int Imponibile;
-        public int IVA;
-        public int PercentualeIndetraibilita;
-        public int PercentualeIndeducibilita;
-        public int Settore;
-        public string Note;
+        public int Id { get; set; }
+
+        public int DocumentId { get; set; }
+        public Documento Documento { get; set; }
+
+        public int ContoDareId { get; set; }
+        public Conto ContoDare { get; set; }
+
+        public int ContoAvereId { get; set; }
+        public Conto ContoAvere { get; set; }
+
+        public int VoceIVAId { get; set; }
+        public VoceIVA VoceIVA { get; set; }
+
+        public int AliquotaIVAId { get; set; }
+        public AliquotaIVA AliquotaIVA { get; set; }
+
+        public TrattamentoEnum Trattamento { get; set; }
+        public int TitoloInapplicabilita { get; set; }
+        public int Imponibile { get; set; }
+        public int IVA { get; set; }
+        public int PercentualeIndetraibilita { get; set; }
+        public int PercentualeIndeducibilita { get; set; }
+        public int Settore { get; set; }
+        public string Note { get; set; }
     }
 }

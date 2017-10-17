@@ -7,7 +7,7 @@ namespace SeacDigitTemplate.Model
 {
     public class VoceIVA
     {
-        public int Id;
-        public string Nome;
+        public int Id { get; set; }
+        public string Nome { get; set; }
     }
 }

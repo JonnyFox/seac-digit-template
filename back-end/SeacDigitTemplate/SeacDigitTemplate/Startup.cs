@@ -32,5 +32,7 @@ namespace SeacDigitTemplate
 
             app.UseMvc();
         }
+
+ 
     }
 }

@@ -20,8 +20,8 @@ namespace SeacDigitTemplate.Data
             //{
             //    new User{ Name = "Hello", Password ="Hello" }
             //};
-            
-           
+
+
             context.SaveChanges();
         }
     }

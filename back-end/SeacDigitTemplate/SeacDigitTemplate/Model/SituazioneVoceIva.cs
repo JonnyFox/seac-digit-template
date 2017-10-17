@@ -7,10 +7,14 @@ namespace SeacDigitTemplate.Model
 {
     public class SituazioneVoceIVA
     {
-        public int VoceIVAId;
-        public TrattamentoEnum Trattamento;
-        public int TitoloInapplicabilita;
-        public int AliquotaIVAId;
-        public int Valore;
+        public int VoceIVAId { get; set; }
+        public VoceIVA VoceIVA { get; set; }
+
+        public int AliquotaIVAId { get; set; }
+        public AliquotaIVA AliquotaIVA { get; set; }
+
+        public TrattamentoEnum Trattamento { get; set; }
+        public int TitoloInapplicabilita { get; set; }
+        public int Valore { get; set; }
     }
 }

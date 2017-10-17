@@ -7,14 +7,16 @@ namespace SeacDigitTemplate.Model
 {
     public class Documento
     {
-        public int Id;
-        public int Totale;
-        public int RitenutaAcconto;
-        public DocumentoSospensioneEnum Sospeso;
-        public DocumentoTipoEnum Tipo;
-        public DocumentoCaratteristicaEnum Caratteristica;
-        public int CliforId;
-        public RegistroTipoEnum Registro;
-        public int RiferimentoDocumentoId;
+        public int Id { get; set; }
+        public int Totale { get; set; }
+        public int RitenutaAcconto { get; set; }
+        public DocumentoSospensioneEnum Sospeso { get; set; }
+        public DocumentoTipoEnum Tipo { get; set; }
+        public DocumentoCaratteristicaEnum Caratteristica { get; set; }
+        public int CliforId { get; set; }
+        public Clifor Clifor { get; set; }
+
+        public RegistroTipoEnum Registro { get; set; }
+        public int RiferimentoDocumentoId { get; set; }
     }
 }
