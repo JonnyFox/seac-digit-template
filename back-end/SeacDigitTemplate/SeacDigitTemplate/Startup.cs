@@ -24,6 +24,7 @@ namespace SeacDigitTemplate
             services.AddMvc();
             services.AddTransient<EffettoService>();
             services.AddTransient<ContoService>();
+            services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
