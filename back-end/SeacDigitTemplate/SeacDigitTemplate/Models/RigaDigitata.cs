@@ -9,7 +9,7 @@ namespace SeacDigitTemplate.Model
     {
         public int Id { get; set; }
 
-        public int DocumentId { get; set; }
+        public int DocumentoId { get; set; }
         public Documento Documento { get; set; }
 
         public int ContoDareId { get; set; }
@@ -26,10 +26,10 @@ namespace SeacDigitTemplate.Model
 
         public TrattamentoEnum Trattamento { get; set; }
         public int TitoloInapplicabilita { get; set; }
-        public int Imponibile { get; set; }
-        public int IVA { get; set; }
-        public int PercentualeIndetraibilita { get; set; }
-        public int PercentualeIndeducibilita { get; set; }
+        public decimal Imponibile { get; set; }
+        public decimal IVA { get; set; }
+        public decimal PercentualeIndetraibilita { get; set; }
+        public decimal PercentualeIndeducibilita { get; set; }
         public int Settore { get; set; }
         public string Note { get; set; }
     }

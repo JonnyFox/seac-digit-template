@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using SeacDigitTemplate.Data;
+using SeacDigitTemplate.Services;
+using SeacDigitTemplate.Model;
 
 namespace SeacDigitTemplate
 {
@@ -15,13 +17,15 @@ namespace SeacDigitTemplate
         {
             Configuration = configuration;
         }
-                
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SeacDigitTemplateContex>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc();
+            services.AddTransient<EffettoService>();
+            services.AddTransient<ContoService>();
         }
-        
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -30,9 +34,15 @@ namespace SeacDigitTemplate
 
             Configuration = builder.Build();
 
+            app.UseCors(bb => bb.AllowAnyHeader());
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
             app.UseMvc();
         }
 
- 
+
     }
 }

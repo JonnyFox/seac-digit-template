@@ -8,8 +8,8 @@ namespace SeacDigitTemplate.Model
     public class Documento
     {
         public int Id { get; set; }
-        public int Totale { get; set; }
-        public int RitenutaAcconto { get; set; }
+        public decimal Totale { get; set; }
+        public decimal RitenutaAcconto { get; set; }
         public DocumentoSospensioneEnum Sospeso { get; set; }
         public DocumentoTipoEnum Tipo { get; set; }
         public DocumentoCaratteristicaEnum Caratteristica { get; set; }

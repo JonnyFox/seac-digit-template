@@ -10,7 +10,7 @@ namespace SeacDigitTemplate.Model
         public int ContoId { get; set; }
         public Conto Conto { get; set; }
 
-        public int Valore { get; set; }
-        public int Variazione { get; set; }
+        public decimal Valore { get; set; }
+        public decimal Variazione { get; set; }
     }
 }

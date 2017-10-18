@@ -27,7 +27,8 @@
         Differita
     }
 
-    public enum RegistroTipoEnum {
+    public enum RegistroTipoEnum
+    {
         Acquisti,
         Emesse,
         Corrispettivi,
@@ -50,6 +51,7 @@
 
     public enum TrattamentoEnum
     {
+        None,
         Detraibile,
         IdentraibileOggettivo,
         IdentraibileSoggettivo

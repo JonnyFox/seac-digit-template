@@ -15,6 +15,7 @@ namespace SeacDigitTemplate.Model
 
         public TrattamentoEnum Trattamento { get; set; }
         public int TitoloInapplicabilita { get; set; }
-        public int Valore { get; set; }
+        public decimal Valore { get; set; }
+
     }
 }

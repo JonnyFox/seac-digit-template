@@ -8,6 +8,6 @@ namespace SeacDigitTemplate.Model
     public class AliquotaIVA
     {
         public int Id { get; set; }
-        public int Percentuale { get; set; }
+        public decimal Percentuale { get; set; }
     }
 }
