@@ -58,15 +58,13 @@ namespace SeacDigitTemplate
 
             Configuration = builder.Build();
 
-            app.UseCors(bb => bb.AllowAnyHeader());
+            app.UseCors(bb => bb.AllowAnyOrigin());
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             app.UseMvc();
-
-
         }
 
 

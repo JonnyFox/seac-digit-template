@@ -32,6 +32,8 @@ export enum RegistroTipoEnum {
 
 export class Documento {
     id: number;
+    numero: string;
+    protocollo: number;
     totale: number;
     ritenutaAcconto: number;
     sospeso: DocumentoSospensioneEnum;
@@ -39,7 +41,7 @@ export class Documento {
     caratteristica: DocumentoCaratteristicaEnum;
     cliforId: number;
     registro: RegistroTipoEnum;
-    riferimentoDocumentoId: number;
+    riferimentoDocumentoId: number | null;
 }
 
 export enum CliforSoggettoEnum {
@@ -63,19 +65,19 @@ export class Clifor {
 
 export class RigaDigitata {
     id: number;
-    documentId: number;
-    contoDareId: number;
-    contoAvereId: number;
-    voceIVAId: number;
+    documentoId: number | null;
+    contoDareId: number | null;
+    contoAvereId: number | null;
+    voceIvaId: number | null;
     trattamento: TrattamentoEnum;
-    titoloInapplicabilita: number;
-    aliquotaIVAId: number;
-    imponibile: number;
-    IVA: number;
-    percentualeIndetraibilita: number;
-    percentualeIndeducibilita: number;
-    settore: number;
-    note: string;
+    titoloInapplicabilitaId: number | null;
+    aliquotaIvaId: number | null;
+    imponibile: number | null;
+    iva: number | null;
+    percentualeIndetraibilita: number | null;
+    percentualeIndeducibilita: number | null;
+    settore: number | null;
+    note: string | null;
 }
 
 export class Conto {
@@ -84,16 +86,18 @@ export class Conto {
 }
 
 export enum TrattamentoEnum {
+    None,
     Detraibile,
     IdentraibileOggettivo,
-    IdentraibileSoggettivo
+    IdentraibileSoggettivo,
+    Esente
 }
 
 export class SituazioneVoceIVA {
-    voceIVAId: number;
+    voceIvaId: number;
     trattamento: TrattamentoEnum;
     titoloInapplicabilita: number;
-    aliquotaIVAId: number;
+    aliquotaIvaId: number;
     valore: number;
 }
 
@@ -103,12 +107,38 @@ export class SituazioneConto {
     variazione: number;
 }
 
-export class VoceIVA {
+export class VoceIva {
     id: number;
     nome: string;
 }
 
-export class AliquotaIVA {
+export class AliquotaIva {
     id: number;
     percentuale: number;
+}
+
+export class EffettoCalcolo {
+    documento: Documento;
+    rigaDigitataList: RigaDigitata[];
+}
+
+export class Effetto {
+    id: number;
+    documentoId: number;
+    rigaDigitataId: number;
+    contoDareId: number;
+    contoAvereId: number;
+    voceIvaId: number;
+    trattamento: TrattamentoEnum;
+    titoloInapplicabilita: number;
+    aliquotaIvaId: number;
+    imponibile: number;
+    valore: number;
+    variazione: number;
+    riferimentoEffettoId: number;
+}
+
+export class TitoloInapplicabilita {
+    id: number;
+    nome: string;
 }
