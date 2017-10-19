@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SeacDigitTemplate.Dtos;
 using SeacDigitTemplate.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SeacDigitTemplate.Controllers
 {
@@ -8,22 +12,24 @@ namespace SeacDigitTemplate.Controllers
     public class RigaDigitataController : ControllerBase
     {
         private RigaDigitataService _rigaDigitataService;
+        private readonly IMapper _mapper;
 
-        public RigaDigitataController(RigaDigitataService rigaDigitataService)
+        public RigaDigitataController(RigaDigitataService rigaDigitataService, IMapper mapper)
         {
-            this._rigaDigitataService = rigaDigitataService;
+            _rigaDigitataService = rigaDigitataService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAsync()
         {
-            return Ok(_rigaDigitataService.GetAll());
+            return Ok(_mapper.Map<List<RigaDigitataDto>>(await _rigaDigitataService.GetAll()));
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return Ok(_rigaDigitataService.GetById(id));
+            return Ok(_mapper.Map<List<RigaDigitataDto>>(await _rigaDigitataService.GetById(id)));
         }
     }
 }

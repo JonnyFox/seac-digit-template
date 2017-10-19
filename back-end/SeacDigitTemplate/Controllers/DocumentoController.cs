@@ -30,9 +30,9 @@ namespace SeacDigitTemplate.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return Ok(_documentoService.GetById(id));
+            return Ok(_mapper.Map<List<DocumentoDto>>(await _documentoService.GetById(id)));
         }
     }
 }

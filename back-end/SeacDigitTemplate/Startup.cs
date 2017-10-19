@@ -36,6 +36,7 @@ namespace SeacDigitTemplate
             services.AddTransient<VoceIvaService>();
             services.AddTransient<DocumentoService>();
             services.AddTransient<RigaDigitataService>();
+            services.AddTransient<SituazioneVoceIvaService>();
             services.AddCors();
 
 
