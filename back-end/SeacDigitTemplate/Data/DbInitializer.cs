@@ -38,11 +38,7 @@ namespace SeacDigitTemplate.Data
                   context.Contos.Add(c);
               }
 
-              if (context.Clifors.Any())
-              {
-                  return;
-              }
-
+            
               var clifors = new Clifor[]
               {
                   new Clifor{Nome ="Cli For 1", Soggetto = CliforSoggettoEnum.ExtraUE, Istituzionale = CliforIstituzionaleEnum.Istituzionale},
