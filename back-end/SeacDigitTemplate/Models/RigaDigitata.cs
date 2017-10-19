@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using SeacDigitTemplate.Models;
 
 namespace SeacDigitTemplate.Model
 {
@@ -25,7 +22,7 @@ namespace SeacDigitTemplate.Model
         public AliquotaIva AliquotaIVA { get; set; }
 
         public TrattamentoEnum Trattamento { get; set; }
-        public int TitoloInapplicabilita { get; set; }
+        public TitoloInapplicabilita TitoloInapplicabilita { get; set; }
         public decimal Imponibile { get; set; }
         public decimal IVA { get; set; }
         public decimal PercentualeIndetraibilita { get; set; }

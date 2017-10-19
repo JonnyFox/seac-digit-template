@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeacDigitTemplate.Model;
+using SeacDigitTemplate.Models;
 using System.Linq;
 
 namespace SeacDigitTemplate.Data
@@ -19,6 +20,7 @@ namespace SeacDigitTemplate.Data
         public DbSet<SituazioneConto> SituazioneContos { get; set; }
         public DbSet<SituazioneVoceIVA> SituazioneVoceIVAs { get; set; }
         public DbSet<VoceIva> VoceIVAs { get; set; }
+        public DbSet<TitoloInapplicabilita> TitoloInapplicabilitas { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder mb)
