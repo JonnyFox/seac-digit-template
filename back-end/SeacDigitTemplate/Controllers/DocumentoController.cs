@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SeacDigitTemplate.Dtos;
-using SeacDigitTemplate.Model;
 using SeacDigitTemplate.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SeacDigitTemplate.Controllers
 {

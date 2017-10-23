@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using SeacDigitTemplate.Data;
 using SeacDigitTemplate.Services;
 using SeacDigitTemplate.Model;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using SeacDigitTemplate.Dtos;
 
 namespace SeacDigitTemplate
@@ -38,12 +37,14 @@ namespace SeacDigitTemplate
             services.AddTransient<RigaDigitataService>();
             services.AddTransient<SituazioneVoceIvaService>();
             services.AddCors();
-
-
+            
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Documento, DocumentoDto>();
                 cfg.CreateMap<DocumentoDto, Documento>();
+                cfg.CreateMap<RigaDigitata, RigaDigitataDto>();
+                cfg.CreateMap<RigaDigitataDto, RigaDigitata>();
+                cfg.CreateMap<SituazioneVoceIVA, SituazioneVoceIvaDto >();
             });
 
             var mapper = config.CreateMapper();
@@ -66,7 +67,5 @@ namespace SeacDigitTemplate
             }
             app.UseMvc();
         }
-
-
     }
 }
