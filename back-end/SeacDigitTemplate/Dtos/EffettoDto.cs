@@ -1,6 +1,8 @@
-﻿namespace SeacDigitTemplate.Model
+﻿using SeacDigitTemplate.Model;
+
+namespace SeacDigitTemplate.Dtos
 {
-    public class Effetto
+    public class EffettoDto
     {
         public int Id { get; set; }
         public int DocumentoId { get; set; }

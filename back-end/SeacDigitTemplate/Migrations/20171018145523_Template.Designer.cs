@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SeacDigitTemplate.Data;
-using SeacDigitTemplate.Model;
+using SeacDigitTemplate.Dtos;
 using System;
 
 namespace SeacDigitTemplate.Migrations

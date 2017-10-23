@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SeacDigitTemplate.Dtos;
 using SeacDigitTemplate.Services;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SeacDigitTemplate.Controllers
 {
@@ -9,16 +12,24 @@ namespace SeacDigitTemplate.Controllers
     public class SituazioneVoceIvaController : ControllerBase
     {
         private SituazioneVoceIvaService _situazioneVoceIvaService;
+        private readonly IMapper _mapper;
 
-        public SituazioneVoceIvaController(SituazioneVoceIvaService situazioneVoceIvaService)
+        public SituazioneVoceIvaController(SituazioneVoceIvaService situazioneVoceIvaService, IMapper mapper)
         {
-            this._situazioneVoceIvaService = situazioneVoceIvaService;
+            _situazioneVoceIvaService = situazioneVoceIvaService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_situazioneVoceIvaService.GetAll());
+            return Ok(_mapper.Map<List<SituazioneVoceIvaDto>>(await _situazioneVoceIvaService.GetAll()));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            return Ok(_mapper.Map<List<SituazioneVoceIvaDto>>(await _situazioneVoceIvaService.GetById(id)));
         }
     }
 }

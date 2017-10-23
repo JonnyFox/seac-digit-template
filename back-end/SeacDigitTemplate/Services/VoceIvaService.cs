@@ -2,6 +2,7 @@
 using SeacDigitTemplate.Data;
 using SeacDigitTemplate.Model;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SeacDigitTemplate.Services
@@ -17,6 +18,10 @@ namespace SeacDigitTemplate.Services
         public Task<List<VoceIva>> GetAll()
         {
             return _ctx.VoceIVAs.ToListAsync();
+        }
+        public Task<List<VoceIva>> GetById(int id)
+        {
+            return _ctx.VoceIVAs.Where(i => i.Id == id).ToListAsync();
         }
     }
 }

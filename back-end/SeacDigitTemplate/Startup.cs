@@ -7,6 +7,7 @@ using SeacDigitTemplate.Data;
 using SeacDigitTemplate.Services;
 using SeacDigitTemplate.Model;
 using SeacDigitTemplate.Dtos;
+using SeacDigitTemplate.Models;
 
 namespace SeacDigitTemplate
 {
@@ -36,6 +37,8 @@ namespace SeacDigitTemplate
             services.AddTransient<DocumentoService>();
             services.AddTransient<RigaDigitataService>();
             services.AddTransient<SituazioneVoceIvaService>();
+            services.AddTransient<SituazioneContoService>();
+            services.AddTransient<TitoloInapplicabilitaService>();
             services.AddCors();
             
             var config = new AutoMapper.MapperConfiguration(cfg =>
@@ -44,7 +47,23 @@ namespace SeacDigitTemplate
                 cfg.CreateMap<DocumentoDto, Documento>();
                 cfg.CreateMap<RigaDigitata, RigaDigitataDto>();
                 cfg.CreateMap<RigaDigitataDto, RigaDigitata>();
-                cfg.CreateMap<SituazioneVoceIVA, SituazioneVoceIvaDto >();
+                cfg.CreateMap<SituazioneVoceIva, SituazioneVoceIvaDto>();
+                cfg.CreateMap<SituazioneVoceIvaDto, SituazioneVoceIva>();
+                cfg.CreateMap<Conto, ContoDto>();
+                cfg.CreateMap<ContoDto, Conto>();
+                cfg.CreateMap<Clifor, CliforDto>();
+                cfg.CreateMap<CliforDto, Clifor>();
+
+                cfg.CreateMap<AliquotaIva, AliquotaIvaDto>();
+                cfg.CreateMap<AliquotaIvaDto, AliquotaIva>();
+                cfg.CreateMap<Effetto, EffettoDto>();
+                cfg.CreateMap<EffettoDto, Effetto>();
+                cfg.CreateMap<SituazioneConto, SituazioneContoDto>();
+                cfg.CreateMap<SituazioneContoDto, SituazioneConto>();
+                cfg.CreateMap<TitoloInapplicabilita, TitoloInapplicabilitaDto>();
+                cfg.CreateMap<TitoloInapplicabilitaDto, TitoloInapplicabilita>();
+                cfg.CreateMap<VoceIva, VoceIvaDto>();
+                cfg.CreateMap<VoceIvaDto, VoceIva>();
             });
 
             var mapper = config.CreateMapper();

@@ -18,7 +18,7 @@ namespace SeacDigitTemplate.Data
         public DbSet<Documento> Documentos { get; set; }
         public DbSet<RigaDigitata> RigaDigitatas { get; set; }
         public DbSet<SituazioneConto> SituazioneContos { get; set; }
-        public DbSet<SituazioneVoceIVA> SituazioneVoceIVAs { get; set; }
+        public DbSet<SituazioneVoceIva> SituazioneVoceIVAs { get; set; }
         public DbSet<VoceIva> VoceIVAs { get; set; }
         public DbSet<TitoloInapplicabilita> TitoloInapplicabilitas { get; set; }
 
@@ -32,7 +32,7 @@ namespace SeacDigitTemplate.Data
 
             base.OnModelCreating(mb);
             mb.Entity<SituazioneConto>().HasKey(sc => sc.ContoId);
-            mb.Entity<SituazioneVoceIVA>().HasKey(sv => sv.VoceIVAId);
+            mb.Entity<SituazioneVoceIva>().HasKey(sv => sv.VoceIvaId);
 
         }
     }
