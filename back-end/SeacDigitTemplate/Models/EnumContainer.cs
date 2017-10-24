@@ -52,8 +52,8 @@
     public enum TrattamentoEnum
     {
         Detraibile = 1,
-        IdentraibileOggettivo,
-        IdentraibileSoggettivo,
+        IndetraibileOggettivo,
+        IndetraibileSoggettivo,
         Esente
     }
 

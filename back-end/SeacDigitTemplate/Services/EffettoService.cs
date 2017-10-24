@@ -6,6 +6,9 @@ using SeacDigitTemplate.Models;
 using System.Threading.Tasks;
 using SeacDigitTemplate.Data;
 using System.Reflection;
+using System.Text.RegularExpressions;
+using Jace;
+using SeacDigitTemplate.Extensions;
 
 namespace SeacDigitTemplate.Services
 {
@@ -101,7 +104,7 @@ namespace SeacDigitTemplate.Services
                 TemplateGenerazioneEffetto = templateEffetto.Id,
                 RigaDigitataId = rigaDigitata.Id,
                 DocumentoId = rigaDigitata.DocumentoId
-                
+
             };
 
             foreach (var templateEffettoField in TemplateEffettoStringProperties)
@@ -112,20 +115,45 @@ namespace SeacDigitTemplate.Services
                 {
                     Object value = null;
 
+                    var currentEffettoProperty = EffettoProperties.Single(ep => ep.Name == templateEffettoField.Name);
+
                     if (templateEffettoFieldValue.StartsWith("*"))
                     {
-                        value = int.Parse(templateEffettoFieldValue.Substring(1));
+                        if (currentEffettoProperty.PropertyType == typeof(int) || currentEffettoProperty.PropertyType == typeof(int?))
+                        {
+                            value = templateEffettoFieldValue.Substring(1).ToNullableInt();
+                        }
+                        else
+                        {
+                            value = Enum.Parse(Nullable.GetUnderlyingType(currentEffettoProperty.PropertyType), templateEffettoFieldValue.Substring(1));
+                        }
+                    }
+                    else if (templateEffettoFieldValue.StartsWith("#"))
+                    {
+                        var formula = templateEffettoFieldValue.Substring(1);
+                        var regex = new Regex(@"[^\d\W]+");
+
+                        var variables = new Dictionary<string, double>();
+
+                        foreach (Match match in regex.Matches(formula))
+                        {
+                            variables.Add(match.Value, Convert.ToDouble(RigaDigitataProperties.Single(rdp => rdp.Name == match.Value).GetValue(rigaDigitata)));
+                        }
+
+                        value = Convert.ToDecimal(new CalculationEngine().Calculate(formula, variables));
                     }
                     else
                     {
                         value = RigaDigitataProperties.Single(rdp => rdp.Name == templateEffettoFieldValue).GetValue(rigaDigitata);
                     }
 
-                    EffettoProperties.Single(ep => ep.Name == templateEffettoField.Name).SetValue(newEffetto, value);
+                    currentEffettoProperty.SetValue(newEffetto, value);
                 }
             }
 
             return newEffetto;
         }
+
+
     }
 }

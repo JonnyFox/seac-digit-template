@@ -12,10 +12,9 @@ using System;
 namespace SeacDigitTemplate.Migrations
 {
     [DbContext(typeof(SeacDigitTemplateContext))]
-    [Migration("20171023153320_First")]
-    partial class First
+    partial class SeacDigitTemplateContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +30,7 @@ namespace SeacDigitTemplate.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AliquotaIVAs");
+                    b.ToTable("AliquotaIvas");
                 });
 
             modelBuilder.Entity("SeacDigitTemplate.Model.Clifor", b =>
@@ -107,9 +106,9 @@ namespace SeacDigitTemplate.Migrations
 
                     b.Property<int>("DocumentoId");
 
-                    b.Property<decimal>("Imponibile");
+                    b.Property<decimal?>("Imponibile");
 
-                    b.Property<decimal>("Iva");
+                    b.Property<decimal?>("Iva");
 
                     b.Property<string>("Note");
 
@@ -117,11 +116,11 @@ namespace SeacDigitTemplate.Migrations
 
                     b.Property<decimal>("PercentualeIndetraibilita");
 
-                    b.Property<int>("Settore");
+                    b.Property<int?>("Settore");
 
                     b.Property<int?>("TitoloInapplicabilitaId");
 
-                    b.Property<int>("Trattamento");
+                    b.Property<int?>("Trattamento");
 
                     b.Property<int?>("VoceIvaId");
 
@@ -193,7 +192,7 @@ namespace SeacDigitTemplate.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VoceIVAs");
+                    b.ToTable("VoceIvas");
                 });
 
             modelBuilder.Entity("SeacDigitTemplate.Models.ApplicazioneTemplateEffetto", b =>
@@ -235,37 +234,35 @@ namespace SeacDigitTemplate.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AliquotaIVAId");
+                    b.Property<string>("AliquotaIvaId");
 
-                    b.Property<int?>("ContoAvereId");
+                    b.Property<int>("ApplicazioneTemplateEffettoId");
 
-                    b.Property<int?>("ContoDareId");
+                    b.Property<string>("ContoAvereId");
 
-                    b.Property<int>("IdDoc");
+                    b.Property<string>("ContoDareId");
 
-                    b.Property<int>("IdRow");
+                    b.Property<string>("DataOperazione");
 
-                    b.Property<decimal>("Indet");
+                    b.Property<string>("Imponibile");
 
-                    b.Property<int>("RifRow");
+                    b.Property<string>("Iva");
 
-                    b.Property<int>("TitoloInapplicabilita");
+                    b.Property<string>("RifRow");
 
-                    b.Property<decimal>("Valore");
+                    b.Property<string>("TitoloInapplicabilitaId");
 
-                    b.Property<decimal>("VariazioneF");
+                    b.Property<string>("Trattamento");
 
-                    b.Property<int?>("VoceIVAId");
+                    b.Property<string>("Valore");
+
+                    b.Property<string>("VariazioneF");
+
+                    b.Property<string>("VoceIvaId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AliquotaIVAId");
-
-                    b.HasIndex("ContoAvereId");
-
-                    b.HasIndex("ContoDareId");
-
-                    b.HasIndex("VoceIVAId");
+                    b.HasIndex("ApplicazioneTemplateEffettoId");
 
                     b.ToTable("TemplateEffettos");
                 });
@@ -292,7 +289,7 @@ namespace SeacDigitTemplate.Migrations
 
             modelBuilder.Entity("SeacDigitTemplate.Model.RigaDigitata", b =>
                 {
-                    b.HasOne("SeacDigitTemplate.Model.AliquotaIva", "AliquotaIVA")
+                    b.HasOne("SeacDigitTemplate.Model.AliquotaIva", "AliquotaIva")
                         .WithMany()
                         .HasForeignKey("AliquotaIvaId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -317,7 +314,7 @@ namespace SeacDigitTemplate.Migrations
                         .HasForeignKey("TitoloInapplicabilitaId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SeacDigitTemplate.Model.VoceIva", "VoceIVA")
+                    b.HasOne("SeacDigitTemplate.Model.VoceIva", "VoceIva")
                         .WithMany()
                         .HasForeignKey("VoceIvaId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -346,24 +343,9 @@ namespace SeacDigitTemplate.Migrations
 
             modelBuilder.Entity("SeacDigitTemplate.Models.TemplateEffetto", b =>
                 {
-                    b.HasOne("SeacDigitTemplate.Model.AliquotaIva", "AliquotaIVA")
-                        .WithMany()
-                        .HasForeignKey("AliquotaIVAId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SeacDigitTemplate.Model.Conto", "ContoAvere")
-                        .WithMany()
-                        .HasForeignKey("ContoAvereId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SeacDigitTemplate.Model.Conto", "ContoDare")
-                        .WithMany()
-                        .HasForeignKey("ContoDareId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SeacDigitTemplate.Model.VoceIva", "VoceIVA")
-                        .WithMany()
-                        .HasForeignKey("VoceIVAId")
+                    b.HasOne("SeacDigitTemplate.Models.ApplicazioneTemplateEffetto", "ApplicazioneTemplateEffetto")
+                        .WithMany("TemplateEffetto")
+                        .HasForeignKey("ApplicazioneTemplateEffettoId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618

@@ -80,6 +80,7 @@ namespace SeacDigitTemplate.Data
             var documentos = new Documento[]
             {
                 new Documento{Totale = 100.0m, RitenutaAcconto = 35.0m, Sospeso = DocumentoSospensioneEnum.ContoIVA, Tipo = DocumentoTipoEnum.Fattura, Caratteristica = DocumentoCaratteristicaEnum.Autofattura, Clifor = clifors[0], Registro = RegistroTipoEnum.Corrispettivi, Numero = "1", Protocollo = 45},
+                new Documento{Totale = 45.0m, RitenutaAcconto = 5.0m, Sospeso = DocumentoSospensioneEnum.Conto, Tipo = DocumentoTipoEnum.Contabile, Caratteristica = DocumentoCaratteristicaEnum.FatturaUE, Clifor = clifors[1], Registro = RegistroTipoEnum.Emesse, Numero = "2", Protocollo = 5},
                 new Documento{Totale = 45.0m, RitenutaAcconto = 5.0m, Sospeso = DocumentoSospensioneEnum.Conto, Tipo = DocumentoTipoEnum.Contabile, Caratteristica = DocumentoCaratteristicaEnum.FatturaUE, Clifor = clifors[1], Registro = RegistroTipoEnum.Emesse, Numero = "2", Protocollo = 5}
             };
 
@@ -108,42 +109,53 @@ namespace SeacDigitTemplate.Data
                     ContoAvere = contos[9],
                     VoceIva = voceivas[0],
                     AliquotaIva = aliquotas[2],
+                    PercentualeAliquotaIva = aliquotas[2].Percentuale,
                     Trattamento = TrattamentoEnum.Detraibile,
-                    TitoloInapplicabilita = null,
                     Imponibile = 1000.0m,
-                    Iva = 220.0m,
-                    PercentualeIndeducibilita = null,
-                    PercentualeIndetraibilita = null,
-                    Settore = null,
-                    Note = null },
+                    Iva = 220.0m
+                },
                 new RigaDigitata{
                     Documento = documentos[0],
                     ContoDare = contos[1],
                     ContoAvere = contos[9],
                     VoceIva = voceivas[0],
                     AliquotaIva = aliquotas[1],
+                    PercentualeAliquotaIva = aliquotas[1].Percentuale,
                     Trattamento = TrattamentoEnum.Detraibile,
-                    TitoloInapplicabilita = null ,
                     Imponibile = 1000.0m,
-                    Iva = 100,
-                    PercentualeIndeducibilita = null,
-                    PercentualeIndetraibilita = null,
-                    Settore = null,
-                    Note = null},
+                    Iva = 100
+                },
                 new RigaDigitata{
                     Documento = documentos[0],
                     ContoDare = contos[2],
                     ContoAvere = contos[9],
                     VoceIva = voceivas[0],
-                    AliquotaIva = null,
-                    Trattamento = null,
                     TitoloInapplicabilita = titoloInapplicabilitas[2],
-                    Imponibile = 2.0m,
-                    Iva = null ,
-                    PercentualeIndeducibilita = null,
-                    PercentualeIndetraibilita = null,
-                    Settore = null,
-                    Note = null },
+                    Imponibile = 2.0m
+                },
+                new RigaDigitata{
+                    Documento = documentos[1],
+                    ContoDare = contos[0],
+                    ContoAvere = contos[9],
+                    VoceIva = voceivas[0],
+                    AliquotaIva = aliquotas[2],
+                    PercentualeAliquotaIva = aliquotas[2].Percentuale,
+                    Imponibile = 1000.0m,
+                    Iva = 220,
+                    PercentualeIndetraibilita = 0.4m
+                },
+                 new RigaDigitata{
+                    Documento = documentos[2],
+                    ContoDare = contos[0],
+                    ContoAvere = contos[9],
+                    VoceIva = voceivas[0],
+                    AliquotaIva = aliquotas[2],
+                    PercentualeAliquotaIva = aliquotas[2].Percentuale,
+                    Imponibile = 1000.0m,
+                    Iva = 220,
+                    PercentualeIndetraibilita = 0.4m,
+                    PercentualeIndeducibilita = 0.2m
+                }
             };
 
             foreach (RigaDigitata r in rigaDigitatas)
@@ -169,7 +181,19 @@ namespace SeacDigitTemplate.Data
                     ContoAvere ="Fornitore",
                     VoceIva ="Merce",
                     TitoloInapplicabilita = "*",
-                    Imponibile = "*"}
+                    Imponibile = "*"
+                },
+                new ApplicazioneTemplateEffetto
+                {
+                    ContoDare = "*",
+                    ContoAvere = "*",
+                    VoceIva = "*",
+                    AliquotaIva = "*",
+                    Imponibile = "*",
+                    Iva = "*",
+                    PercentualeIndetraibilita = "*",
+                    PercentualeIndeducibilita = "*"
+                }
             };
 
             foreach (ApplicazioneTemplateEffetto a in applicazioneTemplateEffettos)
@@ -193,6 +217,7 @@ namespace SeacDigitTemplate.Data
                     ContoAvereId = "ContoAvereId",
                     VoceIvaId = "VoceIvaId",
                     AliquotaIvaId = "AliquotaIvaId",
+                    Valore = "Imponibile",
                     Imponibile = "Imponibile",
                     Iva = "Iva"
                 },
@@ -204,7 +229,48 @@ namespace SeacDigitTemplate.Data
                     VoceIvaId = "VoceIvaId",
                     TitoloInapplicabilitaId = "TitoloInapplicabilita",
                     Valore = "Imponibile"
-                }
+                },
+                new TemplateEffetto
+                {
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[2],
+                    ContoDareId = "ContoDareId",
+                    ContoAvereId = "ContoAvereId",
+                    Valore = "#Imponibile*PercentualeIndetraibilita",
+                    VariazioneF = "#Imponibile*PercentualeIndetraibilita*PercentualeIndeducibilita"
+                },
+                new TemplateEffetto
+                {
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[2],
+                    ContoDareId = "ContoDareId",
+                    ContoAvereId = "ContoAvereId",
+                    Valore = "#Imponibile*(1 - PercentualeIndetraibilita)",
+                    VariazioneF = "#Imponibile*(1 - PercentualeIndetraibilita)*PercentualeIndeducibilita"
+                },
+                new TemplateEffetto
+                {
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[2],
+                    ContoDareId = "ContoDareId",
+                    ContoAvereId = "ContoAvereId",
+                    VoceIvaId = "VoceIvaId",
+                    Trattamento = "*" + (int)TrattamentoEnum.IndetraibileOggettivo,
+                    AliquotaIvaId = "AliquotaIvaId",
+                    Valore = "#Iva*PercentualeIndetraibilita",
+                    VariazioneF = "#Imponibile*PercentualeAliquotaIva*PercentualeIndetraibilita*PercentualeIndeducibilita",
+                    Imponibile = "Imponibile",
+                    Iva = "#Iva*PercentualeIndetraibilita"
+                },
+                new TemplateEffetto
+                {
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[2],
+                    ContoDareId = "*3",
+                    ContoAvereId = "ContoAvereId",
+                    VoceIvaId = "VoceIvaId",
+                    Trattamento = "*" + (int)TrattamentoEnum.Detraibile,
+                    AliquotaIvaId = "AliquotaIvaId",
+                    Valore = "#Iva*(1 - PercentualeIndetraibilita)",
+                    Imponibile = "Imponibile",
+                    Iva = "#Iva*(1 - PercentualeIndetraibilita)"
+                },
             };
 
             foreach (TemplateEffetto t in templateEffettos)

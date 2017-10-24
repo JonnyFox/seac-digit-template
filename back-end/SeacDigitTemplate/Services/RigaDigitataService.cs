@@ -4,6 +4,7 @@ using SeacDigitTemplate.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace SeacDigitTemplate.Services
 {
@@ -22,6 +23,11 @@ namespace SeacDigitTemplate.Services
         public Task<RigaDigitata> GetByIdAsync(int id)
         {
             return _ctx.RigaDigitatas.SingleOrDefaultAsync(i => i.Id == id);
+        }
+
+        public Task<List<RigaDigitata>> GetByDocumentoIdAsync(int id)
+        {
+            return _ctx.RigaDigitatas.Where(rd => rd.DocumentoId == id).ToListAsync();
         }
     }
 }
