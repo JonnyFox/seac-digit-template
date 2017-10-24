@@ -98,7 +98,8 @@ namespace SeacDigitTemplate.Services
         {
             var newEffetto = new Effetto
             {
-                TemplateGenerazioneEffetto = templateEffetto.Id
+                TemplateGenerazioneEffetto = templateEffetto.Id,
+                RigaDigitataId = rigaDigitata.Id
             };
 
             foreach (var templateEffettoField in TemplateEffettoStringProperties)

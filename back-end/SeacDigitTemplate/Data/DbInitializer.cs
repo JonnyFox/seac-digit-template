@@ -91,8 +91,8 @@ namespace SeacDigitTemplate.Data
             var titoloInapplicabilitas = new TitoloInapplicabilita[]
              {
                  new TitoloInapplicabilita{Nome = "Art 15"},
-                 new TitoloInapplicabilita{Nome = "Art 16 "},
-                 new TitoloInapplicabilita{Nome = "ARt 17"}
+                 new TitoloInapplicabilita{Nome = "Art 16"},
+                 new TitoloInapplicabilita{Nome = "Art 17"}
              };
 
             foreach (TitoloInapplicabilita t in titoloInapplicabilitas)
