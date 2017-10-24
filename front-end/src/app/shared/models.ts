@@ -42,6 +42,7 @@ export class Documento {
     cliforId: number;
     registro: RegistroTipoEnum;
     riferimentoDocumentoId: number | null;
+    rigaDigitataList: RigaDigitata[];
 }
 
 export enum CliforSoggettoEnum {

@@ -24,7 +24,8 @@ export class DocumentoService extends BaseService<Documento> {
             ritenutaAcconto: 0,
             sospeso: DocumentoSospensioneEnum.None,
             tipo: DocumentoTipoEnum.Fattura,
-            totale: 1000
+            totale: 1000,
+            rigaDigitataList: []
         },
         {
             id: 2,
@@ -37,7 +38,8 @@ export class DocumentoService extends BaseService<Documento> {
             ritenutaAcconto: 0,
             sospeso: DocumentoSospensioneEnum.None,
             tipo: DocumentoTipoEnum.Fattura,
-            totale: 1000
+            totale: 1000,
+            rigaDigitataList: []
         },
         {
             id: 3,
@@ -50,7 +52,8 @@ export class DocumentoService extends BaseService<Documento> {
             ritenutaAcconto: 0,
             sospeso: DocumentoSospensioneEnum.None,
             tipo: DocumentoTipoEnum.Fattura,
-            totale: 1000
+            totale: 1000,
+            rigaDigitataList: []
         },
         {
             id: 4,
@@ -63,7 +66,8 @@ export class DocumentoService extends BaseService<Documento> {
             ritenutaAcconto: 0,
             sospeso: DocumentoSospensioneEnum.None,
             tipo: DocumentoTipoEnum.Fattura,
-            totale: 1000
+            totale: 1000,
+            rigaDigitataList: []
         }
     ];
 
