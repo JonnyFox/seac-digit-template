@@ -10,8 +10,8 @@ namespace SeacDigitTemplate.Services
 {
     public class SituazioneContoService
     {
-        SeacDigitTemplateContex _ctx;
-        public SituazioneContoService(SeacDigitTemplateContex ctx)
+        SeacDigitTemplateContext _ctx;
+        public SituazioneContoService(SeacDigitTemplateContext ctx)
         {
             _ctx = ctx;
         }

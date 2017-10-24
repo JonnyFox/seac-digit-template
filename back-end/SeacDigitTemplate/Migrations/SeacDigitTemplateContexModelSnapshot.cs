@@ -11,7 +11,7 @@ using System;
 
 namespace SeacDigitTemplate.Migrations
 {
-    [DbContext(typeof(SeacDigitTemplateContex))]
+    [DbContext(typeof(SeacDigitTemplateContext))]
     partial class SeacDigitTemplateContexModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

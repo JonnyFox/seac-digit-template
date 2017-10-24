@@ -11,9 +11,9 @@ namespace SeacDigitTemplate.Services
 {
     public class ApplicazioneTemplateEffettoService
     {
-        SeacDigitTemplateContex _ctx;
+        SeacDigitTemplateContext _ctx;
 
-        public ApplicazioneTemplateEffettoService(SeacDigitTemplateContex ctx)
+        public ApplicazioneTemplateEffettoService(SeacDigitTemplateContext ctx)
         {
             _ctx = ctx;
         }
@@ -28,7 +28,7 @@ namespace SeacDigitTemplate.Services
             return _ctx.ApplicazioneTemplateEffettos.Where(c => c.Id == id).ToListAsync();
         }
 
-        public Task<List<ApplicazioneTemplateEffetto>> GetTemplate(RigaDigitata rigaDigitata)
+        public async Task<ApplicazioneTemplateEffetto> GetTemplateAsync(RigaDigitata rigaDigitata)
         {
             var query = _ctx.ApplicazioneTemplateEffettos.AsQueryable();
 
@@ -41,8 +41,20 @@ namespace SeacDigitTemplate.Services
             query = rigaDigitata.Imponibile == null ? query.Where(a => a.Imponibile == null) : query.Where(a => a.Imponibile != null);
             query = rigaDigitata.Iva == null ? query.Where(a => a.Iva == null) : query.Where(a => a.Iva != null);
 
-            return query.ToListAsync();
+            var applicationTemplates = await query.ToListAsync();
 
+            if (applicationTemplates.Count == 0)
+            {
+                Console.WriteLine("No template found");
+                return null;
+            }
+
+            if (applicationTemplates.Count > 1)
+            {
+                Console.WriteLine("More than  one template found");
+            }
+
+            return applicationTemplates.First();
         }
     }
 }

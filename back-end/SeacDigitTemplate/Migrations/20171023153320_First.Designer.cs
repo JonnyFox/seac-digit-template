@@ -11,7 +11,7 @@ using System;
 
 namespace SeacDigitTemplate.Migrations
 {
-    [DbContext(typeof(SeacDigitTemplateContex))]
+    [DbContext(typeof(SeacDigitTemplateContext))]
     [Migration("20171023153320_First")]
     partial class First
     {

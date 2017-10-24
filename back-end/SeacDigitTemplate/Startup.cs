@@ -22,14 +22,14 @@ namespace SeacDigitTemplate
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<SeacDigitTemplateContex>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<SeacDigitTemplateContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc(opt =>
             {
                 //opt.RespectBrowserAcceptHeader = true;
                 //opt.OutputFormatters.RemoveType<TextOutputFormatter>();
                 //opt.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
             });
-            services.AddTransient<EffettoCalcoloService>();
+            services.AddTransient<EffettoService>();
             services.AddTransient<ContoService>();
             services.AddTransient<CliforService>();
             services.AddTransient<AliquotaIvaService>();

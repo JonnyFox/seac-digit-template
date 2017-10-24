@@ -9,8 +9,8 @@ namespace SeacDigitTemplate.Services
 {
     public class CliforService
     {
-        SeacDigitTemplateContex _ctx;
-        public CliforService(SeacDigitTemplateContex ctx)
+        SeacDigitTemplateContext _ctx;
+        public CliforService(SeacDigitTemplateContext ctx)
         {
             _ctx = ctx;
         }

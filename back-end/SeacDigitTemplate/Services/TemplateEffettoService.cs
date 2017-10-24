@@ -2,7 +2,6 @@
 using SeacDigitTemplate.Data;
 using SeacDigitTemplate.Model;
 using SeacDigitTemplate.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,15 +10,16 @@ namespace SeacDigitTemplate.Services
 {
     public class TemplateEffettoService
     {
-        SeacDigitTemplateContex _ctx;
+        SeacDigitTemplateContext _ctx;
 
-        public TemplateEffettoService(SeacDigitTemplateContex ctx)
+        public TemplateEffettoService(SeacDigitTemplateContext ctx)
         {
             _ctx = ctx;
         }
-       
 
-       
-
+        public Task<List<TemplateEffetto>> GetTemplateEffettoAsync(ApplicazioneTemplateEffetto appTemplateEffetto)
+        {
+            return _ctx.TemplateEffettos.Where(te => te.ApplicazioneTemplateEffettoId == appTemplateEffetto.Id).ToListAsync();
+        }
     }
 }

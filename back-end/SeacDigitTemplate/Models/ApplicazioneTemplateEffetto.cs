@@ -1,4 +1,6 @@
 ﻿using SeacDigitTemplate.Model;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace SeacDigitTemplate.Models
 {
@@ -17,5 +19,7 @@ namespace SeacDigitTemplate.Models
         public string PercentualeIndeducibilita { get; set; }
         public string Settore { get; set; }
         public string Note { get; set; }
+
+        public ICollection<TemplateEffetto> TemplateEffetto { get; set; }
     }
 }

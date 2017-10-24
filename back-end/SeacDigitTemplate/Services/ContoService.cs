@@ -9,8 +9,8 @@ namespace SeacDigitTemplate.Services
 {
     public class ContoService
     {
-        SeacDigitTemplateContex _ctx;
-        public ContoService( SeacDigitTemplateContex ctx)
+        SeacDigitTemplateContext _ctx;
+        public ContoService( SeacDigitTemplateContext ctx)
         {
             _ctx = ctx;
         }

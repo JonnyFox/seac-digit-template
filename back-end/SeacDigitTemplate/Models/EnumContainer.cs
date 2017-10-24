@@ -56,4 +56,10 @@
         IdentraibileSoggettivo,
         Esente
     }
+
+    public enum TemplateEffetetoValoreEnum
+    {
+        Imponibile,
+        Iva
+    }
 }

@@ -7,7 +7,7 @@ namespace SeacDigitTemplate.Data
 {
     public class DbInitializer
     {
-        public static void Initialize(SeacDigitTemplateContex context)
+        public static void Initialize(SeacDigitTemplateContext context)
         {
             context.Database.EnsureCreated();
 
@@ -60,7 +60,7 @@ namespace SeacDigitTemplate.Data
 
             foreach (AliquotaIva a in aliquotas)
             {
-                context.AliquotaIVAs.Add(a);
+                context.AliquotaIvas.Add(a);
             }
 
 
@@ -73,7 +73,7 @@ namespace SeacDigitTemplate.Data
 
             foreach (VoceIva v in voceivas)
             {
-                context.VoceIVAs.Add(v);
+                context.VoceIvas.Add(v);
 
             }
 
@@ -103,14 +103,47 @@ namespace SeacDigitTemplate.Data
             var rigaDigitatas = new RigaDigitata[]
             {
                 new RigaDigitata{
-                    Documento = documentos[0], ContoDare = contos[0], ContoAvere = contos[9], VoceIVA = voceivas[0], AliquotaIVA = aliquotas[2], Trattamento = TrattamentoEnum.Detraibile, TitoloInapplicabilita = null,
-                    Imponibile = 1000.0m,Iva = 220.0m, PercentualeIndeducibilita = null, PercentualeIndetraibilita = null, Settore = null, Note = null },
+                    Documento = documentos[0],
+                    ContoDare = contos[0],
+                    ContoAvere = contos[9],
+                    VoceIva = voceivas[0],
+                    AliquotaIva = aliquotas[2],
+                    Trattamento = TrattamentoEnum.Detraibile,
+                    TitoloInapplicabilita = null,
+                    Imponibile = 1000.0m,
+                    Iva = 220.0m,
+                    PercentualeIndeducibilita = null,
+                    PercentualeIndetraibilita = null,
+                    Settore = null,
+                    Note = null },
                 new RigaDigitata{
-                    Documento = documentos[0], ContoDare = contos[1], ContoAvere = contos[9], VoceIVA = voceivas[0], AliquotaIVA = aliquotas[1], Trattamento = TrattamentoEnum.Detraibile, TitoloInapplicabilita = null   ,
-                    Imponibile = 1000.0m, Iva = 100, PercentualeIndeducibilita = null, PercentualeIndetraibilita = null, Settore = null, Note = null},
+                    Documento = documentos[0],
+                    ContoDare = contos[1],
+                    ContoAvere = contos[9],
+                    VoceIva = voceivas[0],
+                    AliquotaIva = aliquotas[1],
+                    Trattamento = TrattamentoEnum.Detraibile,
+                    TitoloInapplicabilita = null ,
+                    Imponibile = 1000.0m,
+                    Iva = 100,
+                    PercentualeIndeducibilita = null,
+                    PercentualeIndetraibilita = null,
+                    Settore = null,
+                    Note = null},
                 new RigaDigitata{
-                    Documento = documentos[0], ContoDare = contos[2], ContoAvere = contos[9], VoceIVA = voceivas[0], AliquotaIVA = null        , Trattamento = null     , TitoloInapplicabilita = titoloInapplicabilitas[2],
-                    Imponibile = 2.0m, Iva = null , PercentualeIndeducibilita = null, PercentualeIndetraibilita = null, Settore = null, Note = null },
+                    Documento = documentos[0],
+                    ContoDare = contos[2],
+                    ContoAvere = contos[9],
+                    VoceIva = voceivas[0],
+                    AliquotaIva = null,
+                    Trattamento = null,
+                    TitoloInapplicabilita = titoloInapplicabilitas[2],
+                    Imponibile = 2.0m,
+                    Iva = null ,
+                    PercentualeIndeducibilita = null,
+                    PercentualeIndetraibilita = null,
+                    Settore = null,
+                    Note = null },
             };
 
             foreach (RigaDigitata r in rigaDigitatas)
@@ -120,8 +153,23 @@ namespace SeacDigitTemplate.Data
 
             var applicazioneTemplateEffettos = new ApplicazioneTemplateEffetto[]
             {
-                new ApplicazioneTemplateEffetto{ContoDare = "*", ContoAvere ="Fornitore", VoceIva ="Merce", AliquotaIva = "*", Imponibile = "*", Iva = "*"},
-                new ApplicazioneTemplateEffetto{ContoDare = "Valori Bollati", ContoAvere ="Fornitore", VoceIva ="Merce", TitoloInapplicabilita = "*", Imponibile = "*"}
+                new ApplicazioneTemplateEffetto
+                {
+                    ContoDare = "*",
+                    ContoAvere ="Fornitore",
+                    VoceIva ="Merce",
+                    Trattamento = "*",
+                    AliquotaIva = "*",
+                    Imponibile = "*",
+                    Iva = "*"
+                },
+                new ApplicazioneTemplateEffetto
+                {
+                    ContoDare = "Valori Bollati",
+                    ContoAvere ="Fornitore",
+                    VoceIva ="Merce",
+                    TitoloInapplicabilita = "*",
+                    Imponibile = "*"}
             };
 
             foreach (ApplicazioneTemplateEffetto a in applicazioneTemplateEffettos)
@@ -129,8 +177,40 @@ namespace SeacDigitTemplate.Data
                 context.ApplicazioneTemplateEffettos.Add(a);
             }
 
+            var templateEffettos = new TemplateEffetto[]
+            {
+                new TemplateEffetto
+                {
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[0],
+                    ContoDareId = "ContoDareId",
+                    ContoAvereId = "ContoAvereId",
+                    Valore = "Imponibile"
+                },
+                new TemplateEffetto
+                {
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[0],
+                    ContoDareId = "*3",
+                    ContoAvereId = "ContoAvereId",
+                    VoceIvaId = "VoceIvaId",
+                    AliquotaIvaId = "AliquotaIvaId",
+                    Imponibile = "Imponibile",
+                    Iva = "Iva"
+                },
+                new TemplateEffetto
+                {
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[1],
+                    ContoDareId = "ContoDareId",
+                    ContoAvereId = "ContoAvereId",
+                    VoceIvaId = "VoceIvaId",
+                    TitoloInapplicabilitaId = "TitoloInapplicabilita",
+                    Valore = "Imponibile"
+                }
+            };
 
-
+            foreach (TemplateEffetto t in templateEffettos)
+            {
+                context.TemplateEffettos.Add(t);
+            }
             context.SaveChanges();
         }
     }

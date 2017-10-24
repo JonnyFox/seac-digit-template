@@ -9,8 +9,8 @@ namespace SeacDigitTemplate.Services
 {
     public class SituazioneVoceIvaService
     {
-        SeacDigitTemplateContex _ctx;
-        public SituazioneVoceIvaService(SeacDigitTemplateContex ctx)
+        SeacDigitTemplateContext _ctx;
+        public SituazioneVoceIvaService(SeacDigitTemplateContext ctx)
         {
             _ctx = ctx;
         }

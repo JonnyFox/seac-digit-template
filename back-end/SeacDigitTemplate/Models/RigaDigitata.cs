@@ -16,10 +16,10 @@ namespace SeacDigitTemplate.Model
         public Conto ContoAvere { get; set; }
 
         public int? VoceIvaId { get; set; }
-        public VoceIva VoceIVA { get; set; }
+        public VoceIva VoceIva { get; set; }
 
         public int? AliquotaIvaId { get; set; }
-        public AliquotaIva AliquotaIVA { get; set; }
+        public AliquotaIva AliquotaIva { get; set; }
 
         public TrattamentoEnum? Trattamento { get; set; }
 

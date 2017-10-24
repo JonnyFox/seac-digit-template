@@ -18,7 +18,7 @@ namespace SeacDigitTemplate
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<Data.SeacDigitTemplateContex>();
+                    var context = services.GetRequiredService<Data.SeacDigitTemplateContext>();
                     DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)

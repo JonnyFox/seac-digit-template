@@ -10,8 +10,8 @@ namespace SeacDigitTemplate.Services
 {
     public class TitoloInapplicabilitaService
     {
-        SeacDigitTemplateContex _ctx;
-        public TitoloInapplicabilitaService(SeacDigitTemplateContex ctx)
+        SeacDigitTemplateContext _ctx;
+        public TitoloInapplicabilitaService(SeacDigitTemplateContext ctx)
         {
             _ctx = ctx;
         }
