@@ -31,6 +31,15 @@
           "lib/netstandard1.3/AutoMapper.dll": {}
         }
       },
+      "Jace/0.8.7": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Jace.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Jace.dll": {}
+        }
+      },
       "Libuv/1.10.0": {
         "type": "package",
         "dependencies": {
@@ -4792,6 +4801,21 @@
         "lib/netstandard1.1/AutoMapper.xml",
         "lib/netstandard1.3/AutoMapper.dll",
         "lib/netstandard1.3/AutoMapper.xml"
+      ]
+    },
+    "Jace/0.8.7": {
+      "sha512": "UcsD99QcJ51ibzMCkEqDxqhOmLhLjCOF2Q5OgtCSvKpjrZPkJvAkJ0z7CoaibsSWSYSUZAFl+lDkv5dNpyIpYQ==",
+      "type": "package",
+      "path": "jace/0.8.7",
+      "files": [
+        "jace.0.8.7.nupkg.sha512",
+        "jace.nuspec",
+        "lib/monoandroid/Jace.dll",
+        "lib/net40/Jace.dll",
+        "lib/windows8/Jace.dll",
+        "lib/wp7/Jace.dll",
+        "lib/wp8/Jace.dll",
+        "lib/wpa81/Jace.dll"
       ]
     },
     "Libuv/1.10.0": {
@@ -12573,6 +12597,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
       "AutoMapper >= 6.1.1",
+      "Jace >= 0.8.7",
       "Microsoft.AspNetCore.All >= 2.0.0",
       "Microsoft.EntityFrameworkCore >= 2.0.0",
       "Microsoft.EntityFrameworkCore.Sqlite >= 2.0.0",
@@ -12643,6 +12668,10 @@
           "Microsoft.AspNetCore.All": {
             "target": "Package",
             "version": "2.0.0"
+          },
+          "Jace": {
+            "target": "Package",
+            "version": "0.8.7"
           }
         },
         "imports": [
@@ -12652,5 +12681,17 @@
         "warn": true
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Jace 0.8.7' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Jace",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    }
+  ]
 }
