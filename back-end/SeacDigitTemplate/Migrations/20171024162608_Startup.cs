@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace SeacDigitTemplate.Migrations
 {
-    public partial class First : Migration
+    public partial class Startup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AliquotaIVAs",
+                name: "AliquotaIvas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -19,7 +19,7 @@ namespace SeacDigitTemplate.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AliquotaIVAs", x => x.Id);
+                    table.PrimaryKey("PK_AliquotaIvas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,7 +88,7 @@ namespace SeacDigitTemplate.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "VoceIVAs",
+                name: "VoceIvas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -97,7 +97,38 @@ namespace SeacDigitTemplate.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VoceIVAs", x => x.Id);
+                    table.PrimaryKey("PK_VoceIvas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TemplateEffettos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AliquotaIvaId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ApplicazioneTemplateEffettoId = table.Column<int>(type: "int", nullable: false),
+                    ContoAvereId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContoDareId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DataOperazione = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Imponibile = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Iva = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RifRow = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TitoloInapplicabilitaId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Trattamento = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Valore = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VariazioneF = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VoceIvaId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TemplateEffettos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TemplateEffettos_ApplicazioneTemplateEffettos_ApplicazioneTemplateEffettoId",
+                        column: x => x.ApplicazioneTemplateEffettoId,
+                        principalTable: "ApplicazioneTemplateEffettos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -165,62 +196,15 @@ namespace SeacDigitTemplate.Migrations
                 {
                     table.PrimaryKey("PK_SituazioneVoceIVAs", x => x.VoceIvaId);
                     table.ForeignKey(
-                        name: "FK_SituazioneVoceIVAs_AliquotaIVAs_AliquotaIvaId",
+                        name: "FK_SituazioneVoceIVAs_AliquotaIvas_AliquotaIvaId",
                         column: x => x.AliquotaIvaId,
-                        principalTable: "AliquotaIVAs",
+                        principalTable: "AliquotaIvas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SituazioneVoceIVAs_VoceIVAs_VoceIvaId1",
+                        name: "FK_SituazioneVoceIVAs_VoceIvas_VoceIvaId1",
                         column: x => x.VoceIvaId1,
-                        principalTable: "VoceIVAs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TemplateEffettos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AliquotaIVAId = table.Column<int>(type: "int", nullable: true),
-                    ContoAvereId = table.Column<int>(type: "int", nullable: true),
-                    ContoDareId = table.Column<int>(type: "int", nullable: true),
-                    IdDoc = table.Column<int>(type: "int", nullable: false),
-                    IdRow = table.Column<int>(type: "int", nullable: false),
-                    Indet = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
-                    RifRow = table.Column<int>(type: "int", nullable: false),
-                    TitoloInapplicabilita = table.Column<int>(type: "int", nullable: false),
-                    Valore = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
-                    VariazioneF = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
-                    VoceIVAId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TemplateEffettos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TemplateEffettos_AliquotaIVAs_AliquotaIVAId",
-                        column: x => x.AliquotaIVAId,
-                        principalTable: "AliquotaIVAs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_TemplateEffettos_Contos_ContoAvereId",
-                        column: x => x.ContoAvereId,
-                        principalTable: "Contos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_TemplateEffettos_Contos_ContoDareId",
-                        column: x => x.ContoDareId,
-                        principalTable: "Contos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_TemplateEffettos_VoceIVAs_VoceIVAId",
-                        column: x => x.VoceIVAId,
-                        principalTable: "VoceIVAs",
+                        principalTable: "VoceIvas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -235,23 +219,23 @@ namespace SeacDigitTemplate.Migrations
                     ContoAvereId = table.Column<int>(type: "int", nullable: true),
                     ContoDareId = table.Column<int>(type: "int", nullable: true),
                     DocumentoId = table.Column<int>(type: "int", nullable: false),
-                    Imponibile = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
-                    Iva = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
+                    Imponibile = table.Column<decimal>(type: "decimal(18, 2)", nullable: true),
+                    Iva = table.Column<decimal>(type: "decimal(18, 2)", nullable: true),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PercentualeIndeducibilita = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
                     PercentualeIndetraibilita = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
-                    Settore = table.Column<int>(type: "int", nullable: false),
+                    Settore = table.Column<int>(type: "int", nullable: true),
                     TitoloInapplicabilitaId = table.Column<int>(type: "int", nullable: true),
-                    Trattamento = table.Column<int>(type: "int", nullable: false),
+                    Trattamento = table.Column<int>(type: "int", nullable: true),
                     VoceIvaId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RigaDigitatas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RigaDigitatas_AliquotaIVAs_AliquotaIvaId",
+                        name: "FK_RigaDigitatas_AliquotaIvas_AliquotaIvaId",
                         column: x => x.AliquotaIvaId,
-                        principalTable: "AliquotaIVAs",
+                        principalTable: "AliquotaIvas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -279,9 +263,9 @@ namespace SeacDigitTemplate.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_RigaDigitatas_VoceIVAs_VoceIvaId",
+                        name: "FK_RigaDigitatas_VoceIvas_VoceIvaId",
                         column: x => x.VoceIvaId,
-                        principalTable: "VoceIVAs",
+                        principalTable: "VoceIvas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -337,31 +321,13 @@ namespace SeacDigitTemplate.Migrations
                 column: "VoceIvaId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TemplateEffettos_AliquotaIVAId",
+                name: "IX_TemplateEffettos_ApplicazioneTemplateEffettoId",
                 table: "TemplateEffettos",
-                column: "AliquotaIVAId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TemplateEffettos_ContoAvereId",
-                table: "TemplateEffettos",
-                column: "ContoAvereId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TemplateEffettos_ContoDareId",
-                table: "TemplateEffettos",
-                column: "ContoDareId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TemplateEffettos_VoceIVAId",
-                table: "TemplateEffettos",
-                column: "VoceIVAId");
+                column: "ApplicazioneTemplateEffettoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ApplicazioneTemplateEffettos");
-
             migrationBuilder.DropTable(
                 name: "RigaDigitatas");
 
@@ -381,13 +347,16 @@ namespace SeacDigitTemplate.Migrations
                 name: "TitoloInapplicabilitas");
 
             migrationBuilder.DropTable(
-                name: "AliquotaIVAs");
-
-            migrationBuilder.DropTable(
                 name: "Contos");
 
             migrationBuilder.DropTable(
-                name: "VoceIVAs");
+                name: "AliquotaIvas");
+
+            migrationBuilder.DropTable(
+                name: "VoceIvas");
+
+            migrationBuilder.DropTable(
+                name: "ApplicazioneTemplateEffettos");
 
             migrationBuilder.DropTable(
                 name: "Clifors");

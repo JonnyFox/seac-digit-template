@@ -6,7 +6,7 @@ namespace SeacDigitTemplate.Model
     {
         public int Id { get; set; }
         public int RigaDigitataId { get; set; }
-        public int IdDoc { get; set; }
+        public int DocumentoId { get; set; }
         public int? ContoDareId { get; set; }
         public Conto ContoDare { get; set; }
 
