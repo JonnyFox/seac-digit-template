@@ -8,6 +8,8 @@ using SeacDigitTemplate.Services;
 using SeacDigitTemplate.Model;
 using SeacDigitTemplate.Dtos;
 using SeacDigitTemplate.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SeacDigitTemplate
 {
@@ -42,7 +44,7 @@ namespace SeacDigitTemplate
             services.AddTransient<ApplicazioneTemplateEffettoService>();
             services.AddTransient<TemplateEffettoService>();
             services.AddCors();
-            
+
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Documento, DocumentoDto>();
@@ -66,6 +68,12 @@ namespace SeacDigitTemplate
                 cfg.CreateMap<TitoloInapplicabilitaDto, TitoloInapplicabilita>();
                 cfg.CreateMap<VoceIva, VoceIvaDto>();
                 cfg.CreateMap<VoceIvaDto, VoceIva>();
+
+                cfg.CreateMap<Effetto, EffettoContoDto>();
+                cfg.CreateMap<Effetto, EffettoIvaDto>();
+                cfg.CreateMap<List<Effetto>, EffettoCalcoloDto>()
+                    .ForMember(dest => dest.EffettoContos, opt => opt.MapFrom(src => src.Where(e => e.ContoAvereId != null || e.ContoDareId != null)))
+                    .ForMember(dest => dest.EffettoIvas, opt => opt.MapFrom(src => src.Where(e => e.VoceIvaId != null)));
             });
 
             var mapper = config.CreateMapper();

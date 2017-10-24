@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using SeacDigitTemplate.Model;
 using SeacDigitTemplate.Services;
 using System.Threading.Tasks;
+using AutoMapper;
+using SeacDigitTemplate.Dtos;
 
 namespace SeacDigitTemplate.Controllers
 {
@@ -11,11 +13,13 @@ namespace SeacDigitTemplate.Controllers
     {
         private readonly EffettoService _effettoService;
         private readonly RigaDigitataService _rigaDigitataService;
+        private readonly IMapper _mapper;
 
-        public EffettoController(EffettoService effettoService, RigaDigitataService rigaDigitataService)
+        public EffettoController(EffettoService effettoService, RigaDigitataService rigaDigitataService, IMapper mapper)
         {
             _effettoService = effettoService;
             _rigaDigitataService = rigaDigitataService;
+            _mapper = mapper;
         }
 
         [HttpGet("rigaDigitata/{id}")]
@@ -75,8 +79,10 @@ namespace SeacDigitTemplate.Controllers
                     Note = null },
             };
 
+            var originalEffects = await _effettoService.GetEffettosFromRigaDigitatasAsync(rigaDigitatas);
 
-            return Ok(await _effettoService.GetEffettosFromRigaDigitatasAsync(rigaDigitatas));
+
+            return Ok(_mapper.Map<EffettoCalcoloDto>(originalEffects));
         }
     }
 }
