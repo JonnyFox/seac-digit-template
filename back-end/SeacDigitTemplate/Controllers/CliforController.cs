@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SeacDigitTemplate.Dtos;
 using SeacDigitTemplate.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SeacDigitTemplate.Controllers
 {
@@ -8,16 +12,25 @@ namespace SeacDigitTemplate.Controllers
     public class CliforController : ControllerBase
     {
         private CliforService _cliforService;
+        private readonly IMapper _mapper;
 
-        public CliforController(CliforService cliforService)
+        public CliforController(CliforService cliforService, IMapper mapper)
         {
-            this._cliforService = cliforService;
+            _cliforService = cliforService;
+            _mapper = mapper;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            return Ok(_mapper.Map<List<CliforDto>>(await _cliforService.GetById(id)));
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_cliforService.GetAll());
+            return Ok(_mapper.Map<List<CliforDto>>(await _cliforService.GetAll()));
         }
+
     }
 }

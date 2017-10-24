@@ -1,4 +1,6 @@
-﻿namespace SeacDigitTemplate.Model
+﻿using System.Collections.Generic;
+
+namespace SeacDigitTemplate.Model
 {
     public class Documento
     {
@@ -16,5 +18,7 @@
 
         public string Numero { get; set; }
         public int Protocollo { get; set; }
+
+        public List<RigaDigitata> righeDigitate { get; set; }
     }
 }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SeacDigitTemplate.Services;
+using AutoMapper;
+using SeacDigitTemplate.Dtos;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,16 +16,24 @@ namespace SeacDigitTemplate.Controllers
     public class VoceIvaController : ControllerBase
     {
         private VoceIvaService _voceIvaService;
+        private readonly IMapper _mapper;
 
-        public VoceIvaController(VoceIvaService voceIvaService)
+        public VoceIvaController(VoceIvaService voceIvaService, IMapper mapper)
         {
-            this._voceIvaService = voceIvaService;
+            _voceIvaService = voceIvaService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_voceIvaService.GetAll());
+            return Ok(_mapper.Map<List<VoceIvaDto>>(await _voceIvaService.GetAll()));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            return Ok(_mapper.Map<List<VoceIvaDto>>(await _voceIvaService.GetById(id)));
         }
     }
 }

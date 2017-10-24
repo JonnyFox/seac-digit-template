@@ -9,27 +9,27 @@ namespace SeacDigitTemplate.Controllers
 {
     [Produces("application/json")]
     [Route("api/documento")]
-    public class DocumentoController : Controller
+    public class SituazioneContoController : ControllerBase
     {
-        private DocumentoService _documentoService;
+        private SituazioneContoService _situazioneContoService;
         private readonly IMapper _mapper;
-        
-        public DocumentoController(DocumentoService documentoService, IMapper mapper)
+
+        public SituazioneContoController(SituazioneContoService situazioneContoService, IMapper mapper)
         {
-            _documentoService = documentoService;
+            _situazioneContoService = situazioneContoService;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(_mapper.Map<List<DocumentoDto>>(await _documentoService.GetAll()));
+            return Ok(_mapper.Map<List<SituazioneContoDto>>(await _situazioneContoService.GetAll()));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(_mapper.Map<List<DocumentoDto>>(await _documentoService.GetById(id)));
+            return Ok(_mapper.Map<List<SituazioneContoDto>>(await _situazioneContoService.GetById(id)));
         }
     }
 }

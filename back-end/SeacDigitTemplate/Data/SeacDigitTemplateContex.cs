@@ -5,22 +5,24 @@ using System.Linq;
 
 namespace SeacDigitTemplate.Data
 {
-    public class SeacDigitTemplateContex : DbContext
+    public class SeacDigitTemplateContext : DbContext
     {
-        public SeacDigitTemplateContex(DbContextOptions<SeacDigitTemplateContex> options) : base(options)
+        public SeacDigitTemplateContext(DbContextOptions<SeacDigitTemplateContext> options) : base(options)
         {
 
         }
 
         public DbSet<Clifor> Clifors { get; set; }
-        public DbSet<AliquotaIva> AliquotaIVAs { get; set; }
+        public DbSet<AliquotaIva> AliquotaIvas { get; set; }
         public DbSet<Conto> Contos { get; set; }
         public DbSet<Documento> Documentos { get; set; }
         public DbSet<RigaDigitata> RigaDigitatas { get; set; }
         public DbSet<SituazioneConto> SituazioneContos { get; set; }
-        public DbSet<SituazioneVoceIVA> SituazioneVoceIVAs { get; set; }
-        public DbSet<VoceIva> VoceIVAs { get; set; }
+        public DbSet<SituazioneVoceIva> SituazioneVoceIVAs { get; set; }
+        public DbSet<VoceIva> VoceIvas { get; set; }
         public DbSet<TitoloInapplicabilita> TitoloInapplicabilitas { get; set; }
+        public DbSet<ApplicazioneTemplateEffetto> ApplicazioneTemplateEffettos { get; set; }
+        public DbSet<TemplateEffetto> TemplateEffettos { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder mb)
@@ -32,7 +34,7 @@ namespace SeacDigitTemplate.Data
 
             base.OnModelCreating(mb);
             mb.Entity<SituazioneConto>().HasKey(sc => sc.ContoId);
-            mb.Entity<SituazioneVoceIVA>().HasKey(sv => sv.VoceIVAId);
+            mb.Entity<SituazioneVoceIva>().HasKey(sv => sv.VoceIvaId);
 
         }
     }

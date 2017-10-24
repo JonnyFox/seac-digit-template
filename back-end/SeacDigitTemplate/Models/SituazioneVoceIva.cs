@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace SeacDigitTemplate.Model
 {
-    public class SituazioneVoceIVA
+    public class SituazioneVoceIva
     {
-        public int VoceIVAId { get; set; }
-        public VoceIva VoceIVA { get; set; }
+        public int VoceIvaId { get; set; }
+        public VoceIva VoceIva { get; set; }
 
-        public int AliquotaIVAId { get; set; }
-        public AliquotaIva AliquotaIVA { get; set; }
+        public int AliquotaIvaId { get; set; }
+        public AliquotaIva AliquotaIva { get; set; }
 
         public TrattamentoEnum Trattamento { get; set; }
         public int TitoloInapplicabilita { get; set; }

@@ -51,9 +51,15 @@
 
     public enum TrattamentoEnum
     {
-        None,
-        Detraibile,
+        Detraibile = 1,
         IdentraibileOggettivo,
-        IdentraibileSoggettivo
+        IdentraibileSoggettivo,
+        Esente
+    }
+
+    public enum TemplateEffetetoValoreEnum
+    {
+        Imponibile,
+        Iva
     }
 }
