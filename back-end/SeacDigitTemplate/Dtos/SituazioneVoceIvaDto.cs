@@ -1,12 +1,8 @@
 ﻿using SeacDigitTemplate.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SeacDigitTemplate.Dtos
 {
-    public class SituazioneVoceIVA
+    public class SituazioneVoceIvaDto
     {
         public int VoceIVAId { get; set; }
         public int AliquotaIVAId { get; set; }

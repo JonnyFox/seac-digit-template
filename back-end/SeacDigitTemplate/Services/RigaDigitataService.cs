@@ -9,8 +9,8 @@ namespace SeacDigitTemplate.Services
 {
     public class RigaDigitataService
     {
-        SeacDigitTemplateContex _ctx;
-        public RigaDigitataService(SeacDigitTemplateContex ctx)
+        SeacDigitTemplateContext _ctx;
+        public RigaDigitataService(SeacDigitTemplateContext ctx)
         {
             _ctx = ctx;
         }
@@ -19,9 +19,9 @@ namespace SeacDigitTemplate.Services
         {
             return _ctx.RigaDigitatas.ToListAsync();
         }
-        public Task<List<RigaDigitata>> GetById(int id)
+        public Task<RigaDigitata> GetByIdAsync(int id)
         {
-            return _ctx.RigaDigitatas.Where(i => i.Id == id).ToListAsync();
+            return _ctx.RigaDigitatas.SingleOrDefaultAsync(i => i.Id == id);
         }
     }
 }

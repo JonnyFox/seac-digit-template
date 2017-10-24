@@ -7,7 +7,7 @@ namespace SeacDigitTemplate.Model
 {
     public class EffettoCalcolo
     {
-        //post
+        //post Dto vuoto?
         public Documento documento;
         public RigaDigitata[] RigaDigitataList;
     }
