@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SeacDigitTemplate.Data;
-using SeacDigitTemplate.Dtos;
+using SeacDigitTemplate.Model;
 using System;
 
 namespace SeacDigitTemplate.Migrations
@@ -21,7 +21,7 @@ namespace SeacDigitTemplate.Migrations
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("SeacDigitTemplate.Model.AliquotaIVA", b =>
+            modelBuilder.Entity("SeacDigitTemplate.Model.AliquotaIva", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -70,6 +70,10 @@ namespace SeacDigitTemplate.Migrations
 
                     b.Property<int>("CliforId");
 
+                    b.Property<string>("Numero");
+
+                    b.Property<int>("Protocollo");
+
                     b.Property<int>("Registro");
 
                     b.Property<int>("RiferimentoDocumentoId");
@@ -94,17 +98,17 @@ namespace SeacDigitTemplate.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AliquotaIVAId");
+                    b.Property<int?>("AliquotaIvaId");
 
-                    b.Property<int>("ContoAvereId");
+                    b.Property<int?>("ContoAvereId");
 
-                    b.Property<int>("ContoDareId");
+                    b.Property<int?>("ContoDareId");
 
                     b.Property<int>("DocumentoId");
 
-                    b.Property<decimal>("IVA");
-
                     b.Property<decimal>("Imponibile");
+
+                    b.Property<decimal>("Iva");
 
                     b.Property<string>("Note");
 
@@ -114,15 +118,15 @@ namespace SeacDigitTemplate.Migrations
 
                     b.Property<int>("Settore");
 
-                    b.Property<int>("TitoloInapplicabilita");
+                    b.Property<int?>("TitoloInapplicabilitaId");
 
                     b.Property<int>("Trattamento");
 
-                    b.Property<int>("VoceIVAId");
+                    b.Property<int?>("VoceIvaId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AliquotaIVAId");
+                    b.HasIndex("AliquotaIvaId");
 
                     b.HasIndex("ContoAvereId");
 
@@ -130,7 +134,9 @@ namespace SeacDigitTemplate.Migrations
 
                     b.HasIndex("DocumentoId");
 
-                    b.HasIndex("VoceIVAId");
+                    b.HasIndex("TitoloInapplicabilitaId");
+
+                    b.HasIndex("VoceIvaId");
 
                     b.ToTable("RigaDigitatas");
                 });
@@ -153,12 +159,12 @@ namespace SeacDigitTemplate.Migrations
                     b.ToTable("SituazioneContos");
                 });
 
-            modelBuilder.Entity("SeacDigitTemplate.Model.SituazioneVoceIVA", b =>
+            modelBuilder.Entity("SeacDigitTemplate.Model.SituazioneVoceIva", b =>
                 {
-                    b.Property<int>("VoceIVAId")
+                    b.Property<int>("VoceIvaId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AliquotaIVAId");
+                    b.Property<int>("AliquotaIvaId");
 
                     b.Property<int>("TitoloInapplicabilita");
 
@@ -166,18 +172,18 @@ namespace SeacDigitTemplate.Migrations
 
                     b.Property<decimal>("Valore");
 
-                    b.Property<int?>("VoceIVAId1");
+                    b.Property<int?>("VoceIvaId1");
 
-                    b.HasKey("VoceIVAId");
+                    b.HasKey("VoceIvaId");
 
-                    b.HasIndex("AliquotaIVAId");
+                    b.HasIndex("AliquotaIvaId");
 
-                    b.HasIndex("VoceIVAId1");
+                    b.HasIndex("VoceIvaId1");
 
                     b.ToTable("SituazioneVoceIVAs");
                 });
 
-            modelBuilder.Entity("SeacDigitTemplate.Model.VoceIVA", b =>
+            modelBuilder.Entity("SeacDigitTemplate.Model.VoceIva", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -187,6 +193,92 @@ namespace SeacDigitTemplate.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("VoceIVAs");
+                });
+
+            modelBuilder.Entity("SeacDigitTemplate.Models.ApplicazioneTemplateEffetto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AliquotaIva");
+
+                    b.Property<string>("ContoAvere");
+
+                    b.Property<string>("ContoDare");
+
+                    b.Property<string>("Imponibile");
+
+                    b.Property<string>("Iva");
+
+                    b.Property<string>("Note");
+
+                    b.Property<string>("PercentualeIndeducibilita");
+
+                    b.Property<string>("PercentualeIndetraibilita");
+
+                    b.Property<string>("Settore");
+
+                    b.Property<string>("TitoloInapplicabilita");
+
+                    b.Property<string>("Trattamento");
+
+                    b.Property<string>("VoceIva");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicazioneTemplateEffettos");
+                });
+
+            modelBuilder.Entity("SeacDigitTemplate.Models.TemplateEffetto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("AliquotaIVAId");
+
+                    b.Property<int?>("ContoAvereId");
+
+                    b.Property<int?>("ContoDareId");
+
+                    b.Property<int>("IdDoc");
+
+                    b.Property<int>("IdRow");
+
+                    b.Property<decimal>("Indet");
+
+                    b.Property<int>("RifRow");
+
+                    b.Property<int>("TitoloInapplicabilita");
+
+                    b.Property<decimal>("Valore");
+
+                    b.Property<decimal>("VariazioneF");
+
+                    b.Property<int?>("VoceIVAId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AliquotaIVAId");
+
+                    b.HasIndex("ContoAvereId");
+
+                    b.HasIndex("ContoDareId");
+
+                    b.HasIndex("VoceIVAId");
+
+                    b.ToTable("TemplateEffettos");
+                });
+
+            modelBuilder.Entity("SeacDigitTemplate.Models.TitoloInapplicabilita", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Nome");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TitoloInapplicabilitas");
                 });
 
             modelBuilder.Entity("SeacDigitTemplate.Model.Documento", b =>
@@ -199,7 +291,61 @@ namespace SeacDigitTemplate.Migrations
 
             modelBuilder.Entity("SeacDigitTemplate.Model.RigaDigitata", b =>
                 {
-                    b.HasOne("SeacDigitTemplate.Model.AliquotaIVA", "AliquotaIVA")
+                    b.HasOne("SeacDigitTemplate.Model.AliquotaIva", "AliquotaIVA")
+                        .WithMany()
+                        .HasForeignKey("AliquotaIvaId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SeacDigitTemplate.Model.Conto", "ContoAvere")
+                        .WithMany()
+                        .HasForeignKey("ContoAvereId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SeacDigitTemplate.Model.Conto", "ContoDare")
+                        .WithMany()
+                        .HasForeignKey("ContoDareId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SeacDigitTemplate.Model.Documento", "Documento")
+                        .WithMany("righeDigitate")
+                        .HasForeignKey("DocumentoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SeacDigitTemplate.Models.TitoloInapplicabilita", "TitoloInapplicabilita")
+                        .WithMany()
+                        .HasForeignKey("TitoloInapplicabilitaId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SeacDigitTemplate.Model.VoceIva", "VoceIVA")
+                        .WithMany()
+                        .HasForeignKey("VoceIvaId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SeacDigitTemplate.Model.SituazioneConto", b =>
+                {
+                    b.HasOne("SeacDigitTemplate.Model.Conto", "Conto")
+                        .WithMany()
+                        .HasForeignKey("ContoId1")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SeacDigitTemplate.Model.SituazioneVoceIva", b =>
+                {
+                    b.HasOne("SeacDigitTemplate.Model.AliquotaIva", "AliquotaIva")
+                        .WithMany()
+                        .HasForeignKey("AliquotaIvaId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SeacDigitTemplate.Model.VoceIva", "VoceIva")
+                        .WithMany()
+                        .HasForeignKey("VoceIvaId1")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SeacDigitTemplate.Models.TemplateEffetto", b =>
+                {
+                    b.HasOne("SeacDigitTemplate.Model.AliquotaIva", "AliquotaIVA")
                         .WithMany()
                         .HasForeignKey("AliquotaIVAId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -214,35 +360,9 @@ namespace SeacDigitTemplate.Migrations
                         .HasForeignKey("ContoDareId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SeacDigitTemplate.Model.Documento", "Documento")
-                        .WithMany()
-                        .HasForeignKey("DocumentoId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SeacDigitTemplate.Model.VoceIVA", "VoceIVA")
+                    b.HasOne("SeacDigitTemplate.Model.VoceIva", "VoceIVA")
                         .WithMany()
                         .HasForeignKey("VoceIVAId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SeacDigitTemplate.Model.SituazioneConto", b =>
-                {
-                    b.HasOne("SeacDigitTemplate.Model.Conto", "Conto")
-                        .WithMany()
-                        .HasForeignKey("ContoId1")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("SeacDigitTemplate.Model.SituazioneVoceIVA", b =>
-                {
-                    b.HasOne("SeacDigitTemplate.Model.AliquotaIVA", "AliquotaIVA")
-                        .WithMany()
-                        .HasForeignKey("AliquotaIVAId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("SeacDigitTemplate.Model.VoceIVA", "VoceIVA")
-                        .WithMany()
-                        .HasForeignKey("VoceIVAId1")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618

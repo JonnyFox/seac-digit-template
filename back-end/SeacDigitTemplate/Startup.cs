@@ -29,7 +29,7 @@ namespace SeacDigitTemplate
                 //opt.OutputFormatters.RemoveType<TextOutputFormatter>();
                 //opt.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
             });
-            services.AddTransient<EffettoService>();
+            services.AddTransient<EffettoCalcoloService>();
             services.AddTransient<ContoService>();
             services.AddTransient<CliforService>();
             services.AddTransient<AliquotaIvaService>();
@@ -39,6 +39,8 @@ namespace SeacDigitTemplate
             services.AddTransient<SituazioneVoceIvaService>();
             services.AddTransient<SituazioneContoService>();
             services.AddTransient<TitoloInapplicabilitaService>();
+            services.AddTransient<ApplicazioneTemplateEffettoService>();
+            services.AddTransient<TemplateEffettoService>();
             services.AddCors();
             
             var config = new AutoMapper.MapperConfiguration(cfg =>

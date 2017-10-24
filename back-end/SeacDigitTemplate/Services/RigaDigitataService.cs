@@ -23,5 +23,11 @@ namespace SeacDigitTemplate.Services
         {
             return _ctx.RigaDigitatas.Where(i => i.Id == id).ToListAsync();
         }
+
+        public RigaDigitata getRiga()
+        {
+            var x =  _ctx.RigaDigitatas.Where(i => i.Id == 2).ToList();
+            return x[0];
+        }
     }
 }

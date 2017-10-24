@@ -9,25 +9,28 @@ namespace SeacDigitTemplate.Model
         public int DocumentoId { get; set; }
         public Documento Documento { get; set; }
 
-        public int ContoDareId { get; set; }
+        public int? ContoDareId { get; set; }
         public Conto ContoDare { get; set; }
 
-        public int ContoAvereId { get; set; }
+        public int? ContoAvereId { get; set; }
         public Conto ContoAvere { get; set; }
 
-        public int VoceIVAId { get; set; }
+        public int? VoceIvaId { get; set; }
         public VoceIva VoceIVA { get; set; }
 
-        public int AliquotaIVAId { get; set; }
+        public int? AliquotaIvaId { get; set; }
         public AliquotaIva AliquotaIVA { get; set; }
 
-        public TrattamentoEnum Trattamento { get; set; }
+        public TrattamentoEnum? Trattamento { get; set; }
+
+        public int? TitoloInapplicabilitaId { get; set; }
         public TitoloInapplicabilita TitoloInapplicabilita { get; set; }
-        public decimal Imponibile { get; set; }
-        public decimal IVA { get; set; }
-        public decimal PercentualeIndetraibilita { get; set; }
-        public decimal PercentualeIndeducibilita { get; set; }
-        public int Settore { get; set; }
+
+        public decimal? Imponibile { get; set; }
+        public decimal? Iva { get; set; }
+        public decimal? PercentualeIndetraibilita { get; set; }
+        public decimal? PercentualeIndeducibilita { get; set; }
+        public int? Settore { get; set; }
         public string Note { get; set; }
     }
 }

@@ -8,8 +8,8 @@ namespace SeacDigitTemplate.Controllers
     [Route("api/effetto")]
     public class EffettoController : Controller
     {
-        private EffettoService _effettoService;
-        public EffettoController(EffettoService effettoService)
+        private EffettoCalcoloService _effettoService;
+        public EffettoController(EffettoCalcoloService effettoService)
         {
             this._effettoService = effettoService;
         }
@@ -20,14 +20,6 @@ namespace SeacDigitTemplate.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        [HttpPost]
-        public string postJeko([FromBody]EffettoCalcolo effettoCalcolo)
-        {
-            Documento documento = effettoCalcolo.documento;
-            RigaDigitata[] rigaDigitataArray = effettoCalcolo.RigaDigitataList;
-
-            return this._effettoService.GetEffetti(documento,rigaDigitataArray);
-        }
         
     }
 }
