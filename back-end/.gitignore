@@ -2,5 +2,5 @@
 
 # compiled output
 .vs/
-**/obj/
-**/bin/
+obj/
+bin/
