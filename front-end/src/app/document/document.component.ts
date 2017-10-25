@@ -24,7 +24,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class DocumentComponent {
 
-    public editItem: EffettoCalcolo = new EffettoCalcolo();
+    public editItem: Documento = new Documento();
 
     public documentoSospensioneEnumValues = Object.keys(DocumentoSospensioneEnum)
         .filter(key => !isNaN(Number(DocumentoSospensioneEnum[key])));
@@ -56,7 +56,7 @@ export class DocumentComponent {
                 this.documentService.getById(+params.get('id')))
             .first()
             .switchMap((d: Documento) => {
-                this.editItem.documento = d;
+                this.editItem = d;
                 return this.rigaDigitataService.getByDocumentoId(d.id);
             })
             .first()
