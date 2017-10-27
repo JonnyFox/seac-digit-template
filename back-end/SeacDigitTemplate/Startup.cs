@@ -69,6 +69,9 @@ namespace SeacDigitTemplate
                 cfg.CreateMap<VoceIva, VoceIvaDto>();
                 cfg.CreateMap<VoceIvaDto, VoceIva>();
 
+                cfg.CreateMap<Effetto, SituazioneContoDto>();
+                cfg.CreateMap<Effetto, SituazioneVoceIvaDto>();
+
                 cfg.CreateMap<Effetto, EffettoContoDto>();
                 cfg.CreateMap<Effetto, EffettoIvaDto>();
                 cfg.CreateMap<List<Effetto>, EffettoCalcoloDto>()

@@ -100,15 +100,169 @@
         </div>
     </div>
     <div class="col-lg-3">
-        <p>Effetto conto</p>
-        <p>Effetto IVA</p>
+        <div class="row">
+            <mat-table #table [dataSource]="dataSourceEffettoConto">
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+                </ng-container>
+
+
+                <ng-container matColumnDef="documentoId">
+                    <mat-header-cell *matHeaderCellDef> DocumentoId </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.documentoId}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="rigaDigitataId">
+                    <mat-header-cell *matHeaderCellDef> Id Riga Digitata </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.rigaDigitataId}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="contoDareId">
+                    <mat-header-cell *matHeaderCellDef> Conto Dare </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.contoDareId}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="contoAvereId">
+                    <mat-header-cell *matHeaderCellDef> Conto Avere </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.contoAvereId]}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="imponibile">
+                    <mat-header-cell *matHeaderCellDef> Imponibile </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.imponibile}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="valore">
+                    <mat-header-cell *matHeaderCellDef> Valore </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.valore}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="variazione">
+                    <mat-header-cell *matHeaderCellDef> Variazione </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.variazione}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="riferimentoEffettoId">
+                    <mat-header-cell *matHeaderCellDef> RiferimentoEffetto Id </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.riferimentoEffettoId}} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumnsEffettoConto"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsEffettoConto;"></mat-row>
+            </mat-table>
+
+        </div>
+        <div class="row">
+            <mat-table #table [dataSource]="dataSourceEffettoIva">
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+                </ng-container>
+
+
+                <ng-container matColumnDef="documentoId">
+                    <mat-header-cell *matHeaderCellDef> DocumentoId </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.documentoId}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="rigaDigitataId">
+                    <mat-header-cell *matHeaderCellDef> Id Riga Digitata </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.rigaDigitataId}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="voceIvaId">
+                    <mat-header-cell *matHeaderCellDef> Voce Iva Id </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.voceIvaId}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="trattamento">
+                    <mat-header-cell *matHeaderCellDef> Trattamento </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.trattamento]}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="titoloInapplicabilità">
+                    <mat-header-cell *matHeaderCellDef> Titolo Inapplicabilita </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.titoloInapplicabilita}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="aliquotaIvaId">
+                    <mat-header-cell *matHeaderCellDef> Aliquota </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.aliquotaIvaId}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="imponibile">
+                    <mat-header-cell *matHeaderCellDef> Imponibile </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.variazione}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="iva">
+                    <mat-header-cell *matHeaderCellDef> Iva </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.riferimentoEffettoId}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="riferimentoEffettoId">
+                    <mat-header-cell *matHeaderCellDef> RiferimentoEffetto Id </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.riferimentoEffettoId}} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumnsEffettoIva"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsEffettoIva;"></mat-row>
+            </mat-table>
+        </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-6-lg">
-        <p>Totali conto</p>
+    <div class="col-lg-6">
+        <mat-table #table [dataSource]="dataSourceSituazioneConto">
+            <ng-container matColumnDef="contoId">
+                <mat-header-cell *matHeaderCellDef> Conto Id </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.contoId}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="valore">
+                <mat-header-cell *matHeaderCellDef> Valore </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.valore}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="variazione">
+                <mat-header-cell *matHeaderCellDef> Variazione </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.variazione}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumnsSituazioneConto"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumnsSituazioneConto;"></mat-row>
+        </mat-table>
     </div>
-    <div class="col-6-lg">
-        <p>Totali IVA</p>
+    <div class="col-lg-6">
+        <mat-table #table [dataSource]="dataSourceSituazioneIva">
+            <ng-container matColumnDef="voceIvaId">
+                <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.voceIvaId}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="trattamento">
+                <mat-header-cell *matHeaderCellDef> DocumentoId </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.trattamento}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="titoloInapplicabilita">
+                <mat-header-cell *matHeaderCellDef> Id Riga Digitata </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.titoloInapplicabilita}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="aliquotaIvaId">
+                <mat-header-cell *matHeaderCellDef> Voce Iva Id </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.aliquotaIvaId}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="valore">
+                <mat-header-cell *matHeaderCellDef> Trattamento </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.valore]}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumnsSituazioneIva"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumnsSituazioneIva;"></mat-row>
+        </mat-table>
     </div>
 </div>

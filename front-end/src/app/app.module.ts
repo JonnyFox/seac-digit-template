@@ -1,3 +1,4 @@
+import { HttpModule } from '@angular/http';
 import { TitoloInapplicabilitaListResolver } from './shared/titolo-inapplicabilita-list.resolver';
 import { TitoloInapplicabilitaService } from './shared/titolo-inapplicabilita.service';
 import { AliquotaIvaService } from './shared/aliquota-iva.service';
@@ -13,6 +14,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { Http } from '@angular/http';
 import { MatListModule, MatTableModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -35,6 +37,7 @@ import { AliquotaIvaListResolver } from './shared/aliquota-iva-list.resolver';
     imports: [
         FormsModule,
         HttpClientModule,
+        HttpModule,
         BrowserModule,
         BrowserAnimationsModule,
         MatIconModule,

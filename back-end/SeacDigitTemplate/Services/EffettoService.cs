@@ -97,6 +97,52 @@ namespace SeacDigitTemplate.Services
             return effettos;
         }
 
+        //public async Task<List<SituazioneVoceIva>> 
+
+        public async Task<List<SituazioneConto>> CreateSituazioneContoAsync(List<Effetto> effettos)
+        {
+            var _situazioneConto = new List<SituazioneConto>();
+            var _valore = 0.0m;
+            foreach (var effetto in effettos)
+            {
+                _valore = 0.0m;
+                if((_situazioneConto.Count(cd => cd.ContoId == effetto.ContoDareId) != 0))
+                {
+                    foreach (var t in _situazioneConto.Where(w => w.ContoId== effetto.ContoDareId))
+                    {
+                        t.Valore += effetto.Valore;
+                        t.Variazione += effetto.VariazioneF;
+                    }
+                }
+                else
+                {
+                    _valore = effetto.Valore;
+                    _situazioneConto.Add(new SituazioneConto { Valore = effetto.Valore, ContoId = (int)effetto.ContoDareId, Variazione = effetto.VariazioneF });
+
+                }
+
+                _valore = 0.0m;
+
+                if ((_situazioneConto.Count(cd => cd.ContoId == effetto.ContoAvereId) != 0))
+                {
+                    foreach (var t in _situazioneConto.Where(w => w.ContoId == effetto.ContoAvereId))
+                    {
+                        t.Valore -= -effetto.Valore; // converti in negativo 
+                        t.Variazione -= -effetto.VariazioneF; // converti in negativo 
+                    }
+                }
+                else
+                {
+                    _valore = -effetto.Valore;
+                    _situazioneConto.Add(new SituazioneConto { Valore = effetto.Valore, ContoId = (int)effetto.ContoAvereId, Variazione = effetto.VariazioneF });
+
+                }
+            }
+            
+            return _situazioneConto; 
+        }
+        
+
         private Effetto CreateEffetto(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto)
         {
             var newEffetto = new Effetto

@@ -37,7 +37,26 @@ namespace SeacDigitTemplate.Controllers
 
             var originalEffects = await _effettoService.GetEffettosFromRigaDigitatasAsync(rigaDigitatas);
 
+            var totaleConto = await _effettoService.CreateSituazioneContoAsync(originalEffects);
+
+            //var totalveIva
+
+            //  return Ok(_mapper.Map<EffettoCalcoloDto>(originalEffects));
+            return Ok(totaleConto);
+        }
+        [HttpGet("calculate2/{id}")]
+        public async Task<IActionResult> GetEffettos2(int id)
+        {
+            var rigaDigitatas = await _rigaDigitataService.GetByDocumentoIdAsync(id);
+
+            var originalEffects = await _effettoService.GetEffettosFromRigaDigitatasAsync(rigaDigitatas);
+
+            //var totaleConto = await _effettoService.CreateSituazioneContoAsync(originalEffects);
+
+            //var totalveIva
+
             return Ok(_mapper.Map<EffettoCalcoloDto>(originalEffects));
+            //return Ok(totaleConto);
         }
     }
 }
