@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Jace;
 using SeacDigitTemplate.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace SeacDigitTemplate.Services
 {
@@ -141,9 +142,41 @@ namespace SeacDigitTemplate.Services
             
             return _situazioneConto; 
         }
-        
 
-        private Effetto CreateEffetto(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto)
+        public async Task<List<SituazioneVoceIva>> CreateSituazioneVoceIvaAsync(List<Effetto> effettos)
+        {
+            var _situazioneVoceIva = new List<SituazioneVoceIva>();
+            var _valore = 0.0m;
+
+            foreach (var effetto in effettos.Where(ef => ef.VoceIvaId != null))
+            {
+                var currentVoceIva = _situazioneVoceIva
+                
+                    .Where(si => si.VoceIvaId == effetto.VoceIvaId)
+                    .Where(si => si.Trattamento == effetto.Trattamento)
+                    .Where(si => si.TitoloInapplicabilita == effetto.TitoloInapplicabilitaId)
+                    .FirstOrDefault(si => si.AliquotaIvaId == effetto.AliquotaIvaId);
+                if(currentVoceIva != null)
+                {
+                    currentVoceIva.Valore += effetto.Valore;
+                }
+                else
+                {
+                    _situazioneVoceIva.Add(new SituazioneVoceIva
+                    {
+                        VoceIva = effetto.VoceIva,
+                        Trattamento = effetto.Trattamento,
+                        TitoloInapplicabilita = effetto.TitoloInapplicabilitaId,
+                        AliquotaIva = effetto.AliquotaIva,
+                        Valore = _valore
+                    });
+                }
+            }
+            return _situazioneVoceIva;
+        }
+
+
+            private Effetto CreateEffetto(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto)
         {
             var newEffetto = new Effetto
             {

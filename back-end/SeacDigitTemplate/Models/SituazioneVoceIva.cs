@@ -10,11 +10,11 @@ namespace SeacDigitTemplate.Model
         public int VoceIvaId { get; set; }
         public VoceIva VoceIva { get; set; }
 
-        public int AliquotaIvaId { get; set; }
+        public int? AliquotaIvaId { get; set; }
         public AliquotaIva AliquotaIva { get; set; }
 
-        public TrattamentoEnum Trattamento { get; set; }
-        public int TitoloInapplicabilita { get; set; }
+        public TrattamentoEnum? Trattamento { get; set; }
+        public int? TitoloInapplicabilita { get; set; }
         public decimal Valore { get; set; }
 
     }
