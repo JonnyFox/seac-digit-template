@@ -40,8 +40,6 @@ namespace SeacDigitTemplate.Services
             query = rigaDigitata.AliquotaIvaId == null ? query.Where(a => a.AliquotaIva == null) : query.Where(a => a.AliquotaIva != null);
             query = rigaDigitata.Imponibile == null ? query.Where(a => a.Imponibile == null) : query.Where(a => a.Imponibile != null);
             query = rigaDigitata.Iva == null ? query.Where(a => a.Iva == null) : query.Where(a => a.Iva != null);
-            query = rigaDigitata.PercentualeIndetraibilita == null ? query.Where(a => a.PercentualeIndetraibilita == null) : query.Where(a => a.PercentualeIndetraibilita != null);
-            query = rigaDigitata.PercentualeIndeducibilita == null ? query.Where(a => a.PercentualeIndeducibilita == null) : query.Where(a => a.PercentualeIndeducibilita != null);
 
             var applicationTemplates = await query.ToListAsync();
 

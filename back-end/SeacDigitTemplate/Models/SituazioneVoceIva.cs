@@ -14,7 +14,7 @@ namespace SeacDigitTemplate.Model
         public AliquotaIva AliquotaIva { get; set; }
 
         public TrattamentoEnum? Trattamento { get; set; }
-        public int? TitoloInapplicabilita { get; set; }
+        public int? TitoloInapplicabilitaId { get; set; }
         public decimal Valore { get; set; }
 
     }

@@ -79,8 +79,20 @@ namespace SeacDigitTemplate.Data
 
             var documentos = new Documento[]
             {
-                new Documento{Totale = 100.0m, RitenutaAcconto = 35.0m, Sospeso = DocumentoSospensioneEnum.ContoIVA, Tipo = DocumentoTipoEnum.Fattura, Caratteristica = DocumentoCaratteristicaEnum.Autofattura, Clifor = clifors[0], Registro = RegistroTipoEnum.Corrispettivi, Numero = "1", Protocollo = 45},
-                new Documento{Totale = 45.0m, RitenutaAcconto = 5.0m, Sospeso = DocumentoSospensioneEnum.Conto, Tipo = DocumentoTipoEnum.Contabile, Caratteristica = DocumentoCaratteristicaEnum.FatturaUE, Clifor = clifors[1], Registro = RegistroTipoEnum.Emesse, Numero = "2", Protocollo = 5},
+                new Documento
+                {
+                    Totale = 0.0m,
+                    RitenutaAcconto = 0.0m,
+                    Sospeso = DocumentoSospensioneEnum.None,
+                    Tipo = DocumentoTipoEnum.Fattura,
+                    Caratteristica = DocumentoCaratteristicaEnum.Normale,
+                    Clifor = clifors[0],
+                    Registro = RegistroTipoEnum.Emesse,
+                    Numero = "1",
+                    Protocollo = 1
+                },
+                new Documento{
+                    Totale = 45.0m, RitenutaAcconto = 5.0m, Sospeso = DocumentoSospensioneEnum.Conto, Tipo = DocumentoTipoEnum.Contabile, Caratteristica = DocumentoCaratteristicaEnum.FatturaUE, Clifor = clifors[1], Registro = RegistroTipoEnum.Emesse, Numero = "2", Protocollo = 5},
                 new Documento{Totale = 45.0m, RitenutaAcconto = 5.0m, Sospeso = DocumentoSospensioneEnum.Conto, Tipo = DocumentoTipoEnum.Contabile, Caratteristica = DocumentoCaratteristicaEnum.FatturaUE, Clifor = clifors[1], Registro = RegistroTipoEnum.Emesse, Numero = "2", Protocollo = 5}
             };
 
@@ -149,6 +161,7 @@ namespace SeacDigitTemplate.Data
                     ContoDare = contos[0],
                     ContoAvere = contos[9],
                     VoceIva = voceivas[0],
+                    Trattamento = TrattamentoEnum.Detraibile,
                     AliquotaIva = aliquotas[2],
                     PercentualeAliquotaIva = aliquotas[2].Percentuale,
                     Imponibile = 1000.0m,
@@ -165,16 +178,16 @@ namespace SeacDigitTemplate.Data
 
             var applicazioneTemplateEffettos = new ApplicazioneTemplateEffetto[]
             {
-                new ApplicazioneTemplateEffetto
-                {
-                    ContoDare = "*",
-                    ContoAvere ="Fornitore",
-                    VoceIva ="Merce",
-                    Trattamento = "*",
-                    AliquotaIva = "*",
-                    Imponibile = "*",
-                    Iva = "*"
-                },
+                //new ApplicazioneTemplateEffetto
+                //{
+                //    ContoDare = "*",
+                //    ContoAvere ="Fornitore",
+                //    VoceIva ="Merce",
+                //    Trattamento = "*",
+                //    AliquotaIva = "*",
+                //    Imponibile = "*",
+                //    Iva = "*"
+                //},
                 new ApplicazioneTemplateEffetto
                 {
                     ContoDare = "Valori Bollati",
@@ -188,6 +201,7 @@ namespace SeacDigitTemplate.Data
                     ContoDare = "*",
                     ContoAvere = "*",
                     VoceIva = "*",
+                    Trattamento = "*", // trattamento should be D check the query
                     AliquotaIva = "*",
                     Imponibile = "*",
                     Iva = "*",
@@ -203,65 +217,65 @@ namespace SeacDigitTemplate.Data
 
             var templateEffettos = new TemplateEffetto[]
             {
+                //new TemplateEffetto
+                //{
+                //    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[0],
+                //    ContoDareId = "ContoDareId",
+                //    ContoAvereId = "ContoAvereId",
+                //    Valore = "Imponibile"
+                //},
+                //new TemplateEffetto
+                //{
+                //    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[0],
+                //    ContoDareId = "*3",
+                //    ContoAvereId = "ContoAvereId",
+                //    VoceIvaId = "VoceIvaId",
+                //    AliquotaIvaId = "AliquotaIvaId",
+                //    Valore = "Imponibile",
+                //    Imponibile = "Imponibile",
+                //    Iva = "Iva"
+                //},
                 new TemplateEffetto
                 {
                     ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[0],
-                    ContoDareId = "ContoDareId",
-                    ContoAvereId = "ContoAvereId",
-                    Valore = "Imponibile"
-                },
-                new TemplateEffetto
-                {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[0],
-                    ContoDareId = "*3",
-                    ContoAvereId = "ContoAvereId",
-                    VoceIvaId = "VoceIvaId",
-                    AliquotaIvaId = "AliquotaIvaId",
-                    Valore = "Imponibile",
-                    Imponibile = "Imponibile",
-                    Iva = "Iva"
-                },
-                new TemplateEffetto
-                {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[1],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     VoceIvaId = "VoceIvaId",
                     TitoloInapplicabilitaId = "TitoloInapplicabilita",
                     Valore = "Imponibile"
                 },
-                new TemplateEffetto
+                new TemplateEffetto // second row
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[2],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[1],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     Valore = "#Imponibile*PercentualeIndetraibilita",
                     VariazioneF = "#Imponibile*PercentualeIndetraibilita*PercentualeIndeducibilita"
                 },
-                new TemplateEffetto
+                new TemplateEffetto // first row 
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[2],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[1],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     Valore = "#Imponibile*(1 - PercentualeIndetraibilita)",
                     VariazioneF = "#Imponibile*(1 - PercentualeIndetraibilita)*PercentualeIndeducibilita"
                 },
-                new TemplateEffetto
+                new TemplateEffetto // third row
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[2],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[1],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     VoceIvaId = "VoceIvaId",
                     Trattamento = "*" + (int)TrattamentoEnum.IndetraibileOggettivo,
                     AliquotaIvaId = "AliquotaIvaId",
                     Valore = "#Iva*PercentualeIndetraibilita",
-                    VariazioneF = "#Imponibile*PercentualeAliquotaIva*PercentualeIndetraibilita*PercentualeIndeducibilita",
+                    VariazioneF = "#Iva*PercentualeIndetraibilita*PercentualeIndeducibilita",
                     Imponibile = "Imponibile",
                     Iva = "#Iva*PercentualeIndetraibilita"
                 },
                 new TemplateEffetto
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[2],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[1],
                     ContoDareId = "*3",
                     ContoAvereId = "ContoAvereId",
                     VoceIvaId = "VoceIvaId",

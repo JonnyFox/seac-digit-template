@@ -74,8 +74,8 @@ namespace SeacDigitTemplate
 
             cfg.CreateMap<Effetto, EffettoContoDto>();
             cfg.CreateMap<Effetto, EffettoIvaDto>();
-            cfg.CreateMap<Effetto, SituazioneVoceIvaDto>();
-            cfg.CreateMap<Effetto, SituazioneContoDto>();
+            cfg.CreateMap<SituazioneVoceIva, SituazioneVoceIvaDto>();
+            cfg.CreateMap<SituazioneConto, SituazioneContoDto>();
             cfg.CreateMap<List<Effetto>, EffettoCalcoloDto>()
                 .ForMember(dest => dest.EffettoContos, opt => opt.MapFrom(src => src.Where(e => e.ContoAvereId != null || e.ContoDareId != null)))
                 .ForMember(dest => dest.EffettoIvas, opt => opt.MapFrom(src => src.Where(e => e.VoceIvaId != null)));
