@@ -73,6 +73,7 @@ namespace SeacDigitTemplate.Services
             _ctx = context;
         }
 
+
         public async Task<List<Effetto>> GetEffettosFromRigaDigitatasAsync(List<RigaDigitata> rigaDigitatas)
         {
             var effettos = new List<Effetto>();
@@ -97,8 +98,6 @@ namespace SeacDigitTemplate.Services
 
             return effettos;
         }
-
-        //public async Task<List<SituazioneVoceIva>> 
 
         public async Task<List<SituazioneConto>> CreateSituazioneContoAsync(List<Effetto> effettos)
         {

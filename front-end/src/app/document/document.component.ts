@@ -1,5 +1,5 @@
+
 import { RigaDigitataService } from '../shared/riga-digitata.service';
-import { DocumentoService } from '../shared/documento.service';
 import {
     AliquotaIva,
     Conto,
@@ -22,6 +22,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
+import { DocumentoService } from '../shared/documento.service';
 
 @Component({
     selector: 'app-document',
@@ -32,10 +33,10 @@ export class DocumentComponent implements OnInit {
 
     public displayedColumnsEfettoConto = ['id', 'documentoId', 'rigaDigitataId', 'contoDareId',
         'contoAvereId', 'imponibile', 'valore', 'variazione', 'riferimentoEffettoId'];
-    public displaysedColumnsEffettoIva = ['id', 'documentoId', 'rigaDigitataId', 'voceIvaId', 'trattamento',
-    'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva', 'riferimentoEffettoId'];
-    public displaysedColumnsSituazioneConto = ['contoId', 'valore', 'variazione'];
-    public displaysedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento', 'titoloInapplicabilita', 'aliquotaIvaId', 'valore'];
+    public displayedColumnsEffettoIva = ['id', 'documentoId', 'rigaDigitataId', 'voceIvaId', 'trattamento',
+        'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva', 'riferimentoEffettoId'];
+    public displayedColumnsSituazioneConto = ['contoId', 'valore', 'variazione'];
+    public displayedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento', 'titoloInapplicabilita', 'aliquotaIvaId', 'valore'];
 
     public dataSourceEffettoConto: ExampleDataSourceEffettoConto | null;
     public dataSourceEffettoIva: ExampleDataSourceEffettoIva | null;
