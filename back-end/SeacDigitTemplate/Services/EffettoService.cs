@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Jace;
 using SeacDigitTemplate.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace SeacDigitTemplate.Services
 {
@@ -72,6 +73,7 @@ namespace SeacDigitTemplate.Services
             _ctx = context;
         }
 
+
         public async Task<List<Effetto>> GetEffettosFromRigaDigitatasAsync(List<RigaDigitata> rigaDigitatas)
         {
             var effettos = new List<Effetto>();
@@ -96,6 +98,112 @@ namespace SeacDigitTemplate.Services
 
             return effettos;
         }
+
+
+        public List<SituazioneConto> GetSituazioneConto(List<Effetto> effettos)
+        {
+
+            var contoDareResult = effettos
+                .GroupBy(e => e.ContoDareId)
+                .Where(g => g.Key.HasValue)
+                .Select(kvp =>
+                {
+                    return new SituazioneConto
+                    {
+                        ContoId = kvp.Key.Value,
+                        Valore = kvp.Sum(v => v.Valore),
+                        Variazione = kvp.Sum(v => v.VariazioneF)
+                    };
+                });
+
+            var contoAvereResult = effettos
+                .GroupBy(e => e.ContoAvereId)
+                .Where(g => g.Key.HasValue)
+                .Select(kvp =>
+                {
+                    return new SituazioneConto
+                    {
+                        ContoId = kvp.Key.Value,
+                        Valore = -kvp.Sum(v => v.Valore),
+                        Variazione = 0 //kvp.Sum(v => v.VariazioneF)
+                    };
+                });
+
+            var result = contoDareResult
+                .Join(contoAvereResult, cd => cd.ContoId, ca => ca.ContoId, (ca, cd) => new SituazioneConto
+                {
+                    ContoId = ca.ContoId,
+                    Valore = cd.Valore + ca.Valore,
+                    Variazione = cd.Variazione + ca.Variazione
+                });
+
+            result = result.Union(contoAvereResult);
+            result = result.Union(contoDareResult);
+
+            return result.ToList();
+
+        }
+
+        public List<SituazioneVoceIva> GetSituazioneVoceIva(List<Effetto> effettos)
+        {
+
+            var x = effettos
+                .GroupBy(e => new
+                {
+                    e.VoceIvaId,
+                    e.Trattamento,
+                    e.TitoloInapplicabilitaId,
+                    e.AliquotaIvaId
+                })
+                .Where(g => g.Key.VoceIvaId != null)
+                .Select(kvp =>
+                {
+                    return new SituazioneVoceIva
+                    {
+                        VoceIvaId = kvp.Key.VoceIvaId.Value,
+                        Trattamento = kvp.Key.Trattamento.Value,
+                        TitoloInapplicabilitaId = kvp.Key.TitoloInapplicabilitaId,
+                        AliquotaIvaId = kvp.Key.AliquotaIvaId,
+                        Valore = kvp.Sum(s => s.Valore)
+                        
+                    };
+                });
+
+            return x.ToList();
+
+
+
+            //var situazioneVoceIva = new List<SituazioneVoceIva>();
+            //var valore = 0.0m;
+
+            //foreach (var effetto in effettos.Where(ef => ef.VoceIvaId != null))
+            //{
+            //    var currentVoceIva = situazioneVoceIva
+            //        .Where(si => si.VoceIvaId == effetto.VoceIvaId)
+            //        .Where(si => si.Trattamento == effetto.Trattamento)
+            //        .Where(si => si.TitoloInapplicabilita == effetto.TitoloInapplicabilitaId)
+            //        .FirstOrDefault(si => si.AliquotaIvaId == effetto.AliquotaIvaId);
+
+            //    if (currentVoceIva != null)
+            //    {
+            //        currentVoceIva.Valore += effetto.Valore;
+            //    }
+            //    else
+            //    {
+            //        situazioneVoceIva.Add(new SituazioneVoceIva
+            //        {
+            //            VoceIva = effetto.VoceIva,
+            //            Trattamento = effetto.Trattamento,
+            //            TitoloInapplicabilita = effetto.TitoloInapplicabilitaId,
+            //            AliquotaIva = effetto.AliquotaIva,
+            //            Valore = valore
+            //        });
+            //    }
+            //}
+
+            //return situazioneVoceIva;
+        }
+
 
         private Effetto CreateEffetto(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto)
         {

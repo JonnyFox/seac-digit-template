@@ -1,16 +1,29 @@
+import { HttpClient } from '@angular/common/http';
 import { BaseService } from './base.service';
+
 import {
     Documento,
     DocumentoCaratteristicaEnum,
     DocumentoSospensioneEnum,
     DocumentoTipoEnum,
     RegistroTipoEnum,
+    EffettoCalcolo,
+    EffettoConto,
+    EffettoIva,
+    SituazioneConto,
+    SituazioneVoceIVA
 } from './models';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Http, HttpModule, Response } from '@angular/http';
+import 'rxjs/add/operator/map';
 
 @Injectable()
-export class DocumentoService extends BaseService<Documento> {
+export class DocumentoService/* extends BaseService<Documento>*/ {
+
+    constructor(private http: Http) {
+
+    }
 
     private storage: Documento[] = [
         {
@@ -71,6 +84,97 @@ export class DocumentoService extends BaseService<Documento> {
         }
     ];
 
+    private effettoContos: EffettoConto[] = [
+        {
+            id: 1,
+            documentoId: 1,
+            rigaDigitataId: 2,
+            contoDareId: 1,
+            contoAvereId: 2,
+            imponibile: 3,
+            valore: 1,
+            variazione: 3,
+            riferimentoEffettoId: 1
+        },
+        {
+            id: 2,
+            documentoId: 1,
+            rigaDigitataId: 2,
+            contoDareId: 1,
+            contoAvereId: 2,
+            imponibile: 3,
+            valore: 1,
+            variazione: 3,
+            riferimentoEffettoId: 1
+        },
+    ];
+    private storageEffettoConto: EffettoConto[] = [
+        {
+            id: 1,
+            documentoId: 2,
+            rigaDigitataId: 1,
+            contoDareId: 1,
+            contoAvereId: 1,
+            imponibile: 12,
+            valore: 134,
+            variazione: 9,
+            riferimentoEffettoId: 1
+        },
+        {
+            id: 2,
+            documentoId: 3,
+            rigaDigitataId: 2,
+            contoDareId: 12,
+            contoAvereId: 2,
+            imponibile: 166,
+            valore: 143,
+            variazione: 10,
+            riferimentoEffettoId: 2
+        }
+    ];
+    private storageEffettoIva: EffettoIva[] = [
+        {
+            id: 1,
+            documentoId: 2,
+            rigaDigitataId: 3,
+            voceIvaId: 4,
+            trattamento: 12,
+            titoloInapplicabilita: 2,
+            aliquotaIvaId: 3,
+            imponibile: 4,
+            iva: 5,
+            riferimentoEffettoId: 2
+        }
+    ];
+    private storageSituazioneConto: SituazioneConto[] = [
+        {
+            contoId: 1,
+            valore: 500,
+            variazione: 12
+        },
+        {
+            contoId: 2,
+            valore: 300,
+            variazione: 24
+        }
+    ];
+    private storageSituazioneVoceIva: SituazioneVoceIVA[] = [
+        {
+            voceIvaId: 1,
+            trattamento: 2,
+            titoloInapplicabilita: 3,
+            aliquotaIvaId: 4,
+            valore: 100
+        },
+        {
+            voceIvaId: 2,
+            trattamento: 3,
+            titoloInapplicabilita: 3,
+            aliquotaIvaId: 4,
+            valore: 2000
+        }
+    ];
+
     public getAll(): Observable<Documento[]> {
         return Observable.of(this.storage);
     }
@@ -78,4 +182,24 @@ export class DocumentoService extends BaseService<Documento> {
     public getById(id: number): Observable<Documento> {
         return Observable.of(this.storage.filter(d => d.id === id)[0]);
     }
+
+    public getEffettos(): Observable<EffettoConto[]> {
+        // return this.http.get('http://localhost:6969/api/effetto/calculate/2')
+        //     .map(res => res.json());
+        return Observable.of(this.effettoContos);
+    }
+    public getAllEffettoConto(): Observable<EffettoConto[]> {
+        return Observable.of(this.storageEffettoConto);
+    }
+    public getAllEffettoIva(): Observable<EffettoIva[]> {
+        return Observable.of(this.storageEffettoIva);
+    }
+    public getAllSituazioneConto(): Observable<SituazioneConto[]> {
+        return Observable.of(this.storageSituazioneConto);
+    }
+    public getAllSituazioneVoceIva(): Observable<SituazioneVoceIVA[]> {
+        return Observable.of(this.storageSituazioneVoceIva);
+    }
 }
+
+
