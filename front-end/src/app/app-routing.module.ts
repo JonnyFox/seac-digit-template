@@ -15,9 +15,9 @@ const appRoutes: Routes = [
         path: 'document/:id',
         component: DocumentComponent,
         resolve: {
-            // aliquotaIvaList: AliquotaIvaListResolver,
+            aliquotaIvaList: AliquotaIvaListResolver,
             contoList: ContoListResolver,
-            // titoloInapplicabilitaList: TitoloInapplicabilitaListResolver,
+            titoloInapplicabilitaList: TitoloInapplicabilitaListResolver,
             voceIvaList: VoceIvaListResolver
         }
     },

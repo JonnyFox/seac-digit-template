@@ -8,6 +8,6 @@ import { AliquotaIva, VoceIva } from './models';
 export class AliquotaIvaService extends BaseService<AliquotaIva> {
     constructor(protected httpClient: HttpClient) {
         super(httpClient);
-        this.baseUrl += 'AliquotaIva';
+        this.baseUrl += 'aliquotaIva';
     }
 }

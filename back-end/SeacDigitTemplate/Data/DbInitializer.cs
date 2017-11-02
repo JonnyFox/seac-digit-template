@@ -92,8 +92,27 @@ namespace SeacDigitTemplate.Data
                     Protocollo = 1
                 },
                 new Documento{
-                    Totale = 45.0m, RitenutaAcconto = 5.0m, Sospeso = DocumentoSospensioneEnum.Conto, Tipo = DocumentoTipoEnum.Contabile, Caratteristica = DocumentoCaratteristicaEnum.FatturaUE, Clifor = clifors[1], Registro = RegistroTipoEnum.Emesse, Numero = "2", Protocollo = 5},
-                new Documento{Totale = 45.0m, RitenutaAcconto = 5.0m, Sospeso = DocumentoSospensioneEnum.Conto, Tipo = DocumentoTipoEnum.Contabile, Caratteristica = DocumentoCaratteristicaEnum.FatturaUE, Clifor = clifors[1], Registro = RegistroTipoEnum.Emesse, Numero = "2", Protocollo = 5}
+                    Totale = 45.0m,
+                    RitenutaAcconto = 5.0m,
+                    Sospeso = DocumentoSospensioneEnum.Conto,
+                    Tipo = DocumentoTipoEnum.Contabile,
+                    Caratteristica = DocumentoCaratteristicaEnum.FatturaUE,
+                    Clifor = clifors[1],
+                    Registro = RegistroTipoEnum.Emesse,
+                    Numero = "2",
+                    Protocollo = 5
+                    },
+                new Documento{
+                    Totale = 45.0m,
+                    RitenutaAcconto = 5.0m,
+                    Sospeso = DocumentoSospensioneEnum.Conto,
+                    Tipo = DocumentoTipoEnum.Contabile,
+                    Caratteristica = DocumentoCaratteristicaEnum.FatturaUE,
+                    Clifor = clifors[1],
+                    Registro = RegistroTipoEnum.Emesse,
+                    Numero = "2",
+                    Protocollo = 5
+                    }
             };
 
             foreach (var d in documentos)

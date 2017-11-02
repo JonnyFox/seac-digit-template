@@ -7,6 +7,6 @@ import { TitoloInapplicabilita } from './models';
 export class TitoloInapplicabilitaService extends BaseService<TitoloInapplicabilita> {
     constructor(protected httpClient: HttpClient) {
         super(httpClient);
-        this.baseUrl += 'TitoloInapplicabilita';
+        this.baseUrl += 'titoloInapplicabilita';
     }
 }

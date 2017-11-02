@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Http } from '@angular/http';
-import { MatListModule, MatTableModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule } from '@angular/material';
+import { MatListModule, MatTableModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatCardModule } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -41,6 +41,7 @@ import { AliquotaIvaListResolver } from './shared/aliquota-iva-list.resolver';
         BrowserModule,
         BrowserAnimationsModule,
         MatIconModule,
+        MatCardModule,
         MatInputModule,
         MatSelectModule,
         MatButtonModule,

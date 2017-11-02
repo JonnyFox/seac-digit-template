@@ -89,8 +89,8 @@ export class Conto {
 export enum TrattamentoEnum {
     None,
     Detraibile,
-    IdentraibileOggettivo,
-    IdentraibileSoggettivo,
+    IOgg,
+    ISogg,
     Esente
 }
 

@@ -33,10 +33,10 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 })
 export class DocumentComponent implements OnInit {
 
-    public displayedColumnsEfettoConto = ['id', 'documentoId', 'rigaDigitataId', 'contoDareId',
-        'contoAvereId', 'imponibile', 'valore', 'variazione', 'riferimentoEffettoId'];
-    public displayedColumnsEffettoIva = ['id', 'documentoId', 'rigaDigitataId', 'voceIvaId', 'trattamento',
-        'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva', 'riferimentoEffettoId'];
+    public displayedColumnsEfettoConto = [ 'rigaDigitataId', 'contoDareId',
+        'contoAvereId', 'imponibile', 'valore', 'variazione'];
+    public displayedColumnsEffettoIva = [ 'rigaDigitataId', 'voceIvaId', 'trattamento',
+        'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
     public displayedColumnsSituazioneConto = ['contoId', 'valore', 'variazione'];
     public displayedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento', 'titoloInapplicabilita', 'aliquotaIvaId', 'valore'];
 
@@ -44,9 +44,9 @@ export class DocumentComponent implements OnInit {
     public effettoCalcolo$: Observable<EffettoCalcolo> = this._effettoCalcolo$.asObservable();
 
     public dataSourceEffettoConto = new DataSourceEffettoConto(this.effettoCalcolo$);
-    public dataSourceEffettoIva= new DataSourceEffettoIva(this.effettoCalcolo$);
-    public dataSourceSituazioneConto= new DataSourceSituazioneConto(this.effettoCalcolo$);
-    public dataSourceSituazioneVoceIva= new DataSourceSituazioneVoceIva(this.effettoCalcolo$);
+    public dataSourceEffettoIva = new DataSourceEffettoIva(this.effettoCalcolo$);
+    public dataSourceSituazioneConto = new DataSourceSituazioneConto(this.effettoCalcolo$);
+    public dataSourceSituazioneVoceIva = new DataSourceSituazioneVoceIva(this.effettoCalcolo$);
 
     public editItem: Documento = new Documento();
 
@@ -69,7 +69,7 @@ export class DocumentComponent implements OnInit {
     public contoList: Array<Conto> = [];
     public titoloInapplicabilitaList: Array<TitoloInapplicabilita> = [];
     public voceIvaList: Array<VoceIva> = [];
-
+    public trattamento = TrattamentoEnum;
 
     constructor(
         private route: ActivatedRoute,
@@ -88,15 +88,13 @@ export class DocumentComponent implements OnInit {
             .first()
             .subscribe(rigaDigitataList => this.editItem.rigaDigitataList = rigaDigitataList);
 
-        // this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
+        this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
         this.contoList = this.route.snapshot.data['contoList'];
-        // this.titoloInapplicabilitaList = this.route.snapshot.data['titoloInapplicabilitaList'];
+        this.titoloInapplicabilitaList = this.route.snapshot.data['titoloInapplicabilitaList'];
         this.voceIvaList = this.route.snapshot.data['voceIvaList'];
     }
 
-    ngOnInit() {
-
-    }
+    ngOnInit() { }
 
     public addRigaDigitata(): void {
         this.editItem.rigaDigitataList.push(new RigaDigitata());
@@ -111,8 +109,16 @@ export class DocumentComponent implements OnInit {
         return this.contoList.find(c => c.id === id).nome;
     }
 
-    public getVoceIvaDescription(id: number): string {
+    public getVoceIvaDescription(id: number | null): string {
         return this.voceIvaList.find(c => c.id === id).nome;
+    }
+
+    public getTitoloInapplicabilitaDescription(id: number): string {
+        return id == null ? '' : this.titoloInapplicabilitaList.find(c => c.id === id).nome;
+    }
+
+    public getAliquotaDescription(id: number): string {
+        return id == null ? '' : this.aliquotaIvaList.find(c => c.id === id).percentuale * 100 + '%';
     }
 }
 export class DataSourceEffettoConto extends DataSource<any> {
