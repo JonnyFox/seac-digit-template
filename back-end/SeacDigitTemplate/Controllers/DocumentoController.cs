@@ -21,15 +21,9 @@ namespace SeacDigitTemplate.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            return Ok(_mapper.Map<List<DocumentoDto>>(await _documentoService.GetAll()));
-        }
+        public async Task<IActionResult> Get() => Ok(_mapper.Map<List<DocumentoDto>>(await _documentoService.GetAll()));
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            return Ok(_mapper.Map<List<DocumentoDto>>(await _documentoService.GetById(id)));
-        }
+        public async Task<IActionResult> GetById(int id) => Ok(_mapper.Map<DocumentoDto>(await _documentoService.GetByIdAsync(id)));
     }
 }

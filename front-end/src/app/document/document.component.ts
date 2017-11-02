@@ -33,9 +33,9 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 })
 export class DocumentComponent implements OnInit {
 
-    public displayedColumnsEfettoConto = [ 'rigaDigitataId', 'contoDareId',
+    public displayedColumnsEfettoConto = ['rigaDigitataId', 'contoDareId',
         'contoAvereId', 'imponibile', 'valore', 'variazione'];
-    public displayedColumnsEffettoIva = [ 'rigaDigitataId', 'voceIvaId', 'trattamento',
+    public displayedColumnsEffettoIva = ['rigaDigitataId', 'voceIvaId', 'trattamento',
         'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
     public displayedColumnsSituazioneConto = ['contoId', 'valore', 'variazione'];
     public displayedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento', 'titoloInapplicabilita', 'aliquotaIvaId', 'valore'];
@@ -85,8 +85,9 @@ export class DocumentComponent implements OnInit {
                 this.editItem = d;
                 return this.rigaDigitataService.getByDocumentoId(d.id);
             })
-            .first()
-            .subscribe(rigaDigitataList => this.editItem.rigaDigitataList = rigaDigitataList);
+            .subscribe(rigaDigitataList => {
+                this.editItem.rigaDigitataList = rigaDigitataList;
+            });
 
         this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
         this.contoList = this.route.snapshot.data['contoList'];
@@ -100,8 +101,13 @@ export class DocumentComponent implements OnInit {
         this.editItem.rigaDigitataList.push(new RigaDigitata());
     }
 
-    public calculate(): void {
-        this.effettoCalcoloService.calculate(3)
+    public getEffettos(): void {
+        this.effettoCalcoloService.get(this.editItem.id)
+            .subscribe(val => this._effettoCalcolo$.next(val));
+    }
+
+    public postEffettos(): void {
+        this.effettoCalcoloService.post(this.editItem.rigaDigitataList)
             .subscribe(val => this._effettoCalcolo$.next(val));
     }
 

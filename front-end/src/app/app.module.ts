@@ -9,12 +9,11 @@ import { VoceIvaListResolver } from './shared/voce-iva-list.resolver';
 import { EffettoCalcoloService } from './shared/effetto-calcolo.service';
 import { RigaDigitataService } from './shared/riga-digitata.service';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Injector } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { Http } from '@angular/http';
 import { MatListModule, MatTableModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatCardModule } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,7 +25,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DocumentComponent } from './document/document.component';
 import { DocumentoService } from './shared/documento.service';
 import { AliquotaIvaListResolver } from './shared/aliquota-iva-list.resolver';
-
+import { inject } from '@angular/core/testing';
 
 @NgModule({
     declarations: [
@@ -37,7 +36,6 @@ import { AliquotaIvaListResolver } from './shared/aliquota-iva-list.resolver';
     imports: [
         FormsModule,
         HttpClientModule,
-        HttpModule,
         BrowserModule,
         BrowserAnimationsModule,
         MatIconModule,

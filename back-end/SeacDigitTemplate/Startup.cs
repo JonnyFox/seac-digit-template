@@ -93,7 +93,7 @@ namespace SeacDigitTemplate
 
             Configuration = builder.Build();
 
-            app.UseCors(bb => bb.AllowAnyOrigin());
+            app.UseCors(bb => bb.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod());
 
             if (env.IsDevelopment())
             {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SeacDigitTemplate.Controllers
 {
     [Produces("application/json")]
-    [Route("api/documento")]
+    [Route("api/situazioneConto")]
     public class SituazioneContoController : ControllerBase
     {
         private SituazioneContoService _situazioneContoService;

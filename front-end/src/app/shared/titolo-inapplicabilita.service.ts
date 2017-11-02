@@ -6,7 +6,7 @@ import { TitoloInapplicabilita } from './models';
 @Injectable()
 export class TitoloInapplicabilitaService extends BaseService<TitoloInapplicabilita> {
     constructor(protected httpClient: HttpClient) {
-        super(httpClient);
+        super();
         this.baseUrl += 'titoloInapplicabilita';
     }
 }

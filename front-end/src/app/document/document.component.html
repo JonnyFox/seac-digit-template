@@ -1,4 +1,5 @@
-<button (click)="calculate()">Calculate</button>
+<button (click)="getEffettos()">Calculate</button>
+<button (click)="postEffettos()">Post</button>
 <div class="row">
     <div class="col-lg-8">
         <mat-card>
@@ -42,7 +43,7 @@
             </mat-card-content>
         </mat-card>
         <mat-card class="some-top">
-            <mat-card-title>Riga digitata {{this.editItem.rigaDigitataList.length}}
+            <mat-card-title>Riga digitata {{this.editItem.rigaDigitataList?.length}}
                 <button style="align-self:center" mat-icon-button (click)="addRigaDigitata()">
                     <mat-icon>add</mat-icon>
                 </button>
