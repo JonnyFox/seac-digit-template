@@ -39,11 +39,11 @@ namespace SeacDigitTemplate.Controllers
             var situazioneVoceIvas =  _effettoService.GetSituazioneVoceIva(originalEffects);
             var situazioneContos =  _effettoService.GetSituazioneConto(originalEffects);
 
-            var effettoCalcoloDtos = _mapper.Map<EffettoCalcoloDto>(originalEffects);
-            effettoCalcoloDtos.SituazioneContos = _mapper.Map<List<SituazioneContoDto>>(situazioneContos);
-            effettoCalcoloDtos.SituazioneVoceIvas = _mapper.Map<List<SituazioneVoceIvaDto>>(situazioneVoceIvas);
+            var effettoCalcoloDto = _mapper.Map<EffettoCalcoloDto>(originalEffects);
+            effettoCalcoloDto.SituazioneContos = _mapper.Map<List<SituazioneContoDto>>(situazioneContos);
+            effettoCalcoloDto.SituazioneVoceIvas = _mapper.Map<List<SituazioneVoceIvaDto>>(situazioneVoceIvas);
 
-            return Ok(effettoCalcoloDtos);
+            return Ok(effettoCalcoloDto);
         }
     }
 }
