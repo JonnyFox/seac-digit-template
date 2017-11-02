@@ -18,7 +18,7 @@ const appRoutes: Routes = [
             // aliquotaIvaList: AliquotaIvaListResolver,
             contoList: ContoListResolver,
             // titoloInapplicabilitaList: TitoloInapplicabilitaListResolver,
-            // voceIVAList: VoceIvaListResolver
+            voceIvaList: VoceIvaListResolver
         }
     },
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' },

@@ -13,10 +13,10 @@ export abstract class BaseService<T> {
     constructor(protected httpClient: HttpClient) { }
 
     public getAll(): Observable<T[]> {
-        return this.httpClient.get<T[]>(this.baseUrl).map((res: any) => res.result);
+        return this.httpClient.get<T[]>(this.baseUrl);
     }
 
     public genericGetAll<U>(): Observable<U[]> {
-        return this.httpClient.get<U[]>(this.baseUrl).map((res: any) => res.result);
+        return this.httpClient.get<U[]>(this.baseUrl);
     }
 }

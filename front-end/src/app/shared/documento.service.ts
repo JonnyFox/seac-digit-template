@@ -11,7 +11,7 @@ import {
     EffettoConto,
     EffettoIva,
     SituazioneConto,
-    SituazioneVoceIVA
+    SituazioneVoceIva
 } from './models';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -158,7 +158,7 @@ export class DocumentoService/* extends BaseService<Documento>*/ {
             variazione: 24
         }
     ];
-    private storageSituazioneVoceIva: SituazioneVoceIVA[] = [
+    private storageSituazioneVoceIva: SituazioneVoceIva[] = [
         {
             voceIvaId: 1,
             trattamento: 2,
@@ -197,7 +197,7 @@ export class DocumentoService/* extends BaseService<Documento>*/ {
     public getAllSituazioneConto(): Observable<SituazioneConto[]> {
         return Observable.of(this.storageSituazioneConto);
     }
-    public getAllSituazioneVoceIva(): Observable<SituazioneVoceIVA[]> {
+    public getAllSituazioneVoceIva(): Observable<SituazioneVoceIva[]> {
         return Observable.of(this.storageSituazioneVoceIva);
     }
 }

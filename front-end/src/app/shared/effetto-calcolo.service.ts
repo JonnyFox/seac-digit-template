@@ -6,13 +6,11 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class EffettoCalcoloService {
-    constructor(private http: Http) {
 
-    }
-    private storage: EffettoCalcolo[] = [];
+    constructor(private http: Http) { }
 
-    public getAll() {
-        return this.http.get('http://localhost:6969/api/effetto/calculate/2')
+    public calculate(id: number): Observable<EffettoCalcolo> {
+        return this.http.get('http://localhost:6969/api/effetto/calculate/' + id)
             .map((res: Response) => res.json());
     }
 }

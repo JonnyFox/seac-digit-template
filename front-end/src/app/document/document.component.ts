@@ -15,7 +15,7 @@ import {
     TrattamentoEnum,
     VoceIva,
     EffettoIva,
-    SituazioneVoceIVA,
+    SituazioneVoceIva,
     SituazioneConto,
 } from '../shared/models';
 import { Component, OnInit } from '@angular/core';
@@ -23,6 +23,8 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 import { DocumentoService } from '../shared/documento.service';
+import { EffettoCalcoloService } from '../shared/effetto-calcolo.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
     selector: 'app-document',
@@ -38,10 +40,13 @@ export class DocumentComponent implements OnInit {
     public displayedColumnsSituazioneConto = ['contoId', 'valore', 'variazione'];
     public displayedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento', 'titoloInapplicabilita', 'aliquotaIvaId', 'valore'];
 
-    public dataSourceEffettoConto: ExampleDataSourceEffettoConto | null;
-    public dataSourceEffettoIva: ExampleDataSourceEffettoIva | null;
-    public dataSourceSituazioneConto: ExampleDataSourceSituazioneConto | null;
-    public dataSourceSituazioneVoceIva: ExampleDataSourceSituazioneVoceIva | null;
+    private _effettoCalcolo$: BehaviorSubject<EffettoCalcolo> = new BehaviorSubject(new EffettoCalcolo());
+    public effettoCalcolo$: Observable<EffettoCalcolo> = this._effettoCalcolo$.asObservable();
+
+    public dataSourceEffettoConto = new DataSourceEffettoConto(this.effettoCalcolo$);
+    public dataSourceEffettoIva= new DataSourceEffettoIva(this.effettoCalcolo$);
+    public dataSourceSituazioneConto= new DataSourceSituazioneConto(this.effettoCalcolo$);
+    public dataSourceSituazioneVoceIva= new DataSourceSituazioneVoceIva(this.effettoCalcolo$);
 
     public editItem: Documento = new Documento();
 
@@ -65,10 +70,12 @@ export class DocumentComponent implements OnInit {
     public titoloInapplicabilitaList: Array<TitoloInapplicabilita> = [];
     public voceIvaList: Array<VoceIva> = [];
 
+
     constructor(
         private route: ActivatedRoute,
         private documentService: DocumentoService,
-        private rigaDigitataService: RigaDigitataService
+        private rigaDigitataService: RigaDigitataService,
+        private effettoCalcoloService: EffettoCalcoloService
     ) {
         this.route.paramMap
             .switchMap((params: ParamMap) =>
@@ -81,56 +88,66 @@ export class DocumentComponent implements OnInit {
             .first()
             .subscribe(rigaDigitataList => this.editItem.rigaDigitataList = rigaDigitataList);
 
-
         // this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
         this.contoList = this.route.snapshot.data['contoList'];
         // this.titoloInapplicabilitaList = this.route.snapshot.data['titoloInapplicabilitaList'];
-        // this.voceIVAList = this.route.snapshot.data['voceIvaList'];
+        this.voceIvaList = this.route.snapshot.data['voceIvaList'];
     }
+
     ngOnInit() {
-        this.dataSourceEffettoConto = new ExampleDataSourceEffettoConto(this.documentService);
-        this.dataSourceEffettoIva = new ExampleDataSourceEffettoIva(this.documentService);
-        this.dataSourceSituazioneConto = new ExampleDataSourceSituazioneConto(this.documentService);
-        this.dataSourceSituazioneVoceIva = new ExampleDataSourceSituazioneVoceIva(this.documentService);
+
     }
 
     public addRigaDigitata(): void {
         this.editItem.rigaDigitataList.push(new RigaDigitata());
     }
+
+    public calculate(): void {
+        this.effettoCalcoloService.calculate(3)
+            .subscribe(val => this._effettoCalcolo$.next(val));
+    }
+
+    public getContoDescription(id: number): string {
+        return this.contoList.find(c => c.id === id).nome;
+    }
+
+    public getVoceIvaDescription(id: number): string {
+        return this.voceIvaList.find(c => c.id === id).nome;
+    }
 }
-export class ExampleDataSourceEffettoConto extends DataSource<any> {
-    constructor(private documentService: DocumentoService) {
+export class DataSourceEffettoConto extends DataSource<any> {
+    constructor(private effettoCalcolo$: Observable<EffettoCalcolo>) {
         super();
     }
     connect(): Observable<EffettoConto[]> {
-        return this.documentService.getAllEffettoConto();
+        return this.effettoCalcolo$.map(v => v.effettoContos || []);
     }
     disconnect() { }
 }
-export class ExampleDataSourceEffettoIva extends DataSource<any> {
-    constructor(private documentService: DocumentoService) {
+export class DataSourceEffettoIva extends DataSource<any> {
+    constructor(private effettoCalcolo$: Observable<EffettoCalcolo>) {
         super();
     }
     connect(): Observable<EffettoIva[]> {
-        return this.documentService.getAllEffettoIva();
+        return this.effettoCalcolo$.map(v => v.effettoIvas || []);
     }
     disconnect() { }
 }
-export class ExampleDataSourceSituazioneConto extends DataSource<any> {
-    constructor(private documentService: DocumentoService) {
+export class DataSourceSituazioneConto extends DataSource<any> {
+    constructor(private effettoCalcolo$: Observable<EffettoCalcolo>) {
         super();
     }
     connect(): Observable<SituazioneConto[]> {
-        return this.documentService.getAllSituazioneConto();
+        return this.effettoCalcolo$.map(v => v.situazioneContos || []);
     }
     disconnect() { }
 }
-export class ExampleDataSourceSituazioneVoceIva extends DataSource<any> {
-    constructor(private documentService: DocumentoService) {
+export class DataSourceSituazioneVoceIva extends DataSource<any> {
+    constructor(private effettoCalcolo$: Observable<EffettoCalcolo>) {
         super();
     }
-    connect(): Observable<SituazioneVoceIVA[]> {
-        return this.documentService.getAllSituazioneVoceIva();
+    connect(): Observable<SituazioneVoceIva[]> {
+        return this.effettoCalcolo$.map(v => v.situazioneVoceIvas || []);
     }
     disconnect() { }
 }

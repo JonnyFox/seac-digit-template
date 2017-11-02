@@ -94,11 +94,11 @@ export enum TrattamentoEnum {
     Esente
 }
 
-export class SituazioneVoceIVA {
+export class SituazioneVoceIva {
     voceIvaId: number;
+    aliquotaIvaId: number;
     trattamento: TrattamentoEnum;
     titoloInapplicabilita: number;
-    aliquotaIvaId: number;
     valore: number;
 }
 
@@ -141,8 +141,17 @@ export class TitoloInapplicabilita {
 }
 
 export class EffettoCalcolo {
+    constructor() {
+        this.effettoContos =
+            this.effettoIvas =
+            this.situazioneContos =
+            this.situazioneVoceIvas = [];
+    }
+
     effettoContos: EffettoConto[];
     effettoIvas: EffettoIva[];
+    situazioneContos: SituazioneConto[];
+    situazioneVoceIvas: SituazioneVoceIva[];
 }
 
 export class EffettoConto {
