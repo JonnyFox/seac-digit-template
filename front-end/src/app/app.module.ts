@@ -6,7 +6,7 @@ import { ContoService } from './shared/conto.service';
 import { VoceIvaService } from './shared/voce-iva.service';
 import { ContoListResolver } from './shared/conto-list.resolver';
 import { VoceIvaListResolver } from './shared/voce-iva-list.resolver';
-import { EffettoCalcoloService } from './shared/effetto-calcolo.service';
+import { EffettoService } from './shared/effetto.service';
 import { RigaDigitataService } from './shared/riga-digitata.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injector } from '@angular/core';
@@ -14,7 +14,10 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { MatListModule, MatTableModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatCardModule } from '@angular/material';
+import {
+    MatListModule, MatTableModule, MatButtonModule,
+    MatIconModule, MatInputModule, MatSelectModule, MatCardModule
+} from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -49,7 +52,7 @@ import { inject } from '@angular/core/testing';
     providers: [
         DocumentoService,
         RigaDigitataService,
-        EffettoCalcoloService,
+        EffettoService,
         AliquotaIvaService,
         ContoService,
         TitoloInapplicabilitaService,

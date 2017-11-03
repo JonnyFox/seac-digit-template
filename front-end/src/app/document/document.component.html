@@ -1,6 +1,4 @@
-<button (click)="getEffettos()">Calculate</button>
-<button (click)="postEffettos()">Post</button>
-<div class="row">
+<div class="row some-top">
     <div class="col-lg-8">
         <mat-card>
             <mat-card-title>Documento {{editItem.id}}</mat-card-title>
@@ -22,12 +20,12 @@
                         <mat-option *ngFor="let option of documentoSospensioneEnumValues; let i = index" [value]="i">{{option}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field>
+                <mat-form-field class="form-field-small">
                     <mat-select placeholder="Tipo" [(ngModel)]="editItem.tipo">
                         <mat-option *ngFor="let option of documentoTipoEnumValues; let i = index" [value]="i">{{option}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field>
+                <mat-form-field class="form-field-small">
                     <mat-select placeholder="Caratteristica" [(ngModel)]="editItem.caratteristica">
                         <mat-option *ngFor="let option of documentoCaratteristicaEnumValues; let i = index" [value]="i">{{option}}</mat-option>
                     </mat-select>
@@ -35,7 +33,7 @@
                 <mat-form-field>
                     <input type="number" matInput placeholder="Clifor id" [(ngModel)]="editItem.cliforId">
                 </mat-form-field>
-                <mat-form-field>
+                <mat-form-field class="form-field-small">
                     <mat-select placeholder="Registro" [(ngModel)]="editItem.registro">
                         <mat-option *ngFor="let option of registroTipoEnumEnumValues; let i = index" [value]="i">{{option}}</mat-option>
                     </mat-select>
@@ -50,17 +48,17 @@
             </mat-card-title>
             <mat-card-content>
                 <div *ngFor="let riga of editItem.rigaDigitataList">
-                    <mat-form-field>
+                    <mat-form-field class="form-field-small">
                         <mat-select placeholder="Conto dare" [(ngModel)]="riga.contoDareId">
                             <mat-option *ngFor="let option of contoList" [value]="option.id">{{option.nome}}</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field class="form-field-small">
                         <mat-select placeholder="Conto dare" [(ngModel)]="riga.contoAvereId">
                             <mat-option *ngFor="let option of contoList" [value]="option.id">{{option.nome}}</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field class="form-field-small">
                         <mat-select placeholder="Voce IVA" [(ngModel)]="riga.voceIvaId">
                             <mat-option *ngFor="let option of voceIvaList" [value]="option.id">{{option.nome}}</mat-option>
                         </mat-select>
@@ -105,7 +103,7 @@
         </mat-card>
     </div>
     <div class="col-lg-4">
-        <mat-card>
+        <mat-card class="effects">
             <mat-card-title>Effetto conto</mat-card-title>
             <mat-card-content>
                 <mat-table #table [dataSource]="dataSourceEffettoConto">
@@ -125,19 +123,14 @@
                         <mat-cell *matCellDef="let element">{{getContoDescription(element.contoAvereId)}}</mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="imponibile">
-                        <mat-header-cell *matHeaderCellDef>Imponibile</mat-header-cell>
-                        <mat-cell *matCellDef="let element">{{element.imponibile}}</mat-cell>
-                    </ng-container>
-
                     <ng-container matColumnDef="valore">
                         <mat-header-cell *matHeaderCellDef>Valore</mat-header-cell>
                         <mat-cell *matCellDef="let element">{{element.valore}}</mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="variazione">
+                    <ng-container matColumnDef="variazioneFiscale">
                         <mat-header-cell *matHeaderCellDef>Variazione</mat-header-cell>
-                        <mat-cell *matCellDef="let element">{{element.variazione}}</mat-cell>
+                        <mat-cell *matCellDef="let element">{{element.variazioneFiscale}}</mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="riferimentoEffettoId">
@@ -152,7 +145,7 @@
                 </mat-table>
             </mat-card-content>
         </mat-card>
-        <mat-card>
+        <mat-card class="some-top effects">
             <mat-card-title>Effetto IVA</mat-card-title>
             <mat-card-content>
                 <mat-table #table [dataSource]="dataSourceEffettoIva">
@@ -184,7 +177,7 @@
 
                     <ng-container matColumnDef="imponibile">
                         <mat-header-cell *matHeaderCellDef>Imponibile</mat-header-cell>
-                        <mat-cell *matCellDef="let element">{{element.variazione}}</mat-cell>
+                        <mat-cell *matCellDef="let element">{{element.imponibile}}</mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="iva">
@@ -206,13 +199,9 @@
         </mat-card>
     </div>
 </div>
-
-
-
-
 <div class="row some-top">
     <div class="col-lg-6">
-        <mat-card>
+        <mat-card class="effects">
             <mat-card-title>Situazione Conti</mat-card-title>
             <mat-card-content>
                 <mat-table #table [dataSource]="dataSourceSituazioneConto">
@@ -226,9 +215,9 @@
                         <mat-cell *matCellDef="let element">{{element.valore}}</mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="variazione">
+                    <ng-container matColumnDef="variazioneFiscale">
                         <mat-header-cell *matHeaderCellDef>Variazione</mat-header-cell>
-                        <mat-cell *matCellDef="let element">{{element.variazione}}</mat-cell>
+                        <mat-cell *matCellDef="let element">{{element.variazioneFiscale}}</mat-cell>
                     </ng-container>
 
                     <mat-header-row *matHeaderRowDef="displayedColumnsSituazioneConto"></mat-header-row>
@@ -238,7 +227,7 @@
         </mat-card>
     </div>
     <div class="col-lg-6">
-        <mat-card>
+        <mat-card class="effects">
             <mat-card-title>Situazione IVA</mat-card-title>
             <mat-card-content>
                 <mat-table #table [dataSource]="dataSourceSituazioneVoceIva">
@@ -263,9 +252,14 @@
                         <mat-cell *matCellDef="let element">{{getAliquotaDescription(element.aliquotaIvaId)}}</mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="valore">
-                        <mat-header-cell *matHeaderCellDef>Valore</mat-header-cell>
-                        <mat-cell *matCellDef="let element">{{element.valore}}</mat-cell>
+                    <ng-container matColumnDef="imponibile">
+                        <mat-header-cell *matHeaderCellDef>Imponibile</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.imponibile}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="iva">
+                        <mat-header-cell *matHeaderCellDef>IVA</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.iva}}</mat-cell>
                     </ng-container>
 
                     <mat-header-row *matHeaderRowDef="displayedColumnsSituazioneVoceIVA"></mat-header-row>
@@ -277,3 +271,6 @@
         </mat-card>
     </div>
 </div>
+<button mat-fab (click)="getEffettos()">
+    <mat-icon>check</mat-icon>
+</button>

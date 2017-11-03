@@ -74,16 +74,16 @@ namespace SeacDigitTemplate.Services
         }
 
 
-        public async Task<List<Effetto>> GetEffettosFromRigaDigitatasAsync(List<RigaDigitata> rigaDigitatas)
+        public async Task<List<Effetto>> GetEffettosFromRigaDigitatasAsync(List<RigaDigitata> rigaDigitataList)
         {
             var effettos = new List<Effetto>();
 
-            foreach (var rd in rigaDigitatas)
+            foreach (var rd in rigaDigitataList)
             {
                 effettos.AddRange(await GetEffettosFromRigaDigitataAsync(rd));
             }
 
-            return effettos;
+            return effettos.Where(e => e.Valore != 0 || e.VariazioneFiscale != 0 || e.Imponibile != 0 || e.Iva != 0).ToList();
         }
 
         public async Task<List<Effetto>> GetEffettosFromRigaDigitataAsync(RigaDigitata rigaDigitata)
@@ -100,10 +100,10 @@ namespace SeacDigitTemplate.Services
         }
 
 
-        public List<SituazioneConto> GetSituazioneConto(List<Effetto> effettos)
+        public List<SituazioneConto> GetSituazioneConto(List<Effetto> effettoList)
         {
 
-            var contoDareResult = effettos
+            var contoDareResult = effettoList
                 .GroupBy(e => e.ContoDareId)
                 .Where(g => g.Key.HasValue)
                 .Select(kvp =>
@@ -112,11 +112,11 @@ namespace SeacDigitTemplate.Services
                     {
                         ContoId = kvp.Key.Value,
                         Valore = kvp.Sum(v => v.Valore),
-                        Variazione = kvp.Sum(v => v.VariazioneF)
+                        VariazioneFiscale = kvp.Sum(v => v.VariazioneFiscale)
                     };
                 });
 
-            var contoAvereResult = effettos
+            var contoAvereResult = effettoList
                 .GroupBy(e => e.ContoAvereId)
                 .Where(g => g.Key.HasValue)
                 .Select(kvp =>
@@ -125,7 +125,7 @@ namespace SeacDigitTemplate.Services
                     {
                         ContoId = kvp.Key.Value,
                         Valore = -kvp.Sum(v => v.Valore),
-                        Variazione = 0 //kvp.Sum(v => v.VariazioneF)
+                        VariazioneFiscale = 0 //kvp.Sum(v => v.VariazioneF)
                     };
                 });
 
@@ -134,7 +134,7 @@ namespace SeacDigitTemplate.Services
                 {
                     ContoId = ca.ContoId,
                     Valore = cd.Valore + ca.Valore,
-                    Variazione = cd.Variazione + ca.Variazione
+                    VariazioneFiscale = cd.VariazioneFiscale + ca.VariazioneFiscale
                 });
 
             result = result.Union(contoAvereResult);
@@ -144,10 +144,9 @@ namespace SeacDigitTemplate.Services
 
         }
 
-        public List<SituazioneVoceIva> GetSituazioneVoceIva(List<Effetto> effettos)
+        public List<SituazioneVoceIva> GetSituazioneVoceIva(List<Effetto> effettoList)
         {
-
-            var x = effettos
+            return effettoList
                 .GroupBy(e => new
                 {
                     e.VoceIvaId,
@@ -164,44 +163,11 @@ namespace SeacDigitTemplate.Services
                         Trattamento = kvp.Key.Trattamento.Value,
                         TitoloInapplicabilitaId = kvp.Key.TitoloInapplicabilitaId,
                         AliquotaIvaId = kvp.Key.AliquotaIvaId,
-                        Valore = kvp.Sum(s => s.Valore)
-                        
+                        Imponibile = kvp.Sum(s => s.Imponibile),
+                        Iva = kvp.Sum(s => s.Iva)
                     };
-                });
-
-            return x.ToList();
-
-
-
-            //var situazioneVoceIva = new List<SituazioneVoceIva>();
-            //var valore = 0.0m;
-
-            //foreach (var effetto in effettos.Where(ef => ef.VoceIvaId != null))
-            //{
-            //    var currentVoceIva = situazioneVoceIva
-            //        .Where(si => si.VoceIvaId == effetto.VoceIvaId)
-            //        .Where(si => si.Trattamento == effetto.Trattamento)
-            //        .Where(si => si.TitoloInapplicabilita == effetto.TitoloInapplicabilitaId)
-            //        .FirstOrDefault(si => si.AliquotaIvaId == effetto.AliquotaIvaId);
-
-            //    if (currentVoceIva != null)
-            //    {
-            //        currentVoceIva.Valore += effetto.Valore;
-            //    }
-            //    else
-            //    {
-            //        situazioneVoceIva.Add(new SituazioneVoceIva
-            //        {
-            //            VoceIva = effetto.VoceIva,
-            //            Trattamento = effetto.Trattamento,
-            //            TitoloInapplicabilita = effetto.TitoloInapplicabilitaId,
-            //            AliquotaIva = effetto.AliquotaIva,
-            //            Valore = valore
-            //        });
-            //    }
-            //}
-
-            //return situazioneVoceIva;
+                })
+                .ToList();
         }
 
 
@@ -212,7 +178,6 @@ namespace SeacDigitTemplate.Services
                 TemplateGenerazioneEffetto = templateEffetto.Id,
                 RigaDigitataId = rigaDigitata.Id,
                 DocumentoId = rigaDigitata.DocumentoId
-
             };
 
             foreach (var templateEffettoField in TemplateEffettoStringProperties)
@@ -261,7 +226,5 @@ namespace SeacDigitTemplate.Services
 
             return newEffetto;
         }
-
-
     }
 }

@@ -105,7 +105,7 @@ export class SituazioneVoceIva {
 export class SituazioneConto {
     contoId: number;
     valore: number;
-    variazione: number;
+    variazioneFiscale: number;
 }
 
 export class VoceIva {
@@ -129,7 +129,7 @@ export class Effetto {
     titoloInapplicabilita: number;
     aliquotaIvaId: number;
     valore: number;
-    variazione: number;
+    variazioneFiscale: number;
     imponibile: number;
     iva: number;
     riferimentoEffettoId: number;
@@ -162,7 +162,7 @@ export class EffettoConto {
     contoAvereId: number;
     imponibile: number;
     valore: number;
-    variazione: number;
+    variazioneFiscale: number;
     riferimentoEffettoId: number;
 }
 

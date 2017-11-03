@@ -4,6 +4,6 @@
     {
         public int ContoId { get; set; }
         public decimal Valore { get; set; }
-        public decimal Variazione { get; set; }
+        public decimal VariazioneFiscale { get; set; }
     }
 }

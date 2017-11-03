@@ -8,7 +8,7 @@ namespace SeacDigitTemplate.Model
         public Conto Conto { get; set; }
 
         public decimal Valore { get; set; }
-        public decimal Variazione { get; set; }
+        public decimal VariazioneFiscale { get; set; }
 
         public bool Equals(SituazioneConto other)
         {

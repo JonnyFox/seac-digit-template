@@ -25,7 +25,7 @@ namespace SeacDigitTemplate.Model
         public AliquotaIva AliquotaIva { get; set; }
 
         public decimal Valore { get; set; }
-        public decimal VariazioneF { get; set; }
+        public decimal VariazioneFiscale { get; set; }
         public decimal Imponibile { get; set; }
         public decimal Iva { get; set; }
 

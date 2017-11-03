@@ -2,41 +2,51 @@
 using SeacDigitTemplate.Model;
 using SeacDigitTemplate.Models;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace SeacDigitTemplate.Data
 {
     public class DbInitializer
     {
-        public static void Initialize(SeacDigitTemplateContext context)
+        public static async void Initialize(SeacDigitTemplateContext context)
         {
             context.Database.EnsureCreated();
+
+            var trans = context.Database.BeginTransaction();
 
             if (context.Clifors.Any())
             {
                 return;
             }
 
+            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Contos ON");
+
             var contos = new Conto[]
             {
-                  new Conto{Nome ="Merce"},
-                  new Conto{Nome ="Merce2"},
-                  new Conto{Nome ="Valori Bollati"},
-                  new Conto{Nome ="Iva cr"},
-                  new Conto{Nome ="Salari/Stipendi"},
-                  new Conto{Nome ="Anticipo IVS"},
-                  new Conto{Nome ="Transitorio"},
-                  new Conto{Nome ="Compenso"},
-                  new Conto{Nome ="Contributo Previdenziale"},
-                  new Conto{Nome ="Fornitore"},
-                  new Conto{Nome ="Spese"},
-                  new Conto{Nome ="Iva cr(s)"},
-                  new Conto{Nome ="Iva Transitorio"}
+                  new Conto{ Id = 1, Nome ="Merce"},
+                  new Conto{ Id = 2, Nome ="Merce2"},
+                  new Conto{ Id = 3, Nome ="Valori Bollati"},
+                  new Conto{ Id = 4, Nome ="Iva cr"},
+                  new Conto{ Id = 5, Nome ="Salari/Stipendi"},
+                  new Conto{ Id = 6, Nome ="Anticipo IVS"},
+                  new Conto{ Id = 7, Nome ="Transitorio"},
+                  new Conto{ Id = 8, Nome ="Compenso"},
+                  new Conto{ Id = 9, Nome ="Contributo Previdenziale"},
+                  new Conto{ Id = 10, Nome ="Fornitore"},
+                  new Conto{ Id = 11, Nome ="Spese"},
+                  new Conto{ Id = 12, Nome ="Iva cr(s)"},
+                  new Conto{ Id = 13, Nome ="Iva Transitorio"}
             };
             foreach (Conto c in contos)
             {
                 context.Contos.Add(c);
             }
 
+            context.SaveChanges();
+
+            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Contos OFF");
+
+            trans.Commit();
 
             var clifors = new Clifor[]
             {
@@ -185,8 +195,8 @@ namespace SeacDigitTemplate.Data
                     PercentualeAliquotaIva = aliquotas[2].Percentuale,
                     Imponibile = 1000.0m,
                     Iva = 220,
-                    PercentualeIndetraibilita = 0.4m,
-                    PercentualeIndeducibilita = 0.2m
+                    PercentualeIndetraibilita = 40m,
+                    PercentualeIndeducibilita = 20m
                 }
             };
 
@@ -268,16 +278,16 @@ namespace SeacDigitTemplate.Data
                     ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[1],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
-                    Valore = "#Imponibile*PercentualeIndetraibilita",
-                    VariazioneF = "#Imponibile*PercentualeIndetraibilita*PercentualeIndeducibilita"
+                    Valore = "#Imponibile*PercentualeIndetraibilita/100",
+                    VariazioneFiscale = "#Imponibile*PercentualeIndetraibilita/100*PercentualeIndeducibilita/100"
                 },
                 new TemplateEffetto // first row 
                 {
                     ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[1],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
-                    Valore = "#Imponibile*(1 - PercentualeIndetraibilita)",
-                    VariazioneF = "#Imponibile*(1 - PercentualeIndetraibilita)*PercentualeIndeducibilita"
+                    Valore = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
+                    VariazioneFiscale = "#Imponibile*(1 - PercentualeIndetraibilita/100)*PercentualeIndeducibilita/100"
                 },
                 new TemplateEffetto // third row
                 {
@@ -287,22 +297,22 @@ namespace SeacDigitTemplate.Data
                     VoceIvaId = "VoceIvaId",
                     Trattamento = "*" + (int)TrattamentoEnum.IndetraibileOggettivo,
                     AliquotaIvaId = "AliquotaIvaId",
-                    Valore = "#Iva*PercentualeIndetraibilita",
-                    VariazioneF = "#Iva*PercentualeIndetraibilita*PercentualeIndeducibilita",
-                    Imponibile = "Imponibile",
-                    Iva = "#Iva*PercentualeIndetraibilita"
+                    Valore = "#Iva*PercentualeIndetraibilita/100",
+                    VariazioneFiscale = "#Iva*PercentualeIndetraibilita/100*PercentualeIndeducibilita/100",
+                    Imponibile = "#Imponibile*PercentualeIndetraibilita/100",
+                    Iva = "#Iva*PercentualeIndetraibilita/100"
                 },
                 new TemplateEffetto
                 {
                     ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[1],
-                    ContoDareId = "*3",
+                    ContoDareId = "*4",
                     ContoAvereId = "ContoAvereId",
                     VoceIvaId = "VoceIvaId",
                     Trattamento = "*" + (int)TrattamentoEnum.Detraibile,
                     AliquotaIvaId = "AliquotaIvaId",
-                    Valore = "#Iva*(1 - PercentualeIndetraibilita)",
-                    Imponibile = "Imponibile",
-                    Iva = "#Iva*(1 - PercentualeIndetraibilita)"
+                    Valore = "#Iva*(1 - PercentualeIndetraibilita/100)",
+                    Imponibile = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
+                    Iva = "#Iva*(1 - PercentualeIndetraibilita/100)"
                 },
             };
 
@@ -310,7 +320,8 @@ namespace SeacDigitTemplate.Data
             {
                 context.TemplateEffettos.Add(t);
             }
-            context.SaveChanges();
+
+             context.SaveChanges();
         }
     }
 }

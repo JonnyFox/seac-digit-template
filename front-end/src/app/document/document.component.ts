@@ -23,7 +23,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 import { DocumentoService } from '../shared/documento.service';
-import { EffettoCalcoloService } from '../shared/effetto-calcolo.service';
+import { EffettoService } from '../shared/effetto.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
@@ -34,11 +34,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class DocumentComponent implements OnInit {
 
     public displayedColumnsEfettoConto = ['rigaDigitataId', 'contoDareId',
-        'contoAvereId', 'imponibile', 'valore', 'variazione'];
+        'contoAvereId', 'valore', 'variazioneFiscale'];
     public displayedColumnsEffettoIva = ['rigaDigitataId', 'voceIvaId', 'trattamento',
         'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
-    public displayedColumnsSituazioneConto = ['contoId', 'valore', 'variazione'];
-    public displayedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento', 'titoloInapplicabilita', 'aliquotaIvaId', 'valore'];
+    public displayedColumnsSituazioneConto = ['contoId', 'valore', 'variazioneFiscale'];
+    public displayedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento', 'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
 
     private _effettoCalcolo$: BehaviorSubject<EffettoCalcolo> = new BehaviorSubject(new EffettoCalcolo());
     public effettoCalcolo$: Observable<EffettoCalcolo> = this._effettoCalcolo$.asObservable();
@@ -75,7 +75,7 @@ export class DocumentComponent implements OnInit {
         private route: ActivatedRoute,
         private documentService: DocumentoService,
         private rigaDigitataService: RigaDigitataService,
-        private effettoCalcoloService: EffettoCalcoloService
+        private effettoService: EffettoService
     ) {
         this.route.paramMap
             .switchMap((params: ParamMap) =>
@@ -85,8 +85,13 @@ export class DocumentComponent implements OnInit {
                 this.editItem = d;
                 return this.rigaDigitataService.getByDocumentoId(d.id);
             })
-            .subscribe(rigaDigitataList => {
+            .switchMap((rigaDigitataList: RigaDigitata[]) => {
                 this.editItem.rigaDigitataList = rigaDigitataList;
+                return this.effettoService.getEffettoList(this.editItem.rigaDigitataList);
+            })
+            .first()
+            .subscribe(effettoList => {
+                this._effettoCalcolo$.next(effettoList);
             });
 
         this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
@@ -102,12 +107,8 @@ export class DocumentComponent implements OnInit {
     }
 
     public getEffettos(): void {
-        this.effettoCalcoloService.get(this.editItem.id)
-            .subscribe(val => this._effettoCalcolo$.next(val));
-    }
-
-    public postEffettos(): void {
-        this.effettoCalcoloService.post(this.editItem.rigaDigitataList)
+        this.effettoService.getEffettoList(this.editItem.rigaDigitataList)
+            .first()
             .subscribe(val => this._effettoCalcolo$.next(val));
     }
 

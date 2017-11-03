@@ -11,3 +11,11 @@ body {
 .some-top { 
     margin-top: 1rem;
 }
+
+button[mat-fab]{
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    outline: none;
+}
+

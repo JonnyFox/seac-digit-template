@@ -8,7 +8,8 @@ namespace SeacDigitTemplate.Dtos
         public int? AliquotaIvaId { get; set; }
         public TrattamentoEnum Trattamento { get; set; }
         public int? TitoloInapplicabilita { get; set; }
-        public decimal Valore { get; set; }
+        public decimal Imponibile { get; set; }
+        public decimal Iva { get; set; }
 
     }
 }

@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 @Injectable()
-export class EffettoCalcoloService {
+export class EffettoService {
 
     protected baseUrl = environment.apiUrl;
 
@@ -15,11 +15,7 @@ export class EffettoCalcoloService {
         this.baseUrl += 'effetto';
     }
 
-    public get(id: number): Observable<EffettoCalcolo> {
-        return this.http.get<EffettoCalcolo>(this.baseUrl + `/calculate/${id}`);
-    }
-
-    public post(rigaDigitataList: RigaDigitata[]): Observable<EffettoCalcolo> {
+    public getEffettoList(rigaDigitataList: RigaDigitata[]): Observable<EffettoCalcolo> {
         return <any>this.http.post(this.baseUrl + `/calculatePost`, rigaDigitataList, {
             observe: 'body',
             headers: new HttpHeaders().set('Content-Type', 'application/json'),
