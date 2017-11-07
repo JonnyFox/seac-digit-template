@@ -8,7 +8,7 @@ namespace SeacDigitTemplate.Data
 {
     public class DbInitializer
     {
-        public static async void Initialize(SeacDigitTemplateContext context)
+        public static void Initialize(SeacDigitTemplateContext context)
         {
             context.Database.EnsureCreated();
 
@@ -322,7 +322,7 @@ namespace SeacDigitTemplate.Data
                 context.TemplateEffettos.Add(t);
             }
 
-             context.SaveChanges();
+            context.SaveChanges();
         }
     }
 }
