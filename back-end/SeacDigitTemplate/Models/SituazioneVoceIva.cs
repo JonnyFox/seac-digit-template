@@ -7,7 +7,7 @@ namespace SeacDigitTemplate.Model
 {
     public class SituazioneVoceIva
     {
-        public int VoceIvaId { get; set; }
+        public int? VoceIvaId { get; set; }
         public VoceIva VoceIva { get; set; }
 
         public int? AliquotaIvaId { get; set; }

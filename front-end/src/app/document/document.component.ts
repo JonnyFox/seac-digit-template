@@ -125,7 +125,7 @@ export class DocumentComponent implements OnInit {
     }
 
     public getAliquotaDescription(id: number): string {
-        return id == null ? '' : this.aliquotaIvaList.find(c => c.id === id).percentuale * 100 + '%';
+        return id == null ? '' : this.aliquotaIvaList.find(c => c.id === id).percentuale + '%';
     }
 }
 export class DataSourceEffettoConto extends DataSource<any> {

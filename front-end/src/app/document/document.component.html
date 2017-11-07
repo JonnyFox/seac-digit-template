@@ -69,7 +69,7 @@
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="form-field-small">
-                        <mat-select placeholder="Titolo inapplicabilità" [(ngModel)]="riga.aliquotaIvaId">
+                        <mat-select placeholder="Titolo inapplicabilità" [(ngModel)]="riga.titoloInapplicabilitaId">
                             <mat-option *ngFor="let option of titoloInapplicabilitaList" [value]="option.id">{{option.nome}}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -244,7 +244,7 @@
 
                     <ng-container matColumnDef="titoloInapplicabilita">
                         <mat-header-cell *matHeaderCellDef>Titolo inapplicabilità</mat-header-cell>
-                        <mat-cell *matCellDef="let element">{{getTitoloInapplicabilitaDescription(element.titoloInapplicabilita)}}</mat-cell>
+                        <mat-cell *matCellDef="let element">{{getTitoloInapplicabilitaDescription(element.titoloInapplicabilitaId)}}</mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="aliquotaIvaId">

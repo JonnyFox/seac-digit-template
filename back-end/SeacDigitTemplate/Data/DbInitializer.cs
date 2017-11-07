@@ -63,9 +63,9 @@ namespace SeacDigitTemplate.Data
 
             var aliquotas = new AliquotaIva[]
             {
-                new AliquotaIva{Percentuale = 0.04m},
-                new AliquotaIva{Percentuale = 0.10m},
-                new AliquotaIva{Percentuale = 0.22m}
+                new AliquotaIva{Percentuale = 4m},
+                new AliquotaIva{Percentuale = 10m},
+                new AliquotaIva{Percentuale = 22m}
             };
 
             foreach (AliquotaIva a in aliquotas)
@@ -270,8 +270,9 @@ namespace SeacDigitTemplate.Data
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     VoceIvaId = "VoceIvaId",
-                    TitoloInapplicabilitaId = "TitoloInapplicabilita",
-                    Valore = "Imponibile"
+                    TitoloInapplicabilitaId = "TitoloInapplicabilitaId",
+                    Valore = "Imponibile",
+                    Iva = "Imponibile"
                 },
                 new TemplateEffetto // second row
                 {

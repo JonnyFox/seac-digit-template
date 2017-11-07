@@ -88,15 +88,20 @@ namespace SeacDigitTemplate.Services
 
         public async Task<List<Effetto>> GetEffettosFromRigaDigitataAsync(RigaDigitata rigaDigitata)
         {
+            var effettoList = new List<Effetto>();
+
             var applicationTemplate = await _applicazioneTemplateEffettoService.GetTemplateAsync(rigaDigitata);
+
+            if (applicationTemplate == null)
+            {
+                return effettoList;
+            }
 
             var templates = await _templateEffettoService.GetTemplateEffettoAsync(applicationTemplate);
 
-            var effettos = new List<Effetto>();
+            templates.ForEach(t => effettoList.Add(CreateEffetto(rigaDigitata, t)));
 
-            templates.ForEach(t => effettos.Add(CreateEffetto(rigaDigitata, t)));
-
-            return effettos;
+            return effettoList;
         }
 
 
@@ -159,8 +164,8 @@ namespace SeacDigitTemplate.Services
                 {
                     return new SituazioneVoceIva
                     {
-                        VoceIvaId = kvp.Key.VoceIvaId.Value,
-                        Trattamento = kvp.Key.Trattamento.Value,
+                        VoceIvaId = kvp.Key.VoceIvaId,
+                        Trattamento = kvp.Key.Trattamento,
                         TitoloInapplicabilitaId = kvp.Key.TitoloInapplicabilitaId,
                         AliquotaIvaId = kvp.Key.AliquotaIvaId,
                         Imponibile = kvp.Sum(s => s.Imponibile),
