@@ -161,6 +161,7 @@ export class DocumentComponent implements OnInit {
     private subscribeFormValueChanges(): void {
         this.syncSubscription = this.editItemForm.valueChanges
             .takeWhile(() => this.isSync)
+            .filter(() => this.editItemForm.status === 'VALID' )
             .debounceTime(250)
             .distinctUntilChanged()
             .switchMap(editItem => this.effettoService.getEffettoList(editItem.rigaDigitataList))
