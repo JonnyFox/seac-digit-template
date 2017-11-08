@@ -1,106 +1,108 @@
 <div class="row some-top">
     <div class="col-lg-8">
-        <mat-card>
-            <mat-card-title>Documento {{editItem.id}}</mat-card-title>
-            <mat-card-content>
-                <mat-form-field class="form-field-small">
-                    <input type="text" matInput placeholder="Numero" [(ngModel)]="editItem.numero">
-                </mat-form-field>
-                <mat-form-field class="form-field-small">
-                    <input type="number" matInput placeholder="Protocollo" [(ngModel)]="editItem.protocollo">
-                </mat-form-field>
-                <mat-form-field class="form-field-small">
-                    <input type="number" matInput placeholder="Totale" [(ngModel)]="editItem.totale">
-                </mat-form-field>
-                <mat-form-field>
-                    <input type="number" matInput placeholder="Ritenuta acconto" [(ngModel)]="editItem.ritenutaAcconto">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-select placeholder="Sospeso" [(ngModel)]="editItem.sospeso">
-                        <mat-option *ngFor="let option of documentoSospensioneEnumValues; let i = index" [value]="i">{{option}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="form-field-small">
-                    <mat-select placeholder="Tipo" [(ngModel)]="editItem.tipo">
-                        <mat-option *ngFor="let option of documentoTipoEnumValues; let i = index" [value]="i">{{option}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="form-field-small">
-                    <mat-select placeholder="Caratteristica" [(ngModel)]="editItem.caratteristica">
-                        <mat-option *ngFor="let option of documentoCaratteristicaEnumValues; let i = index" [value]="i">{{option}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                    <input type="number" matInput placeholder="Clifor id" [(ngModel)]="editItem.cliforId">
-                </mat-form-field>
-                <mat-form-field class="form-field-small">
-                    <mat-select placeholder="Registro" [(ngModel)]="editItem.registro">
-                        <mat-option *ngFor="let option of registroTipoEnumEnumValues; let i = index" [value]="i">{{option}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </mat-card-content>
-        </mat-card>
-        <mat-card class="some-top">
-            <mat-card-title>Riga digitata {{this.editItem.rigaDigitataList?.length}}
-                <button style="align-self:center" mat-icon-button (click)="addRigaDigitata()">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </mat-card-title>
-            <mat-card-content>
-                <div *ngFor="let riga of editItem.rigaDigitataList">
+        <form [formGroup]="editItemForm" novalidate>
+            <mat-card>
+                <mat-card-title>Documento {{editItem.id}}</mat-card-title>
+                <mat-card-content>
                     <mat-form-field class="form-field-small">
-                        <mat-select placeholder="Conto dare" [(ngModel)]="riga.contoDareId">
-                            <mat-option *ngFor="let option of contoList" [value]="option.id">{{option.nome}}</mat-option>
+                        <input type="text" matInput placeholder="Numero" formControlName="numero">
+                    </mat-form-field>
+                    <mat-form-field class="form-field-small">
+                        <input type="number" matInput placeholder="Protocollo" formControlName="protocollo">
+                    </mat-form-field>
+                    <mat-form-field class="form-field-small">
+                        <input type="number" matInput placeholder="Totale" formControlName="totale">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Ritenuta acconto" formControlName="ritenutaAcconto">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select placeholder="Sospeso" formControlName="sospeso">
+                            <mat-option *ngFor="let option of documentoSospensioneEnumValues; let i = index" [value]="i">{{option}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="form-field-small">
-                        <mat-select placeholder="Conto dare" [(ngModel)]="riga.contoAvereId">
-                            <mat-option *ngFor="let option of contoList" [value]="option.id">{{option.nome}}</mat-option>
+                        <mat-select placeholder="Tipo" formControlName="tipo">
+                            <mat-option *ngFor="let option of documentoTipoEnumValues; let i = index" [value]="i">{{option}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="form-field-small">
-                        <mat-select placeholder="Voce IVA" [(ngModel)]="riga.voceIvaId">
-                            <mat-option *ngFor="let option of voceIvaList" [value]="option.id">{{option.nome}}</mat-option>
+                        <mat-select placeholder="Caratteristica" formControlName="caratteristica">
+                            <mat-option *ngFor="let option of documentoCaratteristicaEnumValues; let i = index" [value]="i">{{option}}</mat-option>
                         </mat-select>
                     </mat-form-field>
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Clifor id" formControlName="cliforId">
+                    </mat-form-field>
                     <mat-form-field class="form-field-small">
-                        <mat-select placeholder="Trattamento" [(ngModel)]="riga.trattamento">
-                            <mat-option *ngFor="let option of trattamentoEnumValues; let i = index" [value]="i">{{option}}</mat-option>
+                        <mat-select placeholder="Registro" formControlName="registro">
+                            <mat-option *ngFor="let option of registroTipoEnumEnumValues; let i = index" [value]="i">{{option}}</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <mat-form-field class="form-field-small">
-                        <mat-select placeholder="Titolo inapplicabilità" [(ngModel)]="riga.titoloInapplicabilitaId">
-                            <mat-option *ngFor="let option of titoloInapplicabilitaList" [value]="option.id">{{option.nome}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="form-field-small">
-                        <mat-select placeholder="Aliquota" [(ngModel)]="riga.aliquotaIvaId">
-                            <mat-option *ngFor="let option of aliquotaIvaList" [value]="option.id">{{option.percentuale}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="form-field-small">
-                        <input type="number" matInput placeholder="Imponibile" [(ngModel)]="riga.imponibile">
-                    </mat-form-field>
-                    <mat-form-field class="form-field-small">
-                        <input type="number" matInput placeholder="IVA" [(ngModel)]="riga.iva">
-                    </mat-form-field>
-                    <mat-form-field class="form-field-small">
-                        <input type="number" matInput placeholder="% indetraibiltà" [(ngModel)]="riga.percentualeIndetraibilita">
-                    </mat-form-field>
-                    <mat-form-field class="form-field-small">
-                        <input type="number" matInput placeholder="% indeducibilità" [(ngModel)]="riga.percentualeIndeducibilita">
-                    </mat-form-field>
-                    <mat-form-field class="form-field-small">
-                        <mat-select placeholder="Settore" [(ngModel)]="riga.settore">
-                            <mat-option *ngFor="let option of [0,1,2]" [value]="option">{{option}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="form-field-small">
-                        <input type="text" matInput placeholder="Note" [(ngModel)]="riga.note">
-                    </mat-form-field>
-                </div>
-            </mat-card-content>
-        </mat-card>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="some-top">
+                <mat-card-title>Riga digitata {{this.editItem.rigaDigitataList?.length}}
+                    <button style="align-self:center" mat-icon-button (click)="addRigaDigitata()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </mat-card-title>
+                <mat-card-content formArrayName="rigaDigitataList">
+                    <div *ngFor="let riga of rigaDigitataList.controls; let i=index" [formGroupName]="i">
+                        <mat-form-field class="form-field-small">
+                            <mat-select placeholder="Conto dare" formControlName="contoDareId">
+                                <mat-option *ngFor="let option of contoList" [value]="option.id">{{option.nome}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="form-field-small">
+                            <mat-select placeholder="Conto dare" formControlName="contoAvereId">
+                                <mat-option *ngFor="let option of contoList" [value]="option.id">{{option.nome}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="form-field-small">
+                            <mat-select placeholder="Voce IVA" formControlName="voceIvaId">
+                                <mat-option *ngFor="let option of voceIvaList" [value]="option.id">{{option.nome}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="form-field-small">
+                            <mat-select placeholder="Trattamento" formControlName="trattamento">
+                                <mat-option *ngFor="let option of trattamentoEnumValues; let i = index" [value]="i">{{option}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="form-field-small">
+                            <mat-select placeholder="Titolo inapplicabilità" formControlName="titoloInapplicabilitaId">
+                                <mat-option *ngFor="let option of titoloInapplicabilitaList" [value]="option.id">{{option.nome}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="form-field-small">
+                            <mat-select placeholder="Aliquota" formControlName="aliquotaIvaId">
+                                <mat-option *ngFor="let option of aliquotaIvaList" [value]="option.id">{{option.percentuale}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="form-field-small">
+                            <input type="number" matInput placeholder="Imponibile" formControlName="imponibile">
+                        </mat-form-field>
+                        <mat-form-field class="form-field-small">
+                            <input type="number" matInput placeholder="IVA" formControlName="iva">
+                        </mat-form-field>
+                        <mat-form-field class="form-field-small">
+                            <input type="number" matInput placeholder="% indetraibiltà" formControlName="percentualeIndetraibilita" min="0" empty="false">
+                        </mat-form-field>
+                        <mat-form-field class="form-field-small">
+                            <input type="number" matInput placeholder="% indeducibilità" formControlName="percentualeIndeducibilita" min="0">
+                        </mat-form-field>
+                        <mat-form-field class="form-field-small">
+                            <mat-select placeholder="Settore" formControlName="settore">
+                                <mat-option *ngFor="let option of [0,1,2]" [value]="option">{{option}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="form-field-small">
+                            <input type="text" matInput placeholder="Note" formControlName="note">
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </form>
     </div>
     <div class="col-lg-4">
         <mat-card class="effects">
@@ -271,6 +273,11 @@
         </mat-card>
     </div>
 </div>
-<button mat-fab (click)="getEffettos()">
+<button mat-mini-fab (click)="toggleSync()" [ngClass]="{'notEnabled': !isSync}" >
+    <mat-icon *ngIf="!isSync">sync_disabled</mat-icon>
+    <mat-icon *ngIf="isSync">sync</mat-icon>
+</button>
+<button mat-fab (click)="getEffettos()" [disabled]="isSync">
     <mat-icon>check</mat-icon>
 </button>
+<p>Form status: {{ editItemForm.status | json }}</p>

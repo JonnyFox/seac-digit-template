@@ -78,6 +78,8 @@ namespace SeacDigitTemplate.Services
         {
             var effettos = new List<Effetto>();
 
+            
+
             foreach (var rd in rigaDigitataList)
             {
                 effettos.AddRange(await GetEffettosFromRigaDigitataAsync(rd));

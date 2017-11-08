@@ -1,3 +1,10 @@
+import { FormArray, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { DataSource } from '@angular/cdk/collections';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 import { RigaDigitataService } from '../shared/riga-digitata.service';
 import {
@@ -18,13 +25,9 @@ import {
     SituazioneVoceIva,
     SituazioneConto,
 } from '../shared/models';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { DataSource } from '@angular/cdk/collections';
-import { Observable } from 'rxjs/Observable';
 import { DocumentoService } from '../shared/documento.service';
 import { EffettoService } from '../shared/effetto.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'app-document',
@@ -32,6 +35,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
     styleUrls: ['./document.component.scss']
 })
 export class DocumentComponent implements OnInit {
+
+    public isSync = false;
+    private syncSubscription: Subscription;
+
+    public editItemForm: FormGroup;
 
     public displayedColumnsEfettoConto = ['rigaDigitataId', 'contoDareId',
         'contoAvereId', 'valore', 'variazioneFiscale'];
@@ -71,11 +79,14 @@ export class DocumentComponent implements OnInit {
     public voceIvaList: Array<VoceIva> = [];
     public trattamento = TrattamentoEnum;
 
+    public rigaDigitataList: FormArray = new FormArray([]);
+
     constructor(
         private route: ActivatedRoute,
         private documentService: DocumentoService,
         private rigaDigitataService: RigaDigitataService,
-        private effettoService: EffettoService
+        private effettoService: EffettoService,
+        private fb: FormBuilder
     ) {
         this.route.paramMap
             .switchMap((params: ParamMap) =>
@@ -87,6 +98,8 @@ export class DocumentComponent implements OnInit {
             })
             .switchMap((rigaDigitataList: RigaDigitata[]) => {
                 this.editItem.rigaDigitataList = rigaDigitataList;
+                this.setFormValues();
+
                 return this.effettoService.getEffettoList(this.editItem.rigaDigitataList);
             })
             .first()
@@ -98,16 +111,78 @@ export class DocumentComponent implements OnInit {
         this.contoList = this.route.snapshot.data['contoList'];
         this.titoloInapplicabilitaList = this.route.snapshot.data['titoloInapplicabilitaList'];
         this.voceIvaList = this.route.snapshot.data['voceIvaList'];
+
+        this.createForm();
+
+
     }
 
     ngOnInit() { }
 
+    private createForm(): void {
+        this.editItemForm = this.fb.group({
+            numero: [],
+            protocollo: [],
+            totale: [],
+            ritenutaAcconto: [],
+            sospeso: [],
+            tipo: [],
+            caratteristica: [],
+            cliforId: [],
+            registro: [],
+            rigaDigitataList: this.fb.array([])
+        });
+    }
+
+    private createRigaDigitataFormGroup(rd: RigaDigitata): FormGroup {
+
+        const group = this.fb.group({
+            contoDareId: [],
+            contoAvereId: [],
+            voceIvaId: [],
+            trattamento: [],
+            titoloInapplicabilitaId: [],
+            aliquotaIvaId: [],
+            imponibile: [],
+            iva: [],
+            percentualeIndetraibilita: ['', Validators.required],
+            percentualeIndeducibilita: ['', Validators.required],
+            settore: [],
+            note: []
+        });
+
+        if (rd) {
+            group.patchValue(rd);
+        }
+
+        return group;
+    }
+
+    private subscribeFormValueChanges(): void {
+        this.syncSubscription = this.editItemForm.valueChanges
+            .takeWhile(() => this.isSync)
+            .debounceTime(250)
+            .distinctUntilChanged()
+            .switchMap(editItem => this.effettoService.getEffettoList(editItem.rigaDigitataList))
+            .subscribe(val => {
+                this._effettoCalcolo$.next(val);
+            });
+    }
+
+    private setFormValues(): void {
+        this.editItemForm.patchValue(this.editItem);
+        this.rigaDigitataList = this.fb.array(this.editItem.rigaDigitataList.map(rd => this.createRigaDigitataFormGroup(rd)));
+        this.editItemForm.setControl('rigaDigitataList', this.rigaDigitataList);
+    }
+
+
     public addRigaDigitata(): void {
-        this.editItem.rigaDigitataList.push(new RigaDigitata());
+        this.rigaDigitataList = this.editItemForm.get('rigaDigitataList') as FormArray;
+        this.rigaDigitataList.push(this.createRigaDigitataFormGroup(new RigaDigitata()));
     }
 
     public getEffettos(): void {
-        this.effettoService.getEffettoList(this.editItem.rigaDigitataList)
+        this.effettoService.getEffettoList(this.editItemForm.get('rigaDigitataList').value)
             .first()
             .subscribe(val => this._effettoCalcolo$.next(val));
     }
@@ -126,6 +201,13 @@ export class DocumentComponent implements OnInit {
 
     public getAliquotaDescription(id: number): string {
         return id == null ? '' : this.aliquotaIvaList.find(c => c.id === id).percentuale + '%';
+    }
+
+    public toggleSync(): void {
+        this.isSync = !this.isSync;
+        if (this.isSync && (!this.syncSubscription || this.syncSubscription.closed)) {
+            this.subscribeFormValueChanges();
+        }
     }
 }
 export class DataSourceEffettoConto extends DataSource<any> {
