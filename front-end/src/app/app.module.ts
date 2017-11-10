@@ -9,6 +9,8 @@ import {
     MatListModule, MatTableModule, MatButtonModule,
     MatIconModule, MatInputModule, MatSelectModule, MatCardModule
 } from '@angular/material';
+import { ToastrModule } from 'ngx-toastr';
+
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -27,6 +29,7 @@ import { ContoListResolver } from './shared/conto-list.resolver';
 import { VoceIvaListResolver } from './shared/voce-iva-list.resolver';
 import { EffettoService } from './shared/effetto.service';
 import { RigaDigitataService } from './shared/riga-digitata.service';
+import { NotificationService } from './shared/notification.service';
 
 @NgModule({
     declarations: [
@@ -46,7 +49,8 @@ import { RigaDigitataService } from './shared/riga-digitata.service';
         MatSelectModule,
         MatButtonModule,
         MatTableModule,
-        AppRoutingModule
+        AppRoutingModule,
+        ToastrModule.forRoot()
     ],
     providers: [
         DocumentoService,
@@ -56,11 +60,12 @@ import { RigaDigitataService } from './shared/riga-digitata.service';
         ContoService,
         TitoloInapplicabilitaService,
         VoceIvaService,
+        NotificationService,
         AliquotaIvaListResolver,
         VoceIvaService,
         ContoListResolver,
         TitoloInapplicabilitaListResolver,
-        VoceIvaListResolver
+        VoceIvaListResolver,
     ],
     bootstrap: [AppComponent]
 })

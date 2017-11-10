@@ -42,13 +42,17 @@
                 </mat-card-content>
             </mat-card>
             <mat-card class="some-top">
-                <mat-card-title>Riga digitata {{this.editItem.rigaDigitataList?.length}}
-                    <button style="align-self:center" mat-icon-button (click)="addRigaDigitata()">
+                <mat-card-title style>
+                    <span style="align-self: center;">Riga digitata {{this.editItem.rigaDigitataList?.length}}</span>
+                    <button mat-icon-button (click)="addRigaDigitata()" class="icon-button">
                         <mat-icon>add</mat-icon>
                     </button>
                 </mat-card-title>
                 <mat-card-content formArrayName="rigaDigitataList">
                     <div *ngFor="let riga of rigaDigitataList.controls; let i=index" [formGroupName]="i">
+                        <button mat-icon-button (click)="deleteRigaDigitata(i)" class="icon-button">
+                            <mat-icon>delete</mat-icon>
+                        </button>
                         <mat-form-field class="form-field-small">
                             <mat-select placeholder="Conto dare" formControlName="contoDareId">
                                 <mat-option *ngFor="let option of contoList" [value]="option.id">{{option.nome}}</mat-option>
@@ -273,11 +277,12 @@
         </mat-card>
     </div>
 </div>
-<button mat-mini-fab (click)="toggleSync()" [ngClass]="{'notEnabled': !isSync}" >
+<button mat-mini-fab (click)="toggleSync()" [ngClass]="{'notEnabled': !isSync}" [disabled]="!isFormValid()" >
     <mat-icon *ngIf="!isSync">sync_disabled</mat-icon>
-    <mat-icon *ngIf="isSync">sync</mat-icon>
+    <mat-icon *ngIf="isSync && isFormValid()">sync</mat-icon>
+    <mat-icon *ngIf="isSync && !isFormValid()">sync_problem</mat-icon>
 </button>
-<button mat-fab (click)="getEffettos()" [disabled]="isSync">
+<button mat-fab (click)="getEffettos()" [disabled]="isSync || !isFormValid()">
     <mat-icon>check</mat-icon>
 </button>
 <p>Form status: {{ editItemForm.status | json }}</p>

@@ -27,7 +27,8 @@ button[mat-fab] {
     outline: none;
 
     &.notEnabled {
-        background-color: #ff8fb4;
-
+        color: rgba(0, 0, 0, 0.38);
+        background-color: rgba(0, 0, 0, 0.12);
+        border-bottom-color: rgba(0, 0, 0, 0.38)
     }
 }

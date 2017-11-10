@@ -1,4 +1,4 @@
-.form-field-small{
+.form-field-small {
     max-width: 100px;
 }
 
@@ -9,4 +9,16 @@ mat-card.effects {
     mat-table {
         background-color: #cecece;
     }
+}
+
+mat-card-title {
+    display: flex;
+}
+
+.icon-button{
+     color: rgba(0, 0, 0, 0.38);
+
+     &:hover{
+         color: rgba(0, 0, 0, 0.58);
+     }
 }

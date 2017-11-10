@@ -2,9 +2,11 @@ import { FormArray, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Subscription } from 'rxjs/Subscription';
+import { ToastrService } from 'ngx-toastr';
 
 import { RigaDigitataService } from '../shared/riga-digitata.service';
 import {
@@ -27,7 +29,7 @@ import {
 } from '../shared/models';
 import { DocumentoService } from '../shared/documento.service';
 import { EffettoService } from '../shared/effetto.service';
-import { Subscription } from 'rxjs/Subscription';
+import { NotificationService } from '../shared/notification.service';
 
 @Component({
     selector: 'app-document',
@@ -86,6 +88,7 @@ export class DocumentComponent implements OnInit {
         private documentService: DocumentoService,
         private rigaDigitataService: RigaDigitataService,
         private effettoService: EffettoService,
+        private notificationService: NotificationService,
         private fb: FormBuilder
     ) {
         this.route.paramMap
@@ -113,8 +116,6 @@ export class DocumentComponent implements OnInit {
         this.voceIvaList = this.route.snapshot.data['voceIvaList'];
 
         this.createForm();
-
-
     }
 
     ngOnInit() { }
@@ -161,13 +162,11 @@ export class DocumentComponent implements OnInit {
     private subscribeFormValueChanges(): void {
         this.syncSubscription = this.editItemForm.valueChanges
             .takeWhile(() => this.isSync)
-            .filter(() => this.editItemForm.status === 'VALID' )
+            .filter(() => this.isFormValid())
             .debounceTime(250)
             .distinctUntilChanged()
             .switchMap(editItem => this.effettoService.getEffettoList(editItem.rigaDigitataList))
-            .subscribe(val => {
-                this._effettoCalcolo$.next(val);
-            });
+            .subscribe(val => this._effettoCalcolo$.next(val), err => this.notificationService.notifyError(err));
     }
 
     private setFormValues(): void {
@@ -176,16 +175,38 @@ export class DocumentComponent implements OnInit {
         this.editItemForm.setControl('rigaDigitataList', this.rigaDigitataList);
     }
 
+    private isFormValid(): boolean {
+        return this.editItemForm.status === 'VALID';
+    }
 
     public addRigaDigitata(): void {
         this.rigaDigitataList = this.editItemForm.get('rigaDigitataList') as FormArray;
-        this.rigaDigitataList.push(this.createRigaDigitataFormGroup(new RigaDigitata()));
+
+        const newRigaDigitata = new RigaDigitata();
+        newRigaDigitata.percentualeIndeducibilita = newRigaDigitata.percentualeIndetraibilita = 0;
+        newRigaDigitata.documentoId = this.editItem.id;
+
+        const currentRigaDigitata = (this.rigaDigitataList.length > 0 ? this.rigaDigitataList.value[0] : null) as RigaDigitata;
+        if (currentRigaDigitata) {
+            newRigaDigitata.contoAvereId = currentRigaDigitata.contoAvereId;
+            newRigaDigitata.contoDareId = currentRigaDigitata.contoDareId;
+            newRigaDigitata.aliquotaIvaId = currentRigaDigitata.aliquotaIvaId;
+            newRigaDigitata.titoloInapplicabilitaId = currentRigaDigitata.titoloInapplicabilitaId;
+            newRigaDigitata.trattamento = currentRigaDigitata.trattamento;
+            newRigaDigitata.voceIvaId = currentRigaDigitata.voceIvaId;
+        }
+
+        this.rigaDigitataList.push(this.createRigaDigitataFormGroup(newRigaDigitata));
+    }
+
+    public deleteRigaDigitata(index: number): void {
+        this.rigaDigitataList.removeAt(index);
     }
 
     public getEffettos(): void {
         this.effettoService.getEffettoList(this.editItemForm.get('rigaDigitataList').value)
             .first()
-            .subscribe(val => this._effettoCalcolo$.next(val));
+            .subscribe(val => this._effettoCalcolo$.next(val), err => this.notificationService.notifyError(err));
     }
 
     public getContoDescription(id: number): string {
