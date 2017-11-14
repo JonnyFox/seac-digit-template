@@ -100,6 +100,7 @@ namespace SeacDigitTemplate.Data
                     Registro = RegistroTipoEnum.Emesse,
                     Numero = "1",
                     Protocollo = 1
+                   
                 },
                 new Documento{
                     Totale = 45.0m,
@@ -223,7 +224,14 @@ namespace SeacDigitTemplate.Data
                     ContoAvere ="Fornitore",
                     VoceIva ="Merce",
                     TitoloInapplicabilita = "*",
-                    Imponibile = "*"
+                    Imponibile = "*",
+                    RitenutaAcconto = "0.0m",
+                    Sospeso = DocumentoSospensioneEnum.None.ToString(),
+                    Tipo = DocumentoTipoEnum.Fattura.ToString(),
+                    Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
+                    Registro = RegistroTipoEnum.Emesse.ToString(),
+
+
                 },
                 new ApplicazioneTemplateEffetto
                 {
@@ -235,7 +243,12 @@ namespace SeacDigitTemplate.Data
                     Imponibile = "*",
                     Iva = "*",
                     PercentualeIndetraibilita = "*",
-                    PercentualeIndeducibilita = "*"
+                    PercentualeIndeducibilita = "*",
+                    RitenutaAcconto = "0.0m",
+                    Sospeso = DocumentoSospensioneEnum.None.ToString(),
+                    Tipo = DocumentoTipoEnum.Fattura.ToString(),
+                    Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
+                    Registro = RegistroTipoEnum.Emesse.ToString(),
                 }
             };
 

@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class RigaDigitataService extends BaseService<RigaDigitata>{
+export class RigaDigitataService extends BaseService<RigaDigitata> {
 
     constructor() {
         super();

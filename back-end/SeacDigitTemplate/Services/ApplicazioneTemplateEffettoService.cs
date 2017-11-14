@@ -28,10 +28,16 @@ namespace SeacDigitTemplate.Services
             return _ctx.ApplicazioneTemplateEffettos.Where(c => c.Id == id).ToListAsync();
         }
 
-        public async Task<ApplicazioneTemplateEffetto> GetTemplateAsync(RigaDigitata rigaDigitata)
+        public async Task<ApplicazioneTemplateEffetto> GetTemplateAsync(RigaDigitata rigaDigitata, Documento documento)
         {
             var query = _ctx.ApplicazioneTemplateEffettos.AsQueryable();
 
+            query = documento.RitenutaAcconto == null ? query.Where(a => a.RitenutaAcconto == null) : query.Where(a => a.RitenutaAcconto != null);
+            query = query.Where(a => a.Sospeso == documento.Sospeso.ToString() || a.Sospeso == "*");
+            query = query.Where(a => a.Tipo == documento.Tipo.ToString() || a.Tipo == "*");
+            query = query.Where(a => a.Caratteristica == documento.Caratteristica.ToString() || a.Caratteristica== "*");
+            query = query.Where(a => a.Registro == documento.Registro.ToString() || a.Registro == "*");
+          
             query = rigaDigitata.ContoDareId == null ? query.Where(a => a.ContoDare == null) : query.Where(a => a.ContoDare != null);
             query = rigaDigitata.ContoAvereId == null ? query.Where(a => a.ContoAvere == null) : query.Where(a => a.ContoAvere != null);
             query = rigaDigitata.VoceIvaId == null ? query.Where(a => a.VoceIva == null) : query.Where(a => a.VoceIva != null);

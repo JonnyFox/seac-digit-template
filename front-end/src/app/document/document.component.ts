@@ -103,7 +103,7 @@ export class DocumentComponent implements OnInit {
                 this.editItem.rigaDigitataList = rigaDigitataList;
                 this.setFormValues();
 
-                return this.effettoService.getEffettoList(this.editItem.rigaDigitataList);
+                return this.effettoService.getEffettoList(this.editItem);
             })
             .first()
             .subscribe(effettoList => {
@@ -165,7 +165,7 @@ export class DocumentComponent implements OnInit {
             .filter(() => this.isFormValid())
             .debounceTime(250)
             .distinctUntilChanged()
-            .switchMap(editItem => this.effettoService.getEffettoList(editItem.rigaDigitataList))
+            .switchMap(editItem => this.effettoService.getEffettoList(editItem))
             .subscribe(val => this._effettoCalcolo$.next(val), err => this.notificationService.notifyError(err));
     }
 
@@ -204,7 +204,7 @@ export class DocumentComponent implements OnInit {
     }
 
     public getEffettos(): void {
-        this.effettoService.getEffettoList(this.editItemForm.get('rigaDigitataList').value)
+        this.effettoService.getEffettoList(this.editItemForm.value)
             .first()
             .subscribe(val => this._effettoCalcolo$.next(val), err => this.notificationService.notifyError(err));
     }

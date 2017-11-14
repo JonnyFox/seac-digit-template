@@ -22,37 +22,35 @@ namespace SeacDigitTemplate.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("rigaDigitata/{id}")]
-        public async Task<IActionResult> GetEffetto(int id)
-        {
-            var rigaDigitata = await _rigaDigitataService.GetByIdAsync(id);
+        //[HttpGet("rigaDigitata/{id}")]
+        //public async Task<IActionResult> GetEffetto(int id)
+        //{
+        //    var rigaDigitata = await _rigaDigitataService.GetByIdAsync(id);
 
-            return Ok(await _effettoService.GetEffettosFromRigaDigitataAsync(rigaDigitata));
-        }
+        //    return Ok(await _effettoService.GetEffettosFromRigaDigitataAsync(rigaDigitata));
+        //}
 
-        [HttpGet("calculate/{id}")]
-        public async Task<IActionResult> GetEffettos(int id)
-        {
-            var rigaDigitatas = await _rigaDigitataService.GetByDocumentoIdAsync(id);
+        //[HttpGet("calculate/{id}")]
+        //public async Task<IActionResult> GetEffettos(int id)
+        //{
+        //    var rigaDigitatas = await _rigaDigitataService.GetByDocumentoIdAsync(id);
 
-            var originalEffects = await _effettoService.GetEffettosFromRigaDigitatasAsync(rigaDigitatas);
-            var situazioneVoceIvas =  _effettoService.GetSituazioneVoceIva(originalEffects);
-            var situazioneContos =  _effettoService.GetSituazioneConto(originalEffects);
+        //    var originalEffects = await _effettoService.GetEffettosFromRigaDigitatasAsync(rigaDigitatas);
+        //    var situazioneVoceIvas =  _effettoService.GetSituazioneVoceIva(originalEffects);
+        //    var situazioneContos =  _effettoService.GetSituazioneConto(originalEffects);
 
-            var effettoCalcoloDto = _mapper.Map<EffettoCalcoloDto>(originalEffects);
-            effettoCalcoloDto.SituazioneContos = _mapper.Map<List<SituazioneContoDto>>(situazioneContos);
-            effettoCalcoloDto.SituazioneVoceIvas = _mapper.Map<List<SituazioneVoceIvaDto>>(situazioneVoceIvas);
+        //    var effettoCalcoloDto = _mapper.Map<EffettoCalcoloDto>(originalEffects);
+        //    effettoCalcoloDto.SituazioneContos = _mapper.Map<List<SituazioneContoDto>>(situazioneContos);
+        //    effettoCalcoloDto.SituazioneVoceIvas = _mapper.Map<List<SituazioneVoceIvaDto>>(situazioneVoceIvas);
 
-            return Ok(effettoCalcoloDto);
-        }
+        //    return Ok(effettoCalcoloDto);
+        //}
 
         [HttpPost("calculatePost")]
-        public async Task<IActionResult> GetEffettosFromRigaDigitatas([FromBody] List<RigaDigitataDto> rigaDigitataDtos)
+        public async Task<IActionResult> GetEffettosFromRigaDigitatas([FromBody] Documento documento)
         {
-            // var rigaDigitatas = await _rigaDigitataService.GetByDocumentoIdAsync(id);
-            var rigaDigitatas = _mapper.Map<List<RigaDigitata>>(rigaDigitataDtos);
 
-            var originalEffects = await _effettoService.GetEffettosFromRigaDigitatasAsync(rigaDigitatas);
+            var originalEffects = await _effettoService.GetEffettosFromRigaDigitatasAsync(documento, documento.rigaDigitataList);
             var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(originalEffects);
             var situazioneContos = _effettoService.GetSituazioneConto(originalEffects);
 

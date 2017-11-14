@@ -74,25 +74,24 @@ namespace SeacDigitTemplate.Services
         }
 
 
-        public async Task<List<Effetto>> GetEffettosFromRigaDigitatasAsync(List<RigaDigitata> rigaDigitataList)
+        public async Task<List<Effetto>> GetEffettosFromRigaDigitatasAsync(Documento documento, List<RigaDigitata> rigaDigitataList)
         {
             var effettos = new List<Effetto>();
-
             
 
             foreach (var rd in rigaDigitataList)
             {
-                effettos.AddRange(await GetEffettosFromRigaDigitataAsync(rd));
+                effettos.AddRange(await GetEffettosFromRigaDigitataAsync(rd,documento));
             }
 
             return effettos.Where(e => e.Valore != 0 || e.VariazioneFiscale != 0 || e.Imponibile != 0 || e.Iva != 0).ToList();
         }
 
-        public async Task<List<Effetto>> GetEffettosFromRigaDigitataAsync(RigaDigitata rigaDigitata)
+        public async Task<List<Effetto>> GetEffettosFromRigaDigitataAsync(RigaDigitata rigaDigitata, Documento documento)
         {
             var effettoList = new List<Effetto>();
 
-            var applicationTemplate = await _applicazioneTemplateEffettoService.GetTemplateAsync(rigaDigitata);
+            var applicationTemplate = await _applicazioneTemplateEffettoService.GetTemplateAsync(rigaDigitata, documento);
 
             if (applicationTemplate == null)
             {
