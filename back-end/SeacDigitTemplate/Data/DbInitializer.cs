@@ -259,24 +259,6 @@ namespace SeacDigitTemplate.Data
 
             var templateEffettos = new TemplateEffetto[]
             {
-                //new TemplateEffetto
-                //{
-                //    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[0],
-                //    ContoDareId = "ContoDareId",
-                //    ContoAvereId = "ContoAvereId",
-                //    Valore = "Imponibile"
-                //},
-                //new TemplateEffetto
-                //{
-                //    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[0],
-                //    ContoDareId = "*3",
-                //    ContoAvereId = "ContoAvereId",
-                //    VoceIvaId = "VoceIvaId",
-                //    AliquotaIvaId = "AliquotaIvaId",
-                //    Valore = "Imponibile",
-                //    Imponibile = "Imponibile",
-                //    Iva = "Iva"
-                //},
                 new TemplateEffetto
                 {
                     ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[0],
