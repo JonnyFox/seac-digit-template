@@ -5,6 +5,7 @@ using SeacDigitTemplate.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace SeacDigitTemplate.Services
@@ -41,7 +42,7 @@ namespace SeacDigitTemplate.Services
             query = rigaDigitata.ContoDareId == null ? query.Where(a => a.ContoDare == null) : query.Where(a => a.ContoDare != null);
             query = rigaDigitata.ContoAvereId == null ? query.Where(a => a.ContoAvere == null) : query.Where(a => a.ContoAvere != null);
             query = rigaDigitata.VoceIvaId == null ? query.Where(a => a.VoceIva == null) : query.Where(a => a.VoceIva != null);
-            query = rigaDigitata.Trattamento == null ? query.Where(a => a.Trattamento == null) : query.Where(a => a.Trattamento != null);
+            query = query.Where(a => a.Trattamento == rigaDigitata.Trattamento.ToString() || a.Trattamento == "*");
             query = rigaDigitata.TitoloInapplicabilitaId == null ? query.Where(a => a.TitoloInapplicabilita == null) : query.Where(a => a.TitoloInapplicabilita != null);
             query = rigaDigitata.AliquotaIvaId == null ? query.Where(a => a.AliquotaIva == null) : query.Where(a => a.AliquotaIva != null);
             query = rigaDigitata.Imponibile == null ? query.Where(a => a.Imponibile == null) : query.Where(a => a.Imponibile != null);
@@ -53,14 +54,42 @@ namespace SeacDigitTemplate.Services
             {
                 Console.WriteLine("No template found");
                 return null;
-            }
 
-            if (applicationTemplates.Count > 1)
+            }
+            else if (applicationTemplates.Count > 1)
             {
                 Console.WriteLine("More than  one template found");
-            }
 
-            return applicationTemplates.First();
+                //var bestapplicationtemplates = applicationTemplates.GetType().GetProperties()
+                //.Where(pi => pi.GetValue(applicationTemplates) is string)
+                //.Select(pi => (string)pi.GetValue(applicationTemplates))
+                //.Count(value => value=="*");
+                return applicationTemplates.OrderBy(x => CountStar(x)).First();
+            }
+            else  
+            {
+                return applicationTemplates.First();
+            }    
+        }
+
+
+
+        int CountStar(ApplicazioneTemplateEffetto applicationTamplateEffetto)
+        {
+            int stars = 0;
+            foreach (PropertyInfo pi in applicationTamplateEffetto.GetType().GetProperties())
+            {
+                if (pi.PropertyType == typeof(string))
+                {
+                    string value = (string)pi.GetValue(applicationTamplateEffetto);
+                    if (value =="*")
+                    {
+                        stars++;
+                    }
+                }
+            }
+            return stars;
+            
         }
     }
 }
