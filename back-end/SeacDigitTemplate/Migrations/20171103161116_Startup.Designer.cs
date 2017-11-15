@@ -12,7 +12,7 @@ using System;
 namespace SeacDigitTemplate.Migrations
 {
     [DbContext(typeof(SeacDigitTemplateContext))]
-    [Migration("20171024162608_Startup")]
+    [Migration("20171103161116_Startup")]
     partial class Startup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,6 +113,8 @@ namespace SeacDigitTemplate.Migrations
 
                     b.Property<string>("Note");
 
+                    b.Property<decimal?>("PercentualeAliquotaIva");
+
                     b.Property<decimal>("PercentualeIndeducibilita");
 
                     b.Property<decimal>("PercentualeIndetraibilita");
@@ -151,7 +153,7 @@ namespace SeacDigitTemplate.Migrations
 
                     b.Property<decimal>("Valore");
 
-                    b.Property<decimal>("Variazione");
+                    b.Property<decimal>("VariazioneFiscale");
 
                     b.HasKey("ContoId");
 
@@ -165,13 +167,15 @@ namespace SeacDigitTemplate.Migrations
                     b.Property<int>("VoceIvaId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AliquotaIvaId");
+                    b.Property<int?>("AliquotaIvaId");
 
-                    b.Property<int>("TitoloInapplicabilita");
+                    b.Property<decimal>("Imponibile");
 
-                    b.Property<int>("Trattamento");
+                    b.Property<decimal>("Iva");
 
-                    b.Property<decimal>("Valore");
+                    b.Property<int?>("TitoloInapplicabilitaId");
+
+                    b.Property<int?>("Trattamento");
 
                     b.Property<int?>("VoceIvaId1");
 
@@ -257,7 +261,7 @@ namespace SeacDigitTemplate.Migrations
 
                     b.Property<string>("Valore");
 
-                    b.Property<string>("VariazioneF");
+                    b.Property<string>("VariazioneFiscale");
 
                     b.Property<string>("VoceIvaId");
 

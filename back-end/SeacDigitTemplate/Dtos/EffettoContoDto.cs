@@ -8,7 +8,7 @@
         public int? ContoDareId { get; set; }
         public int? ContoAvereId { get; set; }
         public decimal Valore { get; set; }
-        public decimal VariazioneF { get; set; }
+        public decimal VariazioneFiscale { get; set; }
         public int TemplateGenerazioneEffetto { get; set; }
     }
 }

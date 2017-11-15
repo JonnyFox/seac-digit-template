@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Jace;
 using SeacDigitTemplate.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace SeacDigitTemplate.Services
 {
@@ -72,30 +73,109 @@ namespace SeacDigitTemplate.Services
             _ctx = context;
         }
 
-        public async Task<List<Effetto>> GetEffettosFromRigaDigitatasAsync(List<RigaDigitata> rigaDigitatas)
+
+        public async Task<List<Effetto>> GetEffettosFromRigaDigitatasAsync(Documento documento, List<RigaDigitata> rigaDigitataList)
         {
             var effettos = new List<Effetto>();
+            
 
-            foreach (var rd in rigaDigitatas)
+            foreach (var rd in rigaDigitataList)
             {
-                effettos.AddRange(await GetEffettosFromRigaDigitataAsync(rd));
+                effettos.AddRange(await GetEffettosFromRigaDigitataAsync(rd,documento));
             }
 
-            return effettos;
+            return effettos.Where(e => e.Valore != 0 || e.VariazioneFiscale != 0 || e.Imponibile != 0 || e.Iva != 0).ToList();
         }
 
-        public async Task<List<Effetto>> GetEffettosFromRigaDigitataAsync(RigaDigitata rigaDigitata)
+        public async Task<List<Effetto>> GetEffettosFromRigaDigitataAsync(RigaDigitata rigaDigitata, Documento documento)
         {
-            var applicationTemplate = await _applicazioneTemplateEffettoService.GetTemplateAsync(rigaDigitata);
+            var effettoList = new List<Effetto>();
+
+            var applicationTemplate = await _applicazioneTemplateEffettoService.GetTemplateAsync(rigaDigitata, documento);
+
+            if (applicationTemplate == null)
+            {
+                return effettoList;
+            }
 
             var templates = await _templateEffettoService.GetTemplateEffettoAsync(applicationTemplate);
 
-            var effettos = new List<Effetto>();
+            templates.ForEach(t => effettoList.Add(CreateEffetto(rigaDigitata, t)));
 
-            templates.ForEach(t => effettos.Add(CreateEffetto(rigaDigitata, t)));
-
-            return effettos;
+            return effettoList;
         }
+
+
+        public List<SituazioneConto> GetSituazioneConto(List<Effetto> effettoList)
+        {
+
+            var contoDareResult = effettoList
+                .GroupBy(e => e.ContoDareId)
+                .Where(g => g.Key.HasValue)
+                .Select(kvp =>
+                {
+                    return new SituazioneConto
+                    {
+                        ContoId = kvp.Key.Value,
+                        Valore = kvp.Sum(v => v.Valore),
+                        VariazioneFiscale = kvp.Sum(v => v.VariazioneFiscale)
+                    };
+                });
+
+            var contoAvereResult = effettoList
+                .GroupBy(e => e.ContoAvereId)
+                .Where(g => g.Key.HasValue)
+                .Select(kvp =>
+                {
+                    return new SituazioneConto
+                    {
+                        ContoId = kvp.Key.Value,
+                        Valore = -kvp.Sum(v => v.Valore),
+                        VariazioneFiscale = 0 //kvp.Sum(v => v.VariazioneF)
+                    };
+                });
+
+            var result = contoDareResult
+                .Join(contoAvereResult, cd => cd.ContoId, ca => ca.ContoId, (ca, cd) => new SituazioneConto
+                {
+                    ContoId = ca.ContoId,
+                    Valore = cd.Valore + ca.Valore,
+                    VariazioneFiscale = cd.VariazioneFiscale + ca.VariazioneFiscale
+                });
+
+            result = result.Union(contoAvereResult);
+            result = result.Union(contoDareResult);
+
+            return result.ToList();
+
+        }
+
+        public List<SituazioneVoceIva> GetSituazioneVoceIva(List<Effetto> effettoList)
+        {
+            return effettoList
+                .GroupBy(e => new
+                {
+                    e.VoceIvaId,
+                    e.Trattamento,
+                    e.TitoloInapplicabilitaId,
+                    e.AliquotaIvaId
+                })
+                .Where(g => g.Key.VoceIvaId != null)
+                .Select(kvp =>
+                {
+                    return new SituazioneVoceIva
+                    {
+                        VoceIvaId = kvp.Key.VoceIvaId,
+                        Trattamento = kvp.Key.Trattamento,
+                        TitoloInapplicabilitaId = kvp.Key.TitoloInapplicabilitaId,
+                        AliquotaIvaId = kvp.Key.AliquotaIvaId,
+                        Imponibile = kvp.Sum(s => s.Imponibile),
+                        Iva = kvp.Sum(s => s.Iva)
+                    };
+                })
+                .ToList();
+        }
+
 
         private Effetto CreateEffetto(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto)
         {
@@ -104,7 +184,6 @@ namespace SeacDigitTemplate.Services
                 TemplateGenerazioneEffetto = templateEffetto.Id,
                 RigaDigitataId = rigaDigitata.Id,
                 DocumentoId = rigaDigitata.DocumentoId
-
             };
 
             foreach (var templateEffettoField in TemplateEffettoStringProperties)
@@ -153,7 +232,5 @@ namespace SeacDigitTemplate.Services
 
             return newEffetto;
         }
-
-
     }
 }

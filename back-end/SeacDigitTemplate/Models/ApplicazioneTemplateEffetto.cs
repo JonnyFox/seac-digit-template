@@ -1,6 +1,4 @@
-﻿using SeacDigitTemplate.Model;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SeacDigitTemplate.Models
 {
@@ -19,6 +17,11 @@ namespace SeacDigitTemplate.Models
         public string PercentualeIndeducibilita { get; set; }
         public string Settore { get; set; }
         public string Note { get; set; }
+        public string RitenutaAcconto { get; set; }
+        public string Sospeso { get; set; }
+        public string Tipo { get; set; }
+        public string Caratteristica { get; set; }
+        public string Registro { get; set; }
 
         public ICollection<TemplateEffetto> TemplateEffetto { get; set; }
     }

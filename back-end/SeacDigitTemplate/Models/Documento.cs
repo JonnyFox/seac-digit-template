@@ -6,7 +6,9 @@ namespace SeacDigitTemplate.Model
     {
         public int Id { get; set; }
         public decimal Totale { get; set; }
-        public decimal RitenutaAcconto { get; set; }
+
+        public decimal? RitenutaAcconto { get; set; }
+
         public DocumentoSospensioneEnum Sospeso { get; set; }
         public DocumentoTipoEnum Tipo { get; set; }
         public DocumentoCaratteristicaEnum Caratteristica { get; set; }
@@ -19,6 +21,6 @@ namespace SeacDigitTemplate.Model
         public string Numero { get; set; }
         public int Protocollo { get; set; }
 
-        public List<RigaDigitata> righeDigitate { get; set; }
+        public List<RigaDigitata> rigaDigitataList { get; set; }
     }
 }

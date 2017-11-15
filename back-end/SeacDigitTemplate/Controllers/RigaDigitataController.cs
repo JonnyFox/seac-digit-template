@@ -30,15 +30,13 @@ namespace SeacDigitTemplate.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync()
-        {
-            return Ok(_mapper.Map<List<RigaDigitataDto>>(await _rigaDigitataService.GetAll()));
-        }
+        public async Task<IActionResult> GetAsync() => Ok(_mapper.Map<List<RigaDigitataDto>>(await _rigaDigitataService.GetAll()));
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            return Ok(_mapper.Map<List<RigaDigitataDto>>(await _rigaDigitataService.GetByIdAsync(id)));
-        }
+        public async Task<IActionResult> GetById(int id) => Ok(_mapper.Map<RigaDigitataDto>(await _rigaDigitataService.GetByIdAsync(id)));
+
+        [HttpGet("documento/{id}")]
+        public async Task<IActionResult> GetByDocumentoIdAsync(int id) => Ok(_mapper.Map<List<RigaDigitataDto>>(await _rigaDigitataService.GetByDocumentoIdAsync(id)));
+
     }
 }

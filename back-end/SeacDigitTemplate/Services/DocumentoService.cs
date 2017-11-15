@@ -10,19 +10,10 @@ namespace SeacDigitTemplate.Services
     public class DocumentoService
     {
         SeacDigitTemplateContext _ctx;
-        public DocumentoService(SeacDigitTemplateContext ctx)
-        {
-            _ctx = ctx;
-        }
+        public DocumentoService(SeacDigitTemplateContext ctx) => _ctx = ctx;
 
-        public Task<List<Documento>> GetAll()
-        {
-            return _ctx.Documentos.ToListAsync();
-        }
+        public Task<List<Documento>> GetAll() => _ctx.Documentos.ToListAsync();
 
-        public Task<List<Documento>> GetById(int id)
-        {
-            return _ctx.Documentos.Where(i => i.Id == id).ToListAsync();
-        }
+        public Task<Documento> GetByIdAsync(int id) => _ctx.Documentos.SingleOrDefaultAsync(i => i.Id == id);
     }
 }

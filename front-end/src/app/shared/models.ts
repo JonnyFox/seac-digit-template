@@ -87,25 +87,24 @@ export class Conto {
 }
 
 export enum TrattamentoEnum {
-    None,
-    Detraibile,
-    IdentraibileOggettivo,
-    IdentraibileSoggettivo,
+    Detraibile = 1,
+    IOgg,
+    ISogg,
     Esente
 }
 
-export class SituazioneVoceIVA {
+export class SituazioneVoceIva {
     voceIvaId: number;
+    aliquotaIvaId: number;
     trattamento: TrattamentoEnum;
     titoloInapplicabilita: number;
-    aliquotaIvaId: number;
     valore: number;
 }
 
 export class SituazioneConto {
     contoId: number;
     valore: number;
-    variazione: number;
+    variazioneFiscale: number;
 }
 
 export class VoceIva {
@@ -129,7 +128,7 @@ export class Effetto {
     titoloInapplicabilita: number;
     aliquotaIvaId: number;
     valore: number;
-    variazione: number;
+    variazioneFiscale: number;
     imponibile: number;
     iva: number;
     riferimentoEffettoId: number;
@@ -141,8 +140,17 @@ export class TitoloInapplicabilita {
 }
 
 export class EffettoCalcolo {
+    constructor() {
+        this.effettoContos =
+            this.effettoIvas =
+            this.situazioneContos =
+            this.situazioneVoceIvas = [];
+    }
+
     effettoContos: EffettoConto[];
     effettoIvas: EffettoIva[];
+    situazioneContos: SituazioneConto[];
+    situazioneVoceIvas: SituazioneVoceIva[];
 }
 
 export class EffettoConto {
@@ -153,7 +161,7 @@ export class EffettoConto {
     contoAvereId: number;
     imponibile: number;
     valore: number;
-    variazione: number;
+    variazioneFiscale: number;
     riferimentoEffettoId: number;
 }
 

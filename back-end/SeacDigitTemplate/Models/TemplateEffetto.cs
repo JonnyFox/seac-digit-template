@@ -16,7 +16,7 @@ namespace SeacDigitTemplate.Models
         public string TitoloInapplicabilitaId { get; set; }
         public string AliquotaIvaId { get; set; }
         public string Valore { get; set; }
-        public string VariazioneF { get; set; }
+        public string VariazioneFiscale { get; set; }
         public string Imponibile { get; set; }
         public string Iva { get; set; }
         public string RifRow { get; set; }
