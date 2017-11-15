@@ -19,6 +19,7 @@
     }
 
     public enum DocumentoCaratteristicaEnum
+
     {
         Normale,
         Autofattura,

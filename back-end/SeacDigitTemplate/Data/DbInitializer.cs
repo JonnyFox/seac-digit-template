@@ -208,16 +208,6 @@ namespace SeacDigitTemplate.Data
 
             var applicazioneTemplateEffettos = new ApplicazioneTemplateEffetto[]
             {
-                //new ApplicazioneTemplateEffetto
-                //{
-                //    ContoDare = "*",
-                //    ContoAvere ="Fornitore",
-                //    VoceIva ="Merce",
-                //    Trattamento = "*",
-                //    AliquotaIva = "*",
-                //    Imponibile = "*",
-                //    Iva = "*"
-                //},
                 new ApplicazioneTemplateEffetto
                 {
                     ContoDare = "Valori Bollati",
@@ -230,15 +220,13 @@ namespace SeacDigitTemplate.Data
                     Tipo = DocumentoTipoEnum.Fattura.ToString(),
                     Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
                     Registro = RegistroTipoEnum.Emesse.ToString(),
-
-
                 },
                 new ApplicazioneTemplateEffetto
                 {
                     ContoDare = "*",
                     ContoAvere = "*",
                     VoceIva = "*",
-                    Trattamento = "*", // trattamento should be D check the query
+                    Trattamento = TrattamentoEnum.Detraibile.ToString(),
                     AliquotaIva = "*",
                     Imponibile = "*",
                     Iva = "*",
