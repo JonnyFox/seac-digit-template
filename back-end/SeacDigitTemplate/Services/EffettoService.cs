@@ -65,6 +65,22 @@ namespace SeacDigitTemplate.Services
             }
         }
 
+        private IEnumerable<PropertyInfo> _documentoProprieties;
+
+        private IEnumerable<PropertyInfo> DocumentoProprieties
+        {
+            get
+            {
+                if(_documentoProprieties == null)
+                {
+                    _documentoProprieties = (typeof(Documento)).GetProperties();
+                }
+
+                return _documentoProprieties;
+            }
+        }
+
+
 
         public EffettoService(SeacDigitTemplateContext context, ApplicazioneTemplateEffettoService applicazioneTemplateEffettoService, TemplateEffettoService templateEffettoService)
         {
@@ -100,7 +116,7 @@ namespace SeacDigitTemplate.Services
 
             var templates = await _templateEffettoService.GetTemplateEffettoAsync(applicationTemplate);
 
-            templates.ForEach(t => effettoList.Add(CreateEffetto(rigaDigitata, t)));
+            templates.ForEach(t => effettoList.Add(CreateEffetto(rigaDigitata, t, documento)));
 
             return effettoList;
         }
@@ -177,7 +193,7 @@ namespace SeacDigitTemplate.Services
         }
 
 
-        private Effetto CreateEffetto(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto)
+        private Effetto CreateEffetto(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto, Documento documento)
         {
             var newEffetto = new Effetto
             {
@@ -216,7 +232,14 @@ namespace SeacDigitTemplate.Services
 
                         foreach (Match match in regex.Matches(formula))
                         {
-                            variables.Add(match.Value, Convert.ToDouble(RigaDigitataProperties.Single(rdp => rdp.Name == match.Value).GetValue(rigaDigitata)));
+                            if (match.Value== "RitenutaAcconto")
+                            {
+                                variables.Add(match.Value, Convert.ToDouble(DocumentoProprieties.Single(rdp => rdp.Name == match.Value).GetValue(documento)));
+                            }
+                            else
+                            {
+                                variables.Add(match.Value, Convert.ToDouble(RigaDigitataProperties.Single(rdp => rdp.Name == match.Value).GetValue(rigaDigitata)));
+                            }
                         }
 
                         value = Convert.ToDecimal(new CalculationEngine().Calculate(formula, variables));

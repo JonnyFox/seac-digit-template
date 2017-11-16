@@ -41,6 +41,7 @@ namespace SeacDigitTemplate.Data
                   new Conto{ Id = 16, Nome ="Debito ass.sanit"},
                   new Conto{ Id = 17, Nome ="Ente bilaterale"},
                   new Conto{ Id = 18, Nome ="Deb vs dipendenti"},
+                  new Conto{ Id = 19, Nome = "RitenutaAcconto"}
 
             };
             foreach (Conto c in contos)
@@ -106,7 +107,7 @@ namespace SeacDigitTemplate.Data
                     Registro = RegistroTipoEnum.Emesse,
                     Numero = "1",
                     Protocollo = 1
-                   
+
                 },
                 new Documento{
                     Totale = 45.0m,
@@ -127,7 +128,7 @@ namespace SeacDigitTemplate.Data
                     Caratteristica = DocumentoCaratteristicaEnum.FatturaUE,
                     Clifor = clifors[1],
                     Registro = RegistroTipoEnum.Emesse,
-                    Numero = "2",
+                    Numero = "3",
                     Protocollo = 5
                     },
                 new Documento{
@@ -138,19 +139,29 @@ namespace SeacDigitTemplate.Data
                     Caratteristica = DocumentoCaratteristicaEnum.Normale,
                     Clifor = clifors[1],
                     Registro = RegistroTipoEnum.Finanziari,
-                    Numero = "3",
+                    Numero = "4",
                     Protocollo = 5
-                    }
-                ,
+                    },
                 new Documento{
                     Totale = 60.0m,
-                    RitenutaAcconto = 0.0m,
+                    RitenutaAcconto = 204.0m,
                     Sospeso = DocumentoSospensioneEnum.None,
                     Tipo = DocumentoTipoEnum.Fattura,
                     Caratteristica = DocumentoCaratteristicaEnum.Normale,
                     Clifor = clifors[1],
                     Registro = RegistroTipoEnum.Acquisti,
-                    Numero = "4",
+                    Numero = "5",
+                    Protocollo = 5
+                    },
+                new Documento{
+                    Totale = 320.0m,
+                    RitenutaAcconto = 0.0m,
+                    Sospeso = DocumentoSospensioneEnum.None,
+                    Tipo = DocumentoTipoEnum.BollaDoganale,
+                    Caratteristica = DocumentoCaratteristicaEnum.Normale,
+                    Clifor = clifors[0],
+                    Registro = RegistroTipoEnum.Emesse,
+                    Numero = "6",
                     Protocollo = 5
                     }
 
@@ -229,6 +240,7 @@ namespace SeacDigitTemplate.Data
                     PercentualeIndetraibilita = 40m,
                     PercentualeIndeducibilita = 20m
                 },
+                //Documento 3
                 new RigaDigitata{
                     Documento = documentos[3],
                     ContoDare = contos[4],
@@ -271,6 +283,7 @@ namespace SeacDigitTemplate.Data
                     ContoAvere = contos[17],
                     Imponibile = 2457.88m,
                 },
+                //Documento 4
                 new RigaDigitata{
                     Documento = documentos[4],
                     ContoDare = contos[7],
@@ -295,7 +308,24 @@ namespace SeacDigitTemplate.Data
                     PercentualeIndetraibilita = 0.0m,
                     PercentualeIndeducibilita = 0.0m
                 },
-
+                //Documento 5
+                new RigaDigitata{
+                    Documento = documentos[5],
+                    VoceIva = voceivas[0],
+                    AliquotaIva = aliquotas[2],
+                    PercentualeAliquotaIva = aliquotas[2].Percentuale,
+                    Imponibile = 1000m,
+                    Iva = 220m,
+                },
+                new RigaDigitata{
+                    
+                    Documento = documentos[5],
+                    VoceIva = voceivas[0],
+                    AliquotaIva = aliquotas[1],
+                    PercentualeAliquotaIva = aliquotas[1].Percentuale,
+                    Imponibile = 1000m,
+                    Iva = 100m,
+                }
 
 
             };
@@ -332,11 +362,12 @@ namespace SeacDigitTemplate.Data
                     PercentualeIndetraibilita = "*",
                     PercentualeIndeducibilita = "*",
                     RitenutaAcconto = "0.0m",
-                    Sospeso = DocumentoSospensioneEnum.None.ToString(),
-                    Tipo = DocumentoTipoEnum.Fattura.ToString(),
-                    Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
+                    Sospeso = DocumentoSospensioneEnum.Conto.ToString(),
+                    Tipo = DocumentoTipoEnum.Contabile.ToString(),
+                    Caratteristica = DocumentoCaratteristicaEnum.FatturaUE.ToString(),
                     Registro = RegistroTipoEnum.Emesse.ToString(),
                 },
+                //Documento 3
                 new ApplicazioneTemplateEffetto
                 {
                     ContoDare = "*",
@@ -348,6 +379,7 @@ namespace SeacDigitTemplate.Data
                     Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
                     Registro = RegistroTipoEnum.Finanziari.ToString(),
                 },
+                //Documento 4
                 new ApplicazioneTemplateEffetto
                 {
                     ContoDare = "*",
@@ -358,12 +390,42 @@ namespace SeacDigitTemplate.Data
                     Iva ="*",
                     PercentualeIndetraibilita = "*",
                     PercentualeIndeducibilita = "*",
-                    RitenutaAcconto="0.0m",
+                    RitenutaAcconto="*",
                     Sospeso = DocumentoSospensioneEnum.None.ToString(),
                     Tipo = DocumentoTipoEnum.Fattura.ToString(),
                     Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
                     Registro = RegistroTipoEnum.Acquisti.ToString(),
+                },
+                new ApplicazioneTemplateEffetto
+                {
+                    ContoDare = "*",
+                    ContoAvere = "Fornitore",
+                    VoceIva ="Spese",
+                    AliquotaIva ="*",
+                    Imponibile = "*",
+                    Iva ="220",
+                    PercentualeIndetraibilita = "*",
+                    PercentualeIndeducibilita = "*",
+                    RitenutaAcconto="204",
+                    Sospeso = DocumentoSospensioneEnum.None.ToString(),
+                    Tipo = DocumentoTipoEnum.Fattura.ToString(),
+                    Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
+                    Registro = RegistroTipoEnum.Acquisti.ToString(),
+                },
+                //Documento 5
+                new ApplicazioneTemplateEffetto
+                { 
+                    VoceIva ="Merce",
+                    AliquotaIva ="*",
+                    Imponibile = "*",
+                    Iva ="*",
+                    RitenutaAcconto="0.0m",
+                    Sospeso = DocumentoSospensioneEnum.None.ToString(),
+                    Tipo = DocumentoTipoEnum.BollaDoganale.ToString(),
+                    Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
+                    Registro = RegistroTipoEnum.Emesse.ToString(),
                 }
+
             };
 
             foreach (ApplicazioneTemplateEffetto a in applicazioneTemplateEffettos)
@@ -424,6 +486,7 @@ namespace SeacDigitTemplate.Data
                     Imponibile = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
                     Iva = "#Iva*(1 - PercentualeIndetraibilita/100)"
                 },
+                //Documento 3
                 new TemplateEffetto
                 {
                     ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[2],
@@ -432,13 +495,14 @@ namespace SeacDigitTemplate.Data
                     Valore = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
                     VariazioneFiscale = "#Imponibile*(1 - PercentualeIndetraibilita/100)*PercentualeIndeducibilita/100",
                 },
+                //Documento 4
                 new TemplateEffetto
                 {
                     ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[3],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     Valore = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
-                    
+
                 },
                 new TemplateEffetto
                 {
@@ -452,6 +516,48 @@ namespace SeacDigitTemplate.Data
                     Imponibile = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
                     Iva = "#Iva*(1 - PercentualeIndetraibilita/100)"
                 },
+                //Per aggiunta della ritenuta acconto
+                new TemplateEffetto
+                {
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[4],
+                    ContoDareId = "*10",
+                    ContoAvereId = "*19",
+                    Valore = "#RitenutaAcconto"
+                },
+                new TemplateEffetto
+                {
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[4],
+                    ContoDareId = "ContoDareId",
+                    ContoAvereId = "ContoAvereId",
+                    Valore = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
+
+                },
+                new TemplateEffetto
+                {
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[4],
+                    ContoDareId = "*4",
+                    ContoAvereId = "ContoAvereId",
+                    VoceIvaId = "VoceIvaId",
+                    Trattamento = "*" + (int)TrattamentoEnum.Detraibile,
+                    AliquotaIvaId = "AliquotaIvaId",
+                    Valore = "#Iva*(1 - PercentualeIndetraibilita/100)",
+                    Imponibile = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
+                    Iva = "#Iva*(1 - PercentualeIndetraibilita/100)"
+                },
+                //Documento 5
+                new TemplateEffetto
+                {
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[5],
+                    ContoDareId = "*4",
+                    ContoAvereId = "*7",
+                    VoceIvaId = "VoceIvaId",
+                    Trattamento = "*" + (int)TrattamentoEnum.Detraibile,
+                    AliquotaIvaId = "AliquotaIvaId",
+                    Valore = "#Iva*(1 - PercentualeIndetraibilita/100)",
+                    Imponibile = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
+                    Iva = "#Iva*(1 - PercentualeIndetraibilita/100)"
+                },
+
 
             };
 

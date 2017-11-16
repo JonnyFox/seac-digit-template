@@ -36,8 +36,8 @@ namespace SeacDigitTemplate.Controllers
         //    var rigaDigitatas = await _rigaDigitataService.GetByDocumentoIdAsync(id);
 
         //    var originalEffects = await _effettoService.GetEffettosFromRigaDigitatasAsync(rigaDigitatas);
-        //    var situazioneVoceIvas =  _effettoService.GetSituazioneVoceIva(originalEffects);
-        //    var situazioneContos =  _effettoService.GetSituazioneConto(originalEffects);
+        //    var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(originalEffects);
+        //    var situazioneContos = _effettoService.GetSituazioneConto(originalEffects);
 
         //    var effettoCalcoloDto = _mapper.Map<EffettoCalcoloDto>(originalEffects);
         //    effettoCalcoloDto.SituazioneContos = _mapper.Map<List<SituazioneContoDto>>(situazioneContos);

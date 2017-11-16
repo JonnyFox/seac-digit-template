@@ -8,8 +8,8 @@ namespace SeacDigitTemplate.Dtos
         public int Id { get; set; }
 
         public int DocumentoId { get; set; }
-        public int ContoDareId { get; set; }
-        public int ContoAvereId { get; set; }
+        public int? ContoDareId { get; set; }
+        public int? ContoAvereId { get; set; }
         public int? VoceIvaId { get; set; }
         public int? AliquotaIvaId { get; set; }
         public TrattamentoEnum? Trattamento { get; set; }
