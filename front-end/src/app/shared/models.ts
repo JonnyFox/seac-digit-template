@@ -144,13 +144,15 @@ export class EffettoCalcolo {
         this.effettoContos =
             this.effettoIvas =
             this.situazioneContos =
-            this.situazioneVoceIvas = [];
+            this.situazioneVoceIvas =
+            this.effettoDocumentoList = [];
     }
 
     effettoContos: EffettoConto[];
     effettoIvas: EffettoIva[];
     situazioneContos: SituazioneConto[];
     situazioneVoceIvas: SituazioneVoceIva[];
+    effettoDocumentoList: EffettoDocumento[];
 }
 
 export class EffettoConto {
@@ -177,3 +179,15 @@ export class EffettoIva {
     iva: number;
     riferimentoEffettoId: number;
 }
+export class EffettoDocumento {
+    id: number;
+    totale: number;
+    ritenutaAcconto: number;
+    sospeso: DocumentoSospensioneEnum;
+    tipo: DocumentoTipoEnum;
+    caratteristica: DocumentoCaratteristicaEnum;
+    cliforId: number;
+    registro: RegistroTipoEnum;
+    riferimentoDocumentoId: number | null;
+}
+

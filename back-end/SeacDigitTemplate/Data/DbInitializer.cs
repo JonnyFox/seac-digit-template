@@ -556,6 +556,7 @@ namespace SeacDigitTemplate.Data
                     Valore = "#Iva*(1 - PercentualeIndetraibilita/100)",
                     Imponibile = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
                     Iva = "#Iva*(1 - PercentualeIndetraibilita/100)"
+
                 },
 
 
@@ -572,12 +573,12 @@ namespace SeacDigitTemplate.Data
                 new TemplateDocumento
                 {
                     ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[5],
-                    Totale = "Totale" ,
-                    RitenutaAcconto ="RitenutaAcconto" ,
-                    Sospeso ="Sospeso" ,
-                    Tipo ="Tipo",
-                    Caratteristica ="Caratteristica" ,
-                    Registro="Registro",
+                    Totale = "Totale", 
+                    RitenutaAcconto ="RitenutaAcconto",
+                    Sospeso ="*" + (int)DocumentoSospensioneEnum.None,
+                    Tipo ="*" + (int)DocumentoTipoEnum.BollaDoganale,
+                    Caratteristica ="*" + (int)DocumentoCaratteristicaEnum.Normale ,
+                    Registro="*" + (int)RegistroTipoEnum.Emesse,
                 }
             };
 

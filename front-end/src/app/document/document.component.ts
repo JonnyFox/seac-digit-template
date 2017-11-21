@@ -26,6 +26,7 @@ import {
     EffettoIva,
     SituazioneVoceIva,
     SituazioneConto,
+    EffettoDocumento,
 } from '../shared/models';
 import { DocumentoService } from '../shared/documento.service';
 import { EffettoService } from '../shared/effetto.service';
@@ -43,12 +44,14 @@ export class DocumentComponent implements OnInit {
 
     public editItemForm: FormGroup;
 
-    public displayedColumnsEfettoConto = ['rigaDigitataId', 'contoDareId',
+    public displayedColumnsEffettoConto = ['rigaDigitataId', 'contoDareId',
         'contoAvereId', 'valore', 'variazioneFiscale'];
     public displayedColumnsEffettoIva = ['rigaDigitataId', 'voceIvaId', 'trattamento',
         'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
     public displayedColumnsSituazioneConto = ['contoId', 'valore', 'variazioneFiscale'];
     public displayedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento', 'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
+    public displayedColumnsEffettoDocumento = ['id', 'totale', 'ritenutaAcconto',
+    'sospeso', 'tipo', 'caratteristica', 'cliforId', 'registro', 'riferimentoDocumentoId'];
 
     private _effettoCalcolo$: BehaviorSubject<EffettoCalcolo> = new BehaviorSubject(new EffettoCalcolo());
     public effettoCalcolo$: Observable<EffettoCalcolo> = this._effettoCalcolo$.asObservable();
@@ -57,6 +60,7 @@ export class DocumentComponent implements OnInit {
     public dataSourceEffettoIva = new DataSourceEffettoIva(this.effettoCalcolo$);
     public dataSourceSituazioneConto = new DataSourceSituazioneConto(this.effettoCalcolo$);
     public dataSourceSituazioneVoceIva = new DataSourceSituazioneVoceIva(this.effettoCalcolo$);
+    public dataSourceEffettoDocumento = new DataSourceEffettoDocumento(this.effettoCalcolo$);
 
     public editItem: Documento = new Documento();
 
@@ -267,4 +271,14 @@ export class DataSourceSituazioneVoceIva extends DataSource<any> {
         return this.effettoCalcolo$.map(v => v.situazioneVoceIvas || []);
     }
     disconnect() { }
+}
+export class DataSourceEffettoDocumento extends DataSource<any> {
+    constructor(private effettoCalcolo$: Observable<EffettoCalcolo>) {
+        super();
+    }
+    connect(): Observable<EffettoDocumento[]> {
+         return this.effettoCalcolo$.map(v => v.effettoDocumentoList || []);
+    }
+    disconnect() { }
+
 }

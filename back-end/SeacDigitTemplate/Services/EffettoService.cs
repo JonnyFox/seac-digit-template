@@ -136,7 +136,7 @@ namespace SeacDigitTemplate.Services
             {
                 effettoRigaList.AddRange(await GetEffettoRigaListFromInputAsync(rd,documento));
 
-                if (effettoDocumentoList.Count == 0)
+                if (effettoDocumentoList.Count == 0 )
                 {
                     effettoDocumentoList.AddRange(await GetEffettoDocumentoListFromInputAsync(rd, documento));
                 }
@@ -262,7 +262,7 @@ namespace SeacDigitTemplate.Services
             var newDocumento = new EffettoDocumento
             {
                 TemplateGenerazioneEffetto = templateEffetto.Id,
-                Id = documento.Id
+                RiferimentoDocumentoId = documento.Id
             };
             foreach (var templateEffettoField in TemplateEffettoDocumentoStringProperties)
             {
@@ -274,7 +274,7 @@ namespace SeacDigitTemplate.Services
 
                     var currentEffettoProperty = EffettoDocumentoProperties.Single(ep => ep.Name == templateEffettoField.Name);
 
-                    if (templateEffettoFieldValue.StartsWith("$"))
+                    if (templateEffettoFieldValue.StartsWith("*"))
                     {
                         if (currentEffettoProperty.PropertyType == typeof(int) || currentEffettoProperty.PropertyType == typeof(int?))
                         {
@@ -282,7 +282,8 @@ namespace SeacDigitTemplate.Services
                         }
                         else
                         {
-                            value = Enum.Parse(Nullable.GetUnderlyingType(currentEffettoProperty.PropertyType), templateEffettoFieldValue.Substring(1));
+                            value = Enum.Parse(currentEffettoProperty.PropertyType, templateEffettoFieldValue.Substring(1));
+                            //value = Enum.Parse(Nullable.GetUnderlyingType(currentEffettoProperty.PropertyType), templateEffettoFieldValue.Substring(1));
                         }
                     }
                     else

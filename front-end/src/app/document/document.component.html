@@ -106,7 +106,63 @@
                     </div>
                 </mat-card-content>
             </mat-card>
-        </form>
+            <mat-card class="some-top effects">
+                <mat-card-title>Effetto Documento</mat-card-title>
+                <mat-card-content>
+                    <mat-table #table [dataSource]="dataSourceEffettoDocumento">
+    
+                        <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef>Id Documento</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="totale">
+                            <mat-header-cell *matHeaderCellDef>Totale</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.totale}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="ritenutaAcconto">
+                            <mat-header-cell *matHeaderCellDef>Ritenuta Acconto</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.ritenutaAcconto}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="sospeso">
+                            <mat-header-cell *matHeaderCellDef>Sospeso</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.sospeso}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="tipo">
+                            <mat-header-cell *matHeaderCellDef>Tipo</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.tipo}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="caratteristica">
+                            <mat-header-cell *matHeaderCellDef>Caratteristica</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.caratteristica}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="cliforId">
+                            <mat-header-cell *matHeaderCellDef>CliforId</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.cliforId}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="registro">
+                            <mat-header-cell *matHeaderCellDef>Registro</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.registro}}</mat-cell>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="riferimentoDocumentoId">
+                            <mat-header-cell *matHeaderCellDef>RiferimentoDocumentoId</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.riferimentoDocumentoId}}</mat-cell>
+                        </ng-container>        
+    
+                        <mat-header-row *matHeaderRowDef="displayedColumnsEffettoDocumento"></mat-header-row>
+    
+                        <mat-row *matRowDef="let row; columns: displayedColumnsEffettoDocumento;"></mat-row>
+                    </mat-table>
+                </mat-card-content>
+            </mat-card>
+        </form>   
     </div>
     <div class="col-lg-4">
         <mat-card class="effects">
@@ -144,9 +200,9 @@
                         <mat-cell *matCellDef="let element">{{element.riferimentoEffettoId}}</mat-cell>
                     </ng-container>
 
-                    <mat-header-row *matHeaderRowDef="displayedColumnsEfettoConto"></mat-header-row>
+                    <mat-header-row *matHeaderRowDef="displayedColumnsEffettoConto"></mat-header-row>
 
-                    <mat-row *matRowDef="let row; columns: displayedColumnsEfettoConto;"></mat-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsEffettoConto;"></mat-row>
 
                 </mat-table>
             </mat-card-content>
