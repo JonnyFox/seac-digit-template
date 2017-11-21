@@ -23,6 +23,7 @@ namespace SeacDigitTemplate.Data
         public DbSet<TitoloInapplicabilita> TitoloInapplicabilitas { get; set; }
         public DbSet<ApplicazioneTemplateEffetto> ApplicazioneTemplateEffettos { get; set; }
         public DbSet<TemplateEffetto> TemplateEffettos { get; set; }
+        public DbSet<TemplateDocumento> TemplateDocumentos { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder mb)

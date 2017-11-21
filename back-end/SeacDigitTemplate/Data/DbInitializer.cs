@@ -420,10 +420,10 @@ namespace SeacDigitTemplate.Data
                     Imponibile = "*",
                     Iva ="*",
                     RitenutaAcconto="0.0m",
-                    Sospeso = DocumentoSospensioneEnum.None.ToString(),
+                    Sospeso = "*",
                     Tipo = DocumentoTipoEnum.BollaDoganale.ToString(),
-                    Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
-                    Registro = RegistroTipoEnum.Emesse.ToString(),
+                    Caratteristica = "*",
+                    Registro ="*",
                 }
 
             };
@@ -566,7 +566,29 @@ namespace SeacDigitTemplate.Data
                 context.TemplateEffettos.Add(t);
             }
 
+
+            var templateEffettoDocumentoList = new TemplateDocumento[]
+            {
+                new TemplateDocumento
+                {
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[5],
+                    Totale = "Totale" ,
+                    RitenutaAcconto ="RitenutaAcconto" ,
+                    Sospeso ="Sospeso" ,
+                    Tipo ="Tipo",
+                    Caratteristica ="Caratteristica" ,
+                    Registro="Registro",
+                }
+            };
+
+            foreach (TemplateDocumento t in templateEffettoDocumentoList)
+            {
+                context.TemplateDocumentos.Add(t);
+            }
+
             context.SaveChanges();
+
+            
         }
     }
 }

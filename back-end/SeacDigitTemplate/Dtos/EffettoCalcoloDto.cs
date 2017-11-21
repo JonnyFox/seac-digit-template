@@ -9,5 +9,7 @@ namespace SeacDigitTemplate.Dtos
 
         public List<SituazioneContoDto> SituazioneContos { get; set; }
         public List<SituazioneVoceIvaDto> SituazioneVoceIvas { get; set; }
+        public List<EffettoDocumentoDto> EffettoDocumentoList { get; set; }
+
     }
 }
