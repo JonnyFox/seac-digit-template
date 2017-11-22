@@ -18,24 +18,8 @@ namespace SeacDigitTemplate.Services
         private ApplicazioneTemplateEffettoService _applicazioneTemplateEffettoService;
         private TemplateEffettoService _templateEffettoService;
         private TemplateDocumentoService _templateDocumentoService;
-        private ApplicazioneTemplateDocumentoService _applicazioneTemplateDocumentoService;
 
         private SeacDigitTemplateContext _ctx;
-
-        private IEnumerable<PropertyInfo> _templateEffettoDocumentoStringProperties;
-
-        private IEnumerable<PropertyInfo> TemplateEffettoDocumentoStringProperties
-        {
-            get
-            {
-                if (_templateEffettoDocumentoStringProperties == null)
-                {
-                    _templateEffettoDocumentoStringProperties = (typeof(TemplateDocumento)).GetProperties().Where(p => p.PropertyType == typeof(String));
-                }
-
-                return _templateEffettoDocumentoStringProperties;
-            }
-        }
 
         private IEnumerable<PropertyInfo> _templateEffettoStringProperties;
 
@@ -110,16 +94,8 @@ namespace SeacDigitTemplate.Services
                 return _effettoDocumentoFields;
             }
         }
-
-
-
-
-
-
-
-        public EffettoService(SeacDigitTemplateContext context, ApplicazioneTemplateEffettoService applicazioneTemplateEffettoService, TemplateEffettoService templateEffettoService, TemplateDocumentoService templateDocumentoService, ApplicazioneTemplateDocumentoService applicazioneTemplateDocumentoService)
+        public EffettoService(SeacDigitTemplateContext context, ApplicazioneTemplateEffettoService applicazioneTemplateEffettoService, TemplateEffettoService templateEffettoService, TemplateDocumentoService templateDocumentoService)
         {
-            _applicazioneTemplateDocumentoService = applicazioneTemplateDocumentoService;
             _templateDocumentoService = templateDocumentoService;
             _applicazioneTemplateEffettoService = applicazioneTemplateEffettoService;
             _templateEffettoService = templateEffettoService;
@@ -127,46 +103,19 @@ namespace SeacDigitTemplate.Services
             
         }
 
-
-        public async Task<ResultList> GetEffettosFromInputListAsync(Documento documento, List<RigaDigitata> rigaDigitataList)
+        public async Task<List<Effetto>> GetEffettosFromInputListAsync(Documento documento, List<RigaDigitata> rigaDigitataList)
         {
-            var effetto = new ResultList();
+            
             var effettoList = new List<Effetto>();
             var effettoDocumentoList = new List<EffettoDocumento>();
 
             foreach (var rd in rigaDigitataList)
             {
                 effettoList.AddRange(await GetEffettoListFromInputAsync(rd,documento));
-
-                if (effettoDocumentoList.Count == 0 )
-                {
-                    effettoDocumentoList.AddRange(await GetEffettoDocumentoListFromInputAsync(rd, documento));
-                }
-
-                effetto.EffettoDocumentoList = effettoDocumentoList;
-                effetto.EffettoList = effettoList;
-
             }
-            //return effetto.EffettoList.Where(e => e.Valore != 0 || e.VariazioneFiscale != 0 || e.Imponibile != 0 || e.Iva != 0).ToList();     A COSA SERVE QUESTA COSA  <<<!!>>>
-            return effetto;
+            return effettoList.Where(e => e.Valore != 0 || e.VariazioneFiscale != 0 || e.Imponibile != 0 || e.Iva != 0).ToList(); 
+            
         }
-        public async Task<List<EffettoDocumento>> GetEffettoDocumentoListFromInputAsync(RigaDigitata rigaDigitata, Documento documento)
-        {
-            var effettoDocumentoList = new List<EffettoDocumento>();
-
-            var applicationTemplate = await _applicazioneTemplateDocumentoService.GetTemplateAsync(rigaDigitata, documento);
-
-            if (applicationTemplate == null)
-            {
-                return effettoDocumentoList;
-            }
-            var templatesDocumento = await _templateDocumentoService.GetTemplateDocumentoAsync(applicationTemplate);
-
-            templatesDocumento.ForEach(td => effettoDocumentoList.Add(CreateEffettoDocumento(rigaDigitata, td, documento)));
-
-            return effettoDocumentoList;
-        }
-
         public async Task<List<Effetto>> GetEffettoListFromInputAsync(RigaDigitata rigaDigitata, Documento documento)
         {
             var effettoList = new List<Effetto>();
@@ -255,47 +204,6 @@ namespace SeacDigitTemplate.Services
                 .ToList();
         }
 
-        private EffettoDocumento CreateEffettoDocumento(RigaDigitata rigaDigitata, TemplateDocumento templateEffetto, Documento documento)
-        {
-            var newDocumento = new EffettoDocumento
-            {
-                TemplateGenerazioneEffetto = templateEffetto.Id,
-                RiferimentoDocumentoId = documento.Id
-            };
-            foreach (var templateEffettoField in TemplateEffettoDocumentoStringProperties)
-            {
-                var templateEffettoFieldValue = templateEffettoField.GetValue(templateEffetto) as string;
-
-                if (templateEffettoFieldValue != null)
-                {
-                    Object value = null;
-
-                    var currentEffettoProperty = EffettoDocumentoProperties.Single(ep => ep.Name == templateEffettoField.Name);
-
-                    if (templateEffettoFieldValue.StartsWith("*"))
-                    {
-                        if (currentEffettoProperty.PropertyType == typeof(int) || currentEffettoProperty.PropertyType == typeof(int?))
-                        {
-                            value = templateEffettoFieldValue.Substring(1).ToNullableInt();
-                        }
-                        else
-                        {
-                            value = Enum.Parse(currentEffettoProperty.PropertyType, templateEffettoFieldValue.Substring(1));
-                            //value = Enum.Parse(Nullable.GetUnderlyingType(currentEffettoProperty.PropertyType), templateEffettoFieldValue.Substring(1));
-                        }
-                    }
-                    else
-                    {
-                        value = DocumentoProprieties.Single(rdp => rdp.Name == templateEffettoFieldValue).GetValue(documento);
-                    }
-                    
-                    currentEffettoProperty.SetValue(newDocumento,value);
-                }
-            }
-
-            return newDocumento;
-
-        }
         private Effetto CreateEffetto(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto, Documento documento)
         {
             var newEffetto = new Effetto

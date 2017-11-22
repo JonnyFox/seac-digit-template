@@ -45,6 +45,7 @@ namespace SeacDigitTemplate
             services.AddTransient<ApplicazioneTemplateDocumentoService>();
             services.AddTransient<TemplateEffettoService>();
             services.AddTransient<TemplateDocumentoService>();
+            services.AddTransient<EffettoDocumentoService>();
             services.AddCors();
 
             var config = new AutoMapper.MapperConfiguration(cfg =>
