@@ -335,7 +335,7 @@ namespace SeacDigitTemplate.Data
                 context.RigaDigitatas.Add(r);
             }
 
-            var applicazioneTemplateEffettos = new ApplicazioneTemplateEffetto[]
+            var applicazioneTemplateEffettoList = new ApplicazioneTemplateEffetto[]
             {
                 new ApplicazioneTemplateEffetto
                 {
@@ -428,16 +428,41 @@ namespace SeacDigitTemplate.Data
 
             };
 
-            foreach (ApplicazioneTemplateEffetto a in applicazioneTemplateEffettos)
+            foreach (ApplicazioneTemplateEffetto a in applicazioneTemplateEffettoList)
             {
-                context.ApplicazioneTemplateEffettos.Add(a);
+                context.ApplicazioneTemplateEffettoList.Add(a);
+            }
+
+
+            var applicazioneTemplateDocumentoList = new ApplicazioneTemplateDocumento[]
+            {
+               
+                //Documento 5
+                new ApplicazioneTemplateDocumento
+                {
+                    VoceIva ="Merce",
+                    AliquotaIva ="*",
+                    Imponibile = "*",
+                    Iva ="*",
+                    RitenutaAcconto="0.0m",
+                    Sospeso = "*",
+                    Tipo = DocumentoTipoEnum.BollaDoganale.ToString(),
+                    Caratteristica = "*",
+                    Registro ="*",
+                }
+
+            };
+
+            foreach (ApplicazioneTemplateDocumento a in applicazioneTemplateDocumentoList)
+            {
+                context.ApplicazioneTemplateDocumentoList.Add(a);
             }
 
             var templateEffettos = new TemplateEffetto[]
             {
                 new TemplateEffetto
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[0],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[0],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     VoceIvaId = "VoceIvaId",
@@ -447,7 +472,7 @@ namespace SeacDigitTemplate.Data
                 },
                 new TemplateEffetto // second row
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[1],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[1],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     Valore = "#Imponibile*PercentualeIndetraibilita/100",
@@ -455,7 +480,7 @@ namespace SeacDigitTemplate.Data
                 },
                 new TemplateEffetto // first row 
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[1],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[1],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     Valore = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
@@ -463,7 +488,7 @@ namespace SeacDigitTemplate.Data
                 },
                 new TemplateEffetto // third row
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[1],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[1],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     VoceIvaId = "VoceIvaId",
@@ -476,7 +501,7 @@ namespace SeacDigitTemplate.Data
                 },
                 new TemplateEffetto
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[1],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[1],
                     ContoDareId = "*4",
                     ContoAvereId = "ContoAvereId",
                     VoceIvaId = "VoceIvaId",
@@ -489,7 +514,7 @@ namespace SeacDigitTemplate.Data
                 //Documento 3
                 new TemplateEffetto
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[2],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[2],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     Valore = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
@@ -498,7 +523,7 @@ namespace SeacDigitTemplate.Data
                 //Documento 4
                 new TemplateEffetto
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[3],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[3],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     Valore = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
@@ -506,7 +531,7 @@ namespace SeacDigitTemplate.Data
                 },
                 new TemplateEffetto
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[3],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[3],
                     ContoDareId = "*4",
                     ContoAvereId = "ContoAvereId",
                     VoceIvaId = "VoceIvaId",
@@ -519,14 +544,14 @@ namespace SeacDigitTemplate.Data
                 //Per aggiunta della ritenuta acconto
                 new TemplateEffetto
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[4],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[4],
                     ContoDareId = "*10",
                     ContoAvereId = "*19",
                     Valore = "#RitenutaAcconto"
                 },
                 new TemplateEffetto
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[4],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[4],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     Valore = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
@@ -534,7 +559,7 @@ namespace SeacDigitTemplate.Data
                 },
                 new TemplateEffetto
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[4],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[4],
                     ContoDareId = "*4",
                     ContoAvereId = "ContoAvereId",
                     VoceIvaId = "VoceIvaId",
@@ -547,7 +572,7 @@ namespace SeacDigitTemplate.Data
                 //Documento 5
                 new TemplateEffetto
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[5],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[5],
                     ContoDareId = "*4",
                     ContoAvereId = "*7",
                     VoceIvaId = "VoceIvaId",
@@ -568,11 +593,12 @@ namespace SeacDigitTemplate.Data
             }
 
 
+
             var templateEffettoDocumentoList = new TemplateDocumento[]
             {
                 new TemplateDocumento
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettos[5],
+                    ApplicazioneTemplateDocumento = applicazioneTemplateDocumentoList[0],
                     Totale = "Totale", 
                     RitenutaAcconto ="RitenutaAcconto",
                     Sospeso ="*" + (int)DocumentoSospensioneEnum.None,

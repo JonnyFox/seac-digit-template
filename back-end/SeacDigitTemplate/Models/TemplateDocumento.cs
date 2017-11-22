@@ -10,8 +10,8 @@ namespace SeacDigitTemplate.Models
     {
         public int Id { get; set; }
 
-        public int ApplicazioneTemplateEffettoId { get; set; }
-        public ApplicazioneTemplateEffetto ApplicazioneTemplateEffetto { get; set; }
+        public int ApplicazioneTemplateDocumentoId { get; set; }
+        public ApplicazioneTemplateDocumento ApplicazioneTemplateDocumento { get; set; }
 
         //public int IdDocumento { get; set; }
         public string Totale { get; set; }

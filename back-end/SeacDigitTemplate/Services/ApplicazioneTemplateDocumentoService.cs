@@ -10,35 +10,35 @@ using System.Threading.Tasks;
 
 namespace SeacDigitTemplate.Services
 {
-    public class ApplicazioneTemplateEffettoService
+    public class ApplicazioneTemplateDocumentoService
     {
         SeacDigitTemplateContext _ctx;
 
-        public ApplicazioneTemplateEffettoService(SeacDigitTemplateContext ctx)
+        public ApplicazioneTemplateDocumentoService(SeacDigitTemplateContext ctx)
         {
             _ctx = ctx;
         }
 
-        public Task<List<ApplicazioneTemplateEffetto>> GetAll()
+        public Task<List<ApplicazioneTemplateDocumento>> GetAll()
         {
-            return _ctx.ApplicazioneTemplateEffettoList.ToListAsync();
+            return _ctx.ApplicazioneTemplateDocumentoList.ToListAsync();
         }
 
-        public Task<List<ApplicazioneTemplateEffetto>> GetById(int id)
+        public Task<List<ApplicazioneTemplateDocumento>> GetById(int id)
         {
-            return _ctx.ApplicazioneTemplateEffettoList.Where(c => c.Id == id).ToListAsync();
+            return _ctx.ApplicazioneTemplateDocumentoList.Where(c => c.Id == id).ToListAsync();
         }
 
-        public async Task<ApplicazioneTemplateEffetto> GetTemplateAsync(RigaDigitata rigaDigitata, Documento documento)
+        public async Task<ApplicazioneTemplateDocumento> GetTemplateAsync(RigaDigitata rigaDigitata, Documento documento)
         {
-            var query = _ctx.ApplicazioneTemplateEffettoList.AsQueryable();
+            var query = _ctx.ApplicazioneTemplateDocumentoList.AsQueryable();
 
             query = documento.RitenutaAcconto == null ? query.Where(a => a.RitenutaAcconto == null) : query.Where(a => a.RitenutaAcconto != null);
             query = query.Where(a => a.Sospeso == documento.Sospeso.ToString() || a.Sospeso == "*");
             query = query.Where(a => a.Tipo == documento.Tipo.ToString() || a.Tipo == "*");
-            query = query.Where(a => a.Caratteristica == documento.Caratteristica.ToString() || a.Caratteristica== "*");
+            query = query.Where(a => a.Caratteristica == documento.Caratteristica.ToString() || a.Caratteristica == "*");
             query = query.Where(a => a.Registro == documento.Registro.ToString() || a.Registro == "*");
-          
+
             query = rigaDigitata.ContoDareId == null ? query.Where(a => a.ContoDare == null) : query.Where(a => a.ContoDare != null);
             query = rigaDigitata.ContoAvereId == null ? query.Where(a => a.ContoAvere == null) : query.Where(a => a.ContoAvere != null);
             query = rigaDigitata.VoceIvaId == null ? query.Where(a => a.VoceIva == null) : query.Where(a => a.VoceIva != null);
@@ -48,48 +48,43 @@ namespace SeacDigitTemplate.Services
             query = rigaDigitata.Imponibile == null ? query.Where(a => a.Imponibile == null) : query.Where(a => a.Imponibile != null);
             query = rigaDigitata.Iva == null ? query.Where(a => a.Iva == null) : query.Where(a => a.Iva == rigaDigitata.Iva.ToString() || a.Iva == "*");
 
-            var applicationTemplateList = await query.ToListAsync();
+            var applicationTemplates = await query.ToListAsync();
 
-            if (applicationTemplateList.Count == 0)
+            if (applicationTemplates.Count == 0)
             {
                 Console.WriteLine("No template found");
                 return null;
 
             }
-            else if (applicationTemplateList.Count > 1)
+            else if (applicationTemplates.Count > 1)
             {
                 Console.WriteLine("More than  one template found");
-
-                //var bestapplicationtemplates = applicationTemplates.GetType().GetProperties()
-                //.Where(pi => pi.GetValue(applicationTemplates) is string)
-                //.Select(pi => (string)pi.GetValue(applicationTemplates))
-                //.Count(value => value=="*");
-                return applicationTemplateList.OrderBy(x => CountStar(x)).First();
+                return applicationTemplates.OrderBy(x => CountStar(x)).First();
             }
-            else  
+            else
             {
-                return applicationTemplateList.First();
-            }    
+                return applicationTemplates.First();
+            }
         }
 
 
 
-        int CountStar(ApplicazioneTemplateEffetto applicationTamplateEffetto)
+        int CountStar(ApplicazioneTemplateDocumento applicationTamplateDocumento)
         {
             int stars = 0;
-            foreach (PropertyInfo pi in applicationTamplateEffetto.GetType().GetProperties())
+            foreach (PropertyInfo pi in applicationTamplateDocumento.GetType().GetProperties())
             {
                 if (pi.PropertyType == typeof(string))
                 {
-                    string value = (string)pi.GetValue(applicationTamplateEffetto);
-                    if (value =="*")
+                    string value = (string)pi.GetValue(applicationTamplateDocumento);
+                    if (value == "*")
                     {
                         stars++;
                     }
                 }
             }
             return stars;
-            
+
         }
     }
 }

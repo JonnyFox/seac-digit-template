@@ -36,10 +36,10 @@ namespace SeacDigitTemplate.Controllers
             var documento = await _documentoService.GetByIdAsync(id);
             var righe = await _rigaDigitataService.GetByDocumentoIdAsync(id);
             var originalEffects = await _effettoService.GetEffettosFromInputListAsync(documento, righe);
-            var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(originalEffects.EffettoRigaList);
-            var situazioneContos = _effettoService.GetSituazioneConto(originalEffects.EffettoRigaList);
+            var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(originalEffects.EffettoList);
+            var situazioneContos = _effettoService.GetSituazioneConto(originalEffects.EffettoList);
 
-            var effettoCalcoloDto = _mapper.Map<EffettoCalcoloDto>(originalEffects.EffettoRigaList);
+            var effettoCalcoloDto = _mapper.Map<EffettoCalcoloDto>(originalEffects.EffettoList);
             effettoCalcoloDto.SituazioneContos = _mapper.Map<List<SituazioneContoDto>>(situazioneContos);
             effettoCalcoloDto.SituazioneVoceIvas = _mapper.Map<List<SituazioneVoceIvaDto>>(situazioneVoceIvas);
             effettoCalcoloDto.EffettoDocumentoList = _mapper.Map<List<EffettoDocumentoDto>>(originalEffects.EffettoDocumentoList);
@@ -52,10 +52,10 @@ namespace SeacDigitTemplate.Controllers
         {
 
             var originalEffects = await _effettoService.GetEffettosFromInputListAsync(documento, documento.rigaDigitataList);
-            var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(originalEffects.EffettoRigaList);
-            var situazioneContos = _effettoService.GetSituazioneConto(originalEffects.EffettoRigaList);
+            var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(originalEffects.EffettoList);
+            var situazioneContos = _effettoService.GetSituazioneConto(originalEffects.EffettoList);
 
-            var effettoCalcoloDto = _mapper.Map<EffettoCalcoloDto>(originalEffects.EffettoRigaList);
+            var effettoCalcoloDto = _mapper.Map<EffettoCalcoloDto>(originalEffects.EffettoList);
             effettoCalcoloDto.SituazioneContos = _mapper.Map<List<SituazioneContoDto>>(situazioneContos);
             effettoCalcoloDto.SituazioneVoceIvas = _mapper.Map<List<SituazioneVoceIvaDto>>(situazioneVoceIvas);
             effettoCalcoloDto.EffettoDocumentoList = _mapper.Map<List<EffettoDocumentoDto>>(originalEffects.EffettoDocumentoList);

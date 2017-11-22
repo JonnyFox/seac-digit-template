@@ -42,6 +42,7 @@ namespace SeacDigitTemplate
             services.AddTransient<SituazioneContoService>();
             services.AddTransient<TitoloInapplicabilitaService>();
             services.AddTransient<ApplicazioneTemplateEffettoService>();
+            services.AddTransient<ApplicazioneTemplateDocumentoService>();
             services.AddTransient<TemplateEffettoService>();
             services.AddTransient<TemplateDocumentoService>();
             services.AddCors();
@@ -61,8 +62,8 @@ namespace SeacDigitTemplate
 
             cfg.CreateMap<AliquotaIva, AliquotaIvaDto>();
             cfg.CreateMap<AliquotaIvaDto, AliquotaIva>();
-            cfg.CreateMap<EffettoRiga, EffettoRigaDto>();
-            cfg.CreateMap<EffettoRigaDto, EffettoRiga>();
+            cfg.CreateMap<Effetto, EffettoDto>();
+            cfg.CreateMap<EffettoDto, Effetto>();
             cfg.CreateMap<EffettoDocumento, EffettoDocumentoDto>();
             cfg.CreateMap<EffettoDocumentoDto, EffettoDocumento>();
             cfg.CreateMap<SituazioneConto, SituazioneContoDto>();
@@ -74,14 +75,14 @@ namespace SeacDigitTemplate
             cfg.CreateMap<SituazioneVoceIva, SituazioneVoceIvaDto>();
             cfg.CreateMap<SituazioneConto, SituazioneContoDto>();
             
-            cfg.CreateMap<EffettoRiga, SituazioneContoDto>();
-            cfg.CreateMap<EffettoRiga, SituazioneVoceIvaDto>();
-            cfg.CreateMap<EffettoRiga, EffettoContoDto>();
-            cfg.CreateMap<EffettoRiga, EffettoIvaDto>();
+            cfg.CreateMap<Effetto, SituazioneContoDto>();
+            cfg.CreateMap<Effetto, SituazioneVoceIvaDto>();
+            cfg.CreateMap<Effetto, EffettoContoDto>();
+            cfg.CreateMap<Effetto, EffettoIvaDto>();
             
 
             
-            cfg.CreateMap<List<EffettoRiga>, EffettoCalcoloDto>()
+            cfg.CreateMap<List<Effetto>, EffettoCalcoloDto>()
                 .ForMember(dest => dest.EffettoContos, opt => opt.MapFrom(src => src.Where(e => e.ContoAvereId != null || e.ContoDareId != null)))
                 .ForMember(dest => dest.EffettoIvas, opt => opt.MapFrom(src => src.Where(e => e.VoceIvaId != null)));
             });

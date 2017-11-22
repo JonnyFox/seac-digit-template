@@ -1,6 +1,6 @@
 ﻿namespace SeacDigitTemplate.Dtos
 {
-    public class EffettoRigaDto
+    public class EffettoDto
     {
         public int Id { get; set; }
         public int IdRow { get; set; }

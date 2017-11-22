@@ -17,9 +17,9 @@ namespace SeacDigitTemplate.Services
             _ctx = ctx;
         }
 
-        public Task<List<TemplateDocumento>> GetTemplateEffettoAsync(ApplicazioneTemplateEffetto appTemplateEffetto)
+        public Task<List<TemplateDocumento>> GetTemplateDocumentoAsync(ApplicazioneTemplateDocumento appTemplateDocumento)
         {
-            return _ctx.TemplateDocumentos.Where(te => te.ApplicazioneTemplateEffettoId == appTemplateEffetto.Id).ToListAsync();
+            return _ctx.TemplateDocumentos.Where(te => te.ApplicazioneTemplateDocumentoId == appTemplateDocumento.Id).ToListAsync();
         }
     }
 }
