@@ -84,6 +84,10 @@ export class DocumentComponent implements OnInit {
     public titoloInapplicabilitaList: Array<TitoloInapplicabilita> = [];
     public voceIvaList: Array<VoceIva> = [];
     public trattamento = TrattamentoEnum;
+    public tipo = DocumentoTipoEnum;
+    public caratteristica = DocumentoCaratteristicaEnum;
+    public sospeso = DocumentoSospensioneEnum;
+    public registro = RegistroTipoEnum;
 
     public rigaDigitataList: FormArray = new FormArray([]);
 

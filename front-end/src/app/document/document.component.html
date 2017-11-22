@@ -128,17 +128,17 @@
     
                         <ng-container matColumnDef="sospeso">
                             <mat-header-cell *matHeaderCellDef>Sospeso</mat-header-cell>
-                            <mat-cell *matCellDef="let element">{{element.sospeso}}</mat-cell>
+                            <mat-cell *matCellDef="let element">{{sospeso[element.sospeso]}}</mat-cell>
                         </ng-container>
     
                         <ng-container matColumnDef="tipo">
                             <mat-header-cell *matHeaderCellDef>Tipo</mat-header-cell>
-                            <mat-cell *matCellDef="let element">{{element.tipo}}</mat-cell>
+                            <mat-cell *matCellDef="let element">{{tipo[element.tipo]}}</mat-cell>
                         </ng-container>
     
                         <ng-container matColumnDef="caratteristica">
                             <mat-header-cell *matHeaderCellDef>Caratteristica</mat-header-cell>
-                            <mat-cell *matCellDef="let element">{{element.caratteristica}}</mat-cell>
+                            <mat-cell *matCellDef="let element">{{caratteristica[element.caratteristica]}}</mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="cliforId">
@@ -148,7 +148,7 @@
 
                         <ng-container matColumnDef="registro">
                             <mat-header-cell *matHeaderCellDef>Registro</mat-header-cell>
-                            <mat-cell *matCellDef="let element">{{element.registro}}</mat-cell>
+                            <mat-cell *matCellDef="let element">{{registro[element.registro]}}</mat-cell>
                         </ng-container>
                         
                         <ng-container matColumnDef="riferimentoDocumentoId">
@@ -342,3 +342,26 @@
     <mat-icon>check</mat-icon>
 </button>
 <p>Form status: {{ editItemForm.status | json }}</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -223,10 +223,9 @@ namespace SeacDigitTemplate.Services
                     Valore = cd.Valore + ca.Valore,
                     VariazioneFiscale = cd.VariazioneFiscale + ca.VariazioneFiscale
                 });
-
-            result = result.Union(contoAvereResult);
-            result = result.Union(contoDareResult);
-
+            
+            var difference = contoAvereResult.Except(contoDareResult, new MyComparer());
+            result = result.Union(difference);
             return result.ToList();
 
         }
@@ -298,8 +297,8 @@ namespace SeacDigitTemplate.Services
             return newDocumento;
 
         }
-            private EffettoRiga CreateEffettoRiga(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto, Documento documento)
-            {
+        private EffettoRiga CreateEffettoRiga(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto, Documento documento)
+        {
             var newEffetto = new EffettoRiga
             {
                 TemplateGenerazioneEffetto = templateEffetto.Id,
@@ -357,8 +356,23 @@ namespace SeacDigitTemplate.Services
                     currentEffettoProperty.SetValue(newEffetto, value);
                 }
             }
-
             return newEffetto;
+        }
+        internal class MyComparer : IEqualityComparer<SituazioneConto>
+        {
+            public bool Equals(SituazioneConto x, SituazioneConto y)
+            {
+                if (string.Equals(x.ContoId.ToString(), y.ContoId.ToString(), StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+                return false;
+            }
+
+            public int GetHashCode(SituazioneConto obj)
+            {
+                return obj.ContoId.GetHashCode();
+            }
         }
     }
 }
