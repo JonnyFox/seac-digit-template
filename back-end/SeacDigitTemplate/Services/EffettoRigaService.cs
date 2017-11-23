@@ -144,7 +144,7 @@ namespace SeacDigitTemplate.Services
         {
             var RigaList = new List<RigaDigitata>();
 
-            var applicationTemplate = await _applicazioneTemplateRigaService.GetTemplateAsync(effettoDocumento);
+            var applicationTemplate = await _applicazioneTemplateRigaService.GetTemplateAsync(effettoDocumento, rigaDigitata ,documento);
 
             if (applicationTemplate == null)
             {
@@ -168,30 +168,30 @@ namespace SeacDigitTemplate.Services
                 
             };
 
-            foreach (var templateEffettoField in TemplateEffettoStringProperties)
+            foreach (var templateEffettoField in TemplateRigaStringProperties)
             {
-                var templateEffettoFieldValue = templateEffettoField.GetValue(templateRiga) as string;
+                var templateRigaFieldValue = templateEffettoField.GetValue(templateRiga) as string;
 
-                if (templateEffettoFieldValue != null)
+                if (templateRigaFieldValue != null)
                 {
                     Object value = null;
 
-                    var currentEffettoProperty = EffettoProperties.Single(ep => ep.Name == templateEffettoField.Name);
+                    var currentRigaProperty = RigaDigitataProperties.Single(ep => ep.Name == templateEffettoField.Name);
 
-                    if (templateEffettoFieldValue.StartsWith("*"))
+                    if (templateRigaFieldValue.StartsWith("*"))
                     {
-                        if (currentEffettoProperty.PropertyType == typeof(int) || currentEffettoProperty.PropertyType == typeof(int?))
+                        if (currentRigaProperty.PropertyType == typeof(int) || currentRigaProperty.PropertyType == typeof(int?))
                         {
-                            value = templateEffettoFieldValue.Substring(1).ToNullableInt();
+                            value = templateRigaFieldValue.Substring(1).ToNullableInt();
                         }
                         else
                         {
-                            value = Enum.Parse(Nullable.GetUnderlyingType(currentEffettoProperty.PropertyType), templateEffettoFieldValue.Substring(1));
+                            value = Enum.Parse(Nullable.GetUnderlyingType(currentRigaProperty.PropertyType), templateRigaFieldValue.Substring(1));
                         }
                     }
-                    else if (templateEffettoFieldValue.StartsWith("#"))
+                    else if (templateRigaFieldValue.StartsWith("#"))
                     {
-                        var formula = templateEffettoFieldValue.Substring(1);
+                        var formula = templateRigaFieldValue.Substring(1);
                         var regex = new Regex(@"[^\d\W]+");
 
                         var variables = new Dictionary<string, double>();
@@ -212,10 +212,10 @@ namespace SeacDigitTemplate.Services
                     }
                     else
                     {
-                        value = RigaDigitataProperties.Single(rdp => rdp.Name == templateEffettoFieldValue).GetValue(rigaDigitata);
+                        value = RigaDigitataProperties.Single(rdp => rdp.Name == templateRigaFieldValue).GetValue(rigaDigitata);
                     }
 
-                    currentEffettoProperty.SetValue(newEffettoRiga, value);
+                    currentRigaProperty.SetValue(newEffettoRiga, value);
                 }
             }
             return newEffettoRiga;

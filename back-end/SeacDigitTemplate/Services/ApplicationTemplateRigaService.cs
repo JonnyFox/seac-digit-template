@@ -29,7 +29,7 @@ namespace SeacDigitTemplate.Services
             return _ctx.ApplicazioneTemplateRigaList.Where(c => c.Id == id).ToListAsync();
         }
 
-        public async Task<ApplicazioneTemplateRiga> GetTemplateAsync(Documento effettoDocumento)
+        public async Task<ApplicazioneTemplateRiga> GetTemplateAsync(Documento effettoDocumento, RigaDigitata rigaDigitata , Documento documento)
         {
             var query = _ctx.ApplicazioneTemplateRigaList.AsQueryable();
 
