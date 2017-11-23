@@ -13,7 +13,6 @@ namespace SeacDigitTemplate.Models
         public int ApplicazioneTemplateDocumentoId { get; set; }
         public ApplicazioneTemplateDocumento ApplicazioneTemplateDocumento { get; set; }
 
-        //public int IdDocumento { get; set; }
         public string Totale { get; set; }
         public string RitenutaAcconto { get; set; }
         public string Sospeso { get; set; }
@@ -24,6 +23,5 @@ namespace SeacDigitTemplate.Models
         public string RiferimentoDocumentoId { get; set; }
         public string Numero { get; set; }
         public string Protocollo { get; set; }
-        //public List<RigaDigitata> rigaDigitataList { get; set; }
     }
 }

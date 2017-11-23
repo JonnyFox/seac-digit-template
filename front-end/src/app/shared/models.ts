@@ -43,6 +43,8 @@ export class Documento {
     registro: RegistroTipoEnum;
     riferimentoDocumentoId: number | null;
     rigaDigitataList: RigaDigitata[];
+    TemplateGenerazioneEffettoDocumentoId: number | null;
+
 }
 
 export enum CliforSoggettoEnum {

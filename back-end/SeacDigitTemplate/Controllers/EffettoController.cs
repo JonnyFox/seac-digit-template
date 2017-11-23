@@ -62,7 +62,7 @@ namespace SeacDigitTemplate.Controllers
             var effettoCalcoloDto = _mapper.Map<EffettoCalcoloDto>(EffettoList);
             effettoCalcoloDto.SituazioneContos = _mapper.Map<List<SituazioneContoDto>>(situazioneContos);
             effettoCalcoloDto.SituazioneVoceIvas = _mapper.Map<List<SituazioneVoceIvaDto>>(situazioneVoceIvas);
-            effettoCalcoloDto.EffettoDocumentoList = _mapper.Map<List<EffettoDocumentoDto>>(EffettoDocumentoList);
+            effettoCalcoloDto.EffettoDocumentoList = _mapper.Map<List<DocumentoDto>>(EffettoDocumentoList);
 
             return Ok(effettoCalcoloDto);
         }

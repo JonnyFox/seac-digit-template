@@ -88,7 +88,7 @@ namespace SeacDigitTemplate.Services
             {
                 if (_effettoDocumentoFields == null)
                 {
-                    _effettoDocumentoFields = (typeof(EffettoDocumento)).GetProperties();
+                    _effettoDocumentoFields = (typeof(Documento)).GetProperties();
                 }
 
                 return _effettoDocumentoFields;
@@ -110,10 +110,10 @@ namespace SeacDigitTemplate.Services
 
         }
 
-        public async Task<List<EffettoDocumento>> GetDocumentoListFromInputListAsync(Documento documento, List<RigaDigitata> rigaDigitataList)
+        public async Task<List<Documento>> GetDocumentoListFromInputListAsync(Documento documento, List<RigaDigitata> rigaDigitataList)
         {
             
-            var effettoDocumentoList = new List<EffettoDocumento>();
+            var effettoDocumentoList = new List<Documento>();
 
             foreach (var rd in rigaDigitataList)
             {
@@ -123,9 +123,9 @@ namespace SeacDigitTemplate.Services
             //return effetto.EffettoList.Where(e => e.Valore != 0 || e.VariazioneFiscale != 0 || e.Imponibile != 0 || e.Iva != 0).ToList();     A COSA SERVE QUESTA COSA  <<<!!>>>
             return effettoDocumentoList;
         }
-        public async Task<List<EffettoDocumento>> GetEffettoDocumentoListFromInputAsync(RigaDigitata rigaDigitata, Documento documento)
+        public async Task<List<Documento>> GetEffettoDocumentoListFromInputAsync(RigaDigitata rigaDigitata, Documento documento)
         {
-            var effettoDocumentoList = new List<EffettoDocumento>();
+            var effettoDocumentoList = new List<Documento>();
 
             var applicationTemplate = await _applicazioneTemplateDocumentoService.GetTemplateAsync(rigaDigitata, documento);
 
@@ -140,11 +140,11 @@ namespace SeacDigitTemplate.Services
             return effettoDocumentoList;
         }
 
-        private EffettoDocumento CreateEffettoDocumento(RigaDigitata rigaDigitata, TemplateDocumento templateEffetto, Documento documento)
+        private Documento CreateEffettoDocumento(RigaDigitata rigaDigitata, TemplateDocumento templateEffetto, Documento documento)
         {
-            var newDocumento = new EffettoDocumento
+            var newDocumento = new Documento
             {
-                TemplateGenerazioneEffetto = templateEffetto.Id,
+                TemplateGenerazioneEffettoDocumentoId = templateEffetto.Id,
                 RiferimentoDocumentoId = documento.Id
             };
             foreach (var templateEffettoField in TemplateEffettoDocumentoStringProperties)

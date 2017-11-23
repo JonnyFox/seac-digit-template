@@ -88,7 +88,7 @@ namespace SeacDigitTemplate.Services
             {
                 if (_effettoDocumentoFields == null)
                 {
-                    _effettoDocumentoFields = (typeof(EffettoDocumento)).GetProperties();
+                    _effettoDocumentoFields = (typeof(Documento)).GetProperties();
                 }
 
                 return _effettoDocumentoFields;
@@ -107,7 +107,7 @@ namespace SeacDigitTemplate.Services
         {
             
             var effettoList = new List<Effetto>();
-            var effettoDocumentoList = new List<EffettoDocumento>();
+            var effettoDocumentoList = new List<Documento>();
 
             foreach (var rd in rigaDigitataList)
             {
@@ -160,7 +160,7 @@ namespace SeacDigitTemplate.Services
                     {
                         ContoId = kvp.Key.Value,
                         Valore = -kvp.Sum(v => v.Valore),
-                        VariazioneFiscale = 0 //kvp.Sum(v => v.VariazioneF)
+                        VariazioneFiscale = -kvp.Sum(v => v.VariazioneFiscale) 
                     };
                 });
 
@@ -210,7 +210,7 @@ namespace SeacDigitTemplate.Services
         {
             var newEffetto = new Effetto
             {
-                TemplateGenerazioneEffetto = templateEffetto.Id,
+                TemplateGenerazioneEffettoId = templateEffetto.Id,
                 RigaDigitataId = rigaDigitata.Id,
                 DocumentoId = rigaDigitata.DocumentoId
             };

@@ -2,24 +2,26 @@
 
 namespace SeacDigitTemplate.Models
 {
-    public class TemplateEffettoRiga
+    public class TemplateRiga
     {
         public int Id { get; set; }
 
         public int ApplicazioneTemplateEffettoRigaId { get; set; }
-        public ApplicazioneTemplateEffettoRiga ApplicazioneTemplateEffetto { get; set; }
+        public ApplicazioneTemplateRiga ApplicazioneTemplateEffetto { get; set; }
 
+        public string DocumentoId { get; set; }
         public string ContoDareId { get; set; }
         public string ContoAvereId { get; set; }
         public string VoceIvaId { get; set; }
+        public string AliquotaIvaId { get; set; }
+        public string PercentualeAliquotaIva { get; set; }
         public string Trattamento { get; set; }
         public string TitoloInapplicabilitaId { get; set; }
-        public string AliquotaIvaId { get; set; }
-        public string Valore { get; set; }
-        public string VariazioneFiscale { get; set; }
         public string Imponibile { get; set; }
         public string Iva { get; set; }
-        public string RifRow { get; set; }
-        public string DataOperazione { get; set; }
+        public string PercentualeIndetraibilita { get; set; }
+        public string PercentualeIndeducibilita { get; set; }
+        public string Settore { get; set; }
+        public string Note { get; set; }
     }
 }

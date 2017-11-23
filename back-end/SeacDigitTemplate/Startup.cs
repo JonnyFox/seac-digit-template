@@ -46,8 +46,8 @@ namespace SeacDigitTemplate
             services.AddTransient<TemplateEffettoService>();
             services.AddTransient<TemplateDocumentoService>();
             services.AddTransient<EffettoDocumentoService>();
-            services.AddTransient<TemplateEffettoRigaService>();
-            services.AddTransient<ApplicazioneTemplateEffettoRigaService>();
+            services.AddTransient<TemplateRigaService>();
+            services.AddTransient<ApplicazioneTemplateRigaService>();
             services.AddTransient<EffettoRigaService>();
             services.AddCors();
 
@@ -68,10 +68,9 @@ namespace SeacDigitTemplate
             cfg.CreateMap<AliquotaIvaDto, AliquotaIva>();
             cfg.CreateMap<Effetto, EffettoDto>();
             cfg.CreateMap<EffettoDto, Effetto>();
-            cfg.CreateMap<EffettoRiga, EffettoRigaDto>();
-            cfg.CreateMap<EffettoRigaDto, EffettoRiga>();
-            cfg.CreateMap<EffettoDocumento, EffettoDocumentoDto>();
-            cfg.CreateMap<EffettoDocumentoDto, EffettoDocumento>();
+            cfg.CreateMap<RigaDigitata, EffettoRigaDto>();
+            cfg.CreateMap<EffettoRigaDto, RigaDigitata>();
+            
             cfg.CreateMap<SituazioneConto, SituazioneContoDto>();
             cfg.CreateMap<SituazioneContoDto, SituazioneConto>();
             cfg.CreateMap<TitoloInapplicabilita, TitoloInapplicabilitaDto>();

@@ -8,7 +8,7 @@ namespace SeacDigitTemplate.Model
 {
     public class ResultList
     {
-        public List<EffettoDocumento> EffettoDocumentoList  { get; set; }
+        public List<Documento> EffettoDocumentoList  { get; set; }
         public List<Effetto>  EffettoList{ get; set; }
     }
 }

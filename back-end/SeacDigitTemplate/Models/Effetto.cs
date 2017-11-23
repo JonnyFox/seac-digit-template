@@ -35,7 +35,7 @@ namespace SeacDigitTemplate.Model
 
         public string DataOperazione { get; set; }
 
-        public int TemplateGenerazioneEffetto { get; set; }
+        public int TemplateGenerazioneEffettoId { get; set; }
         public TemplateEffetto TemplateEffetto { get; set; }
     }
 }

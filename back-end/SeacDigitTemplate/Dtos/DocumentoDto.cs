@@ -10,10 +10,11 @@ namespace SeacDigitTemplate.Dtos
         public DocumentoSospensioneEnum Sospeso { get; set; }
         public DocumentoTipoEnum Tipo { get; set; }
         public DocumentoCaratteristicaEnum Caratteristica { get; set; }
-        public int CliforId {  get; set; }
+        public int CliforId { get; set; }
         public RegistroTipoEnum Registro { get; set; }
         public int RiferimentoDocumentoId { get; set; }
         public string Numero { get; set; }
         public int Protocollo { get; set; }
+        public int? TemplateGenerazioneEffettoDocumentoId { get; set; }
     }
 }

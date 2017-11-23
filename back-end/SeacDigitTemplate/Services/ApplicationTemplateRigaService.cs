@@ -10,28 +10,28 @@ using System.Threading.Tasks;
 
 namespace SeacDigitTemplate.Services
 {
-    public class ApplicazioneTemplateEffettoRigaService
+    public class ApplicazioneTemplateRigaService
     {
         SeacDigitTemplateContext _ctx;
 
-        public ApplicazioneTemplateEffettoRigaService(SeacDigitTemplateContext ctx)
+        public ApplicazioneTemplateRigaService(SeacDigitTemplateContext ctx)
         {
             _ctx = ctx;
         }
 
-        public Task<List<ApplicazioneTemplateEffettoRiga>> GetAll()
+        public Task<List<ApplicazioneTemplateRiga>> GetAll()
         {
-            return _ctx.ApplicazioneTemplateEffettoRigaList.ToListAsync();
+            return _ctx.ApplicazioneTemplateRigaList.ToListAsync();
         }
 
-        public Task<List<ApplicazioneTemplateEffettoRiga>> GetById(int id)
+        public Task<List<ApplicazioneTemplateRiga>> GetById(int id)
         {
-            return _ctx.ApplicazioneTemplateEffettoRigaList.Where(c => c.Id == id).ToListAsync();
+            return _ctx.ApplicazioneTemplateRigaList.Where(c => c.Id == id).ToListAsync();
         }
 
-        public async Task<ApplicazioneTemplateEffettoRiga> GetTemplateAsync(EffettoDocumento effettoDocumento)
+        public async Task<ApplicazioneTemplateRiga> GetTemplateAsync(Documento effettoDocumento)
         {
-            var query = _ctx.ApplicazioneTemplateEffettoRigaList.AsQueryable();
+            var query = _ctx.ApplicazioneTemplateRigaList.AsQueryable();
 
             //query = documento.RitenutaAcconto == null ? query.Where(a => a.RitenutaAcconto == null) : query.Where(a => a.RitenutaAcconto != null);
             //query = query.Where(a => a.Sospeso == documento.Sospeso.ToString() || a.Sospeso == "*");
@@ -71,7 +71,7 @@ namespace SeacDigitTemplate.Services
 
 
 
-        int CountStar(ApplicazioneTemplateEffettoRiga applicationTamplateEffetto)
+        int CountStar(ApplicazioneTemplateRiga applicationTamplateEffetto)
         {
             int stars = 0;
             foreach (PropertyInfo pi in applicationTamplateEffetto.GetType().GetProperties())
