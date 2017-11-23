@@ -113,8 +113,8 @@ namespace SeacDigitTemplate.Services
             {
                 effettoList.AddRange(await GetEffettoListFromInputAsync(rd,documento));
             }
-            return effettoList.Where(e => e.Valore != 0 || e.VariazioneFiscale != 0 || e.Imponibile != 0 || e.Iva != 0).ToList(); 
-            
+            //return effettoList.Where(e => e.Valore != 0 || e.VariazioneFiscale != 0 || e.Imponibile != 0 || e.Iva != 0).ToList(); 
+            return effettoList;
         }
         public async Task<List<Effetto>> GetEffettoListFromInputAsync(RigaDigitata rigaDigitata, Documento documento)
         {
@@ -172,8 +172,10 @@ namespace SeacDigitTemplate.Services
                     VariazioneFiscale = cd.VariazioneFiscale + ca.VariazioneFiscale
                 });
             
-            var difference = contoAvereResult.Except(contoDareResult, new MyComparer());
-            result = result.Union(difference);
+            var differenceAvere = contoAvereResult.Except(contoDareResult, new MyComparer());
+            var differenceDare = contoDareResult.Except(contoAvereResult, new MyComparer());
+            result = result.Union(differenceAvere);
+            result = result.Union(differenceDare);
             return result.ToList();
 
         }

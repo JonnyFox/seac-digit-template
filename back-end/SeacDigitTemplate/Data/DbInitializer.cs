@@ -362,9 +362,9 @@ namespace SeacDigitTemplate.Data
                     PercentualeIndetraibilita = "*",
                     PercentualeIndeducibilita = "*",
                     RitenutaAcconto = "0.0m",
-                    Sospeso = DocumentoSospensioneEnum.Conto.ToString(),
-                    Tipo = DocumentoTipoEnum.Contabile.ToString(),
-                    Caratteristica = DocumentoCaratteristicaEnum.FatturaUE.ToString(),
+                    Sospeso = DocumentoSospensioneEnum.None.ToString(),
+                    Tipo = DocumentoTipoEnum.Fattura.ToString(),
+                    Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
                     Registro = RegistroTipoEnum.Emesse.ToString(),
                 },
                 //Documento 3
