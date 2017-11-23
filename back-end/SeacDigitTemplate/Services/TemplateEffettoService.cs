@@ -19,7 +19,7 @@ namespace SeacDigitTemplate.Services
 
         public Task<List<TemplateEffetto>> GetTemplateEffettoAsync(ApplicazioneTemplateEffetto appTemplateEffetto)
         {
-            return _ctx.TemplateEffettos.Where(te => te.ApplicazioneTemplateEffettoId == appTemplateEffetto.Id).ToListAsync();
+            return _ctx.TemplateEffettoList.Where(te => te.ApplicazioneTemplateEffettoId == appTemplateEffetto.Id).ToListAsync();
         }
     }
 }

@@ -589,7 +589,7 @@ namespace SeacDigitTemplate.Data
 
             foreach (TemplateEffetto t in templateEffettos)
             {
-                context.TemplateEffettos.Add(t);
+                context.TemplateEffettoList.Add(t);
             }
 
 
@@ -610,7 +610,7 @@ namespace SeacDigitTemplate.Data
 
             foreach (TemplateDocumento t in templateEffettoDocumentoList)
             {
-                context.TemplateDocumentos.Add(t);
+                context.TemplateDocumentoList.Add(t);
             }
 
             context.SaveChanges();

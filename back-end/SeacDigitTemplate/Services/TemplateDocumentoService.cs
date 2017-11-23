@@ -19,7 +19,7 @@ namespace SeacDigitTemplate.Services
 
         public Task<List<TemplateDocumento>> GetTemplateDocumentoAsync(ApplicazioneTemplateDocumento appTemplateDocumento)
         {
-            return _ctx.TemplateDocumentos.Where(te => te.ApplicazioneTemplateDocumentoId == appTemplateDocumento.Id).ToListAsync();
+            return _ctx.TemplateDocumentoList.Where(te => te.ApplicazioneTemplateDocumentoId == appTemplateDocumento.Id).ToListAsync();
         }
     }
 }

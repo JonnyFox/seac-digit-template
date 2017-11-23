@@ -1,11 +1,10 @@
 ﻿namespace SeacDigitTemplate.Dtos
 {
-    public class EffettoRigaDto
+    public class EffettoDto
     {
         public int Id { get; set; }
         public int IdRow { get; set; }
         public int IdDoc { get; set; }
-        public int IdDocEff { get; set; }
         public int? ContoDareId { get; set; }
         public int? ContoAvereId { get; set; }
         public int? VoceIVAId { get; set; }
@@ -17,6 +16,6 @@
         public decimal Iva { get; set; }
         public int? RiferimentoEffetto { get; set; }
         public string DataOperazione { get; set; }
-        public int TemplateGenerazioneEffettoRiga { get; set; }
+        public int TemplateGenerazioneEffetto { get; set; }
     }
 }

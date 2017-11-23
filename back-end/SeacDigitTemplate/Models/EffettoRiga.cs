@@ -2,11 +2,12 @@
 
 namespace SeacDigitTemplate.Model
 {
-    public class Effetto
+    public class EffettoRiga
     {
         public int Id { get; set; }
         public int RigaDigitataId { get; set; }
         public int DocumentoId { get; set; }
+        public int EffettoDocumentoId { get; set; }
         public int? ContoDareId { get; set; }
         public Conto ContoDare { get; set; }
 
@@ -29,13 +30,12 @@ namespace SeacDigitTemplate.Model
         public decimal Imponibile { get; set; }
         public decimal Iva { get; set; }
 
-        public int? RiferimentoEffettoId { get; set; }
-        public Effetto RiferimentoEffetto { get; set; }
-
+        public int? RiferimentoEffettoRigaId { get; set; }
+        public EffettoRiga RiferimentoEffettoRiga { get; set; }
 
         public string DataOperazione { get; set; }
 
-        public int TemplateGenerazioneEffetto { get; set; }
-        public TemplateEffetto TemplateEffetto { get; set; }
+        public int TemplateGenerazioneEffettoRiga { get; set; }
+        public TemplateEffettoRiga TemplateEffetto { get; set; }
     }
 }
