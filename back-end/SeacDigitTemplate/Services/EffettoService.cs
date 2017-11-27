@@ -94,6 +94,9 @@ namespace SeacDigitTemplate.Services
                 return _effettoDocumentoFields;
             }
         }
+
+        public int x;
+
         public EffettoService(SeacDigitTemplateContext context, ApplicazioneTemplateEffettoService applicazioneTemplateEffettoService, TemplateEffettoService templateEffettoService, TemplateDocumentoService templateDocumentoService)
         {
             _templateDocumentoService = templateDocumentoService;
@@ -210,6 +213,7 @@ namespace SeacDigitTemplate.Services
         {
             var newEffetto = new Effetto
             {
+                Id = x++,
                 TemplateGenerazioneEffettoId = templateEffetto.Id,
                 RigaDigitataId = rigaDigitata.Id,
                 DocumentoId = rigaDigitata.DocumentoId

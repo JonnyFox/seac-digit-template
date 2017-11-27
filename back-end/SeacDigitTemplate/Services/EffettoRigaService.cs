@@ -124,6 +124,8 @@ namespace SeacDigitTemplate.Services
 
         }
 
+        public int x;
+
         public async Task<List<RigaDigitata>> GetEffettoRigaListFromInputListAsync(Documento documento, List<RigaDigitata> rigaDigitataList, List<Documento> effettoDocumentoList)
         {
 
@@ -165,6 +167,7 @@ namespace SeacDigitTemplate.Services
         {
             var newEffettoRiga = new RigaDigitata
             {
+                Id = x++,
                 TemplateGenerazioneEffettoRigaId = templateRiga.Id,
                 DocumentoId = effettoDocumento.Id
             };

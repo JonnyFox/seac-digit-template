@@ -96,10 +96,7 @@ namespace SeacDigitTemplate.Services
         }
 
 
-
-
-
-
+        public int x=0;
 
         public EffettoDocumentoService(SeacDigitTemplateContext context, ApplicazioneTemplateEffettoService applicazioneTemplateEffettoService, TemplateDocumentoService templateDocumentoService, ApplicazioneTemplateDocumentoService applicazioneTemplateDocumentoService)
         {
@@ -144,7 +141,7 @@ namespace SeacDigitTemplate.Services
         {
             var newDocumento = new Documento
             {
-                Id = documento.Id+20,
+                Id = x++,
                 TemplateGenerazioneEffettoDocumentoId = templateEffetto.Id,
                 RiferimentoDocumentoId = documento.Id
             };
