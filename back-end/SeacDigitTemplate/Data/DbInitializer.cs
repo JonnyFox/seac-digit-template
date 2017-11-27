@@ -603,6 +603,7 @@ namespace SeacDigitTemplate.Data
                     Tipo ="§Tipo" ,
                     Caratteristica ="§Caratteristica" ,
                     Registro="§Registro",
+                    CliforId="§CliforId"
                 }
             };
 
@@ -655,6 +656,8 @@ namespace SeacDigitTemplate.Data
                     PercentualeAliquotaIva = "&PercentualeAliquotaIva",
                     Imponibile ="&Imponibile" ,
                     Iva="&Iva",
+
+
 
                 }
             };
