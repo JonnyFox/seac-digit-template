@@ -147,7 +147,8 @@ export class EffettoCalcolo {
             this.effettoIvas =
             this.situazioneContos =
             this.situazioneVoceIvas =
-            this.effettoDocumentoList = [];
+            this.effettoDocumentoList =
+            this.effettoRigaList = [];
     }
 
     effettoContos: EffettoConto[];
@@ -155,6 +156,7 @@ export class EffettoCalcolo {
     situazioneContos: SituazioneConto[];
     situazioneVoceIvas: SituazioneVoceIva[];
     effettoDocumentoList: EffettoDocumento[];
+    effettoRigaList: EffettoRiga[];
 }
 
 export class EffettoConto {
@@ -191,5 +193,21 @@ export class EffettoDocumento {
     cliforId: number;
     registro: RegistroTipoEnum;
     riferimentoDocumentoId: number | null;
+}
+export class EffettoRiga {
+    id: number;
+    documentoId: number | null;
+    contoDareId: number | null;
+    contoAvereId: number | null;
+    voceIvaId: number | null;
+    trattamento: TrattamentoEnum;
+    titoloInapplicabilitaId: number | null;
+    aliquotaIvaId: number | null;
+    imponibile: number | null;
+    iva: number | null;
+    percentualeIndetraibilita: number | null;
+    percentualeIndeducibilita: number | null;
+    settore: number | null;
+    note: string | null;
 }
 

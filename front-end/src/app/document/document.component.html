@@ -162,6 +162,87 @@
                     </mat-table>
                 </mat-card-content>
             </mat-card>
+            <mat-card class="some-top effects">
+                <mat-card-title>Effetto RigaDigitata</mat-card-title>
+                <mat-card-content>
+                    <mat-table #table [dataSource]="dataSourceEffettoRiga">
+    
+                        <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef>Id Riga</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="documentoId">
+                            <mat-header-cell *matHeaderCellDef>Id Documento</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.documentoId}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="contoDareId">
+                            <mat-header-cell *matHeaderCellDef>Conto Dare</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{getContoDescription(element.contoDareId)}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="contoAvereId">
+                            <mat-header-cell *matHeaderCellDef>Conto Avere</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{getContoDescription(element.contoAvereId)}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="voceIvaId">
+                            <mat-header-cell *matHeaderCellDef>Voce Iva</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{getVoceIvaDescription(element.voceIvaId)}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="trattamento">
+                            <mat-header-cell *matHeaderCellDef>Trattamento</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{trattamento[element.trattamento]}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="titoloInapplicabilitaId">
+                            <mat-header-cell *matHeaderCellDef>Titolo inapplicabilità</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{getTitoloInapplicabilitaDescription(element.titoloInapplicabilitaId)}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="aliquotaIvaId">
+                            <mat-header-cell *matHeaderCellDef>Aliquota</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{getAliquotaDescription(element.aliquotaIvaId)}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="imponibile">
+                            <mat-header-cell *matHeaderCellDef>Imponibile</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.imponibile}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="iva">
+                            <mat-header-cell *matHeaderCellDef>Iva</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.iva}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="percentualeIndetraibilita">
+                            <mat-header-cell *matHeaderCellDef>Percentuale Indetraibilita</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.percentualeIndetraibilita}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="percentualeIndeducibilita">
+                            <mat-header-cell *matHeaderCellDef>Percentuale Indeducibilita</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.percentualeIndeducibilita}}</mat-cell>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="settore">
+                            <mat-header-cell *matHeaderCellDef>Settore</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.settore}}</mat-cell>
+                        </ng-container>        
+
+                        <ng-container matColumnDef="note">
+                            <mat-header-cell *matHeaderCellDef>Note</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.note}}</mat-cell>
+                        </ng-container>
+    
+                        <mat-header-row *matHeaderRowDef="displayedColumnsEffettoRiga"></mat-header-row>
+    
+                        <mat-row *matRowDef="let row; columns: displayedColumnsEffettoRiga;"></mat-row>
+                    </mat-table>
+                </mat-card-content>
+            </mat-card>
         </form>   
     </div>
     <div class="col-lg-4">
