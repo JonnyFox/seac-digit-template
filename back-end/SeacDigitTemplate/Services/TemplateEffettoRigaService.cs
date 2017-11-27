@@ -19,7 +19,7 @@ namespace SeacDigitTemplate.Services
 
         public Task<List<TemplateRiga>> GetTemplateRigaAsync(ApplicazioneTemplateRiga appTemplateEffettoRiga)
         {
-            return _ctx.TemplateEffettoRigaList.Where(te => te.ApplicazioneTemplateEffettoRigaId == appTemplateEffettoRiga.Id).ToListAsync();
+            return _ctx.TemplateEffettoRigaList.Where(te => te.ApplicazioneTemplateRigaId == appTemplateEffettoRiga.Id).ToListAsync();
         }
     }
 }

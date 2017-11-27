@@ -157,15 +157,16 @@ namespace SeacDigitTemplate.Services
 
             return RigaList;
         }
-
-
+        // * Set the value
+        // § Get the value from the documento
+        // @ Get the value from the effettoDocumento
+        // & Get the value from the rigaDigitata
         private RigaDigitata CreateEffettoRiga(RigaDigitata rigaDigitata, TemplateRiga templateRiga, Documento documento, Documento effettoDocumento)
         {
             var newEffettoRiga = new RigaDigitata
             {
                 TemplateGenerazioneEffettoRigaId = templateRiga.Id,
-                DocumentoId = effettoDocumento.Id,
-                
+                DocumentoId = effettoDocumento.Id
             };
 
             foreach (var templateEffettoField in TemplateRigaStringProperties)
@@ -186,8 +187,22 @@ namespace SeacDigitTemplate.Services
                         }
                         else
                         {
-                            value = Enum.Parse(Nullable.GetUnderlyingType(currentRigaProperty.PropertyType), templateRigaFieldValue.Substring(1));
+                            value = Enum.Parse(currentRigaProperty.PropertyType, templateRigaFieldValue.Substring(1));
+                            //value = Enum.Parse(Nullable.GetUnderlyingType(currentEffettoProperty.PropertyType), templateEffettoFieldValue.Substring(1));
                         }
+
+                    }
+                    else if (templateRigaFieldValue.StartsWith("§"))
+                    {
+                        value = RigaDigitataProperties.Single(rdp => rdp.Name == templateRigaFieldValue.Substring(1)).GetValue(documento);
+                    }
+                    else if (templateRigaFieldValue.StartsWith("@"))
+                    {
+                        value = RigaDigitataProperties.Single(rdp => rdp.Name == templateRigaFieldValue.Substring(1)).GetValue(effettoDocumento);
+                    }
+                    else if (templateRigaFieldValue.StartsWith("&"))
+                    {
+                        value = RigaDigitataProperties.Single(rdp => rdp.Name == templateRigaFieldValue.Substring(1)).GetValue(rigaDigitata);
                     }
                     else if (templateRigaFieldValue.StartsWith("#"))
                     {

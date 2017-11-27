@@ -592,8 +592,6 @@ namespace SeacDigitTemplate.Data
                 context.TemplateEffettoList.Add(t);
             }
 
-
-
             var templateEffettoDocumentoList = new TemplateDocumento[]
             {
                 new TemplateDocumento
@@ -601,10 +599,10 @@ namespace SeacDigitTemplate.Data
                     ApplicazioneTemplateDocumento = applicazioneTemplateDocumentoList[0],
                     Totale = "Totale", 
                     RitenutaAcconto ="RitenutaAcconto",
-                    Sospeso ="*" + (int)DocumentoSospensioneEnum.None,
-                    Tipo ="*" + (int)DocumentoTipoEnum.BollaDoganale,
-                    Caratteristica ="*" + (int)DocumentoCaratteristicaEnum.Normale ,
-                    Registro="*" + (int)RegistroTipoEnum.Emesse,
+                    Sospeso ="§Sospeso" ,
+                    Tipo ="§Tipo" ,
+                    Caratteristica ="§Caratteristica" ,
+                    Registro="§Registro",
                 }
             };
 
@@ -613,7 +611,61 @@ namespace SeacDigitTemplate.Data
                 context.TemplateDocumentoList.Add(t);
             }
 
+
+            var applicazioneTemplateRigaList = new ApplicazioneTemplateRiga[]
+            {
+
+                new ApplicazioneTemplateRiga
+                {
+
+                    VoceIva ="Merce",
+                    AliquotaIva ="*",
+                    Imponibile = "*",
+                    Iva ="*",
+                    //
+                    RitenutaAcconto = "0.0m",
+                    Sospeso = DocumentoSospensioneEnum.None.ToString(),
+                    Tipo = DocumentoTipoEnum.BollaDoganale.ToString(),
+                    Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
+                    Registro = RegistroTipoEnum.Emesse.ToString(),
+                    //
+                    RitenutaAccontoEffetto = "0.0m",
+                    SospesoEffetto = DocumentoSospensioneEnum.None.ToString(),
+                    TipoEffetto = DocumentoTipoEnum.BollaDoganale.ToString(),
+                    CaratteristicaEffetto = DocumentoCaratteristicaEnum.Normale.ToString(),
+                    RegistroEffetto = RegistroTipoEnum.Emesse.ToString(),
+
+                }
+
+            };
+
+            foreach (ApplicazioneTemplateRiga a in applicazioneTemplateRigaList)
+            {
+                context.ApplicazioneTemplateRigaList.Add(a);
+            }
+
+
+            var templateEffettoRigaList = new TemplateRiga[]
+            {
+                new TemplateRiga
+                {
+                    ApplicazioneTemplateRiga = applicazioneTemplateRigaList[0],
+                    VoceIvaId = "&VoceIvaId",
+                    AliquotaIvaId = "&AliquotaIvaId",
+                    PercentualeAliquotaIva = "&PercentualeAliquotaIva",
+                    Imponibile ="&Imponibile" ,
+                    Iva="&Iva",
+
+                }
+            };
+
+            foreach (TemplateRiga t in templateEffettoRigaList)
+            {
+                context.TemplateEffettoRigaList.Add(t);
+            }
+;
             context.SaveChanges();
+
 
             
         }

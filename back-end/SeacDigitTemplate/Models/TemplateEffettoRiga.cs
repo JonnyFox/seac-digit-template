@@ -6,10 +6,11 @@ namespace SeacDigitTemplate.Models
     {
         public int Id { get; set; }
 
-        public int ApplicazioneTemplateEffettoRigaId { get; set; }
-        public ApplicazioneTemplateRiga ApplicazioneTemplateEffetto { get; set; }
+        public int ApplicazioneTemplateRigaId { get; set; }
+        public ApplicazioneTemplateRiga ApplicazioneTemplateRiga { get; set; }
 
-        public string DocumentoId { get; set; }
+        public int? DocumentoId { get; set; }
+
         public string ContoDareId { get; set; }
         public string ContoAvereId { get; set; }
         public string VoceIvaId { get; set; }

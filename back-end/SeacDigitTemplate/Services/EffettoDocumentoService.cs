@@ -144,6 +144,7 @@ namespace SeacDigitTemplate.Services
         {
             var newDocumento = new Documento
             {
+                Id = documento.Id+20,
                 TemplateGenerazioneEffettoDocumentoId = templateEffetto.Id,
                 RiferimentoDocumentoId = documento.Id
             };
@@ -168,6 +169,11 @@ namespace SeacDigitTemplate.Services
                             value = Enum.Parse(currentEffettoProperty.PropertyType, templateEffettoFieldValue.Substring(1));
                             //value = Enum.Parse(Nullable.GetUnderlyingType(currentEffettoProperty.PropertyType), templateEffettoFieldValue.Substring(1));
                         }
+
+                    }
+                    else if (templateEffettoFieldValue.StartsWith("§"))
+                    {
+                        value = DocumentoProprieties.Single(rdp => rdp.Name == templateEffettoFieldValue.Substring(1)).GetValue(documento);
                     }
                     else
                     {
