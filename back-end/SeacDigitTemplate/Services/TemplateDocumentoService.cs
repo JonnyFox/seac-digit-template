@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace SeacDigitTemplate.Services
 {
-    public class TemplateEffettoService
+    public class TemplateDocumentoService
     {
         SeacDigitTemplateContext _ctx;
 
-        public TemplateEffettoService(SeacDigitTemplateContext ctx)
+        public TemplateDocumentoService(SeacDigitTemplateContext ctx)
         {
             _ctx = ctx;
         }
 
-        public Task<List<TemplateEffetto>> GetTemplateEffettoAsync(ApplicazioneTemplateEffetto appTemplateEffetto)
+        public Task<List<TemplateDocumento>> GetTemplateDocumentoAsync(ApplicazioneTemplateDocumento appTemplateDocumento)
         {
-            return _ctx.TemplateEffettoList.Where(te => te.ApplicazioneTemplateEffettoId == appTemplateEffetto.Id).ToListAsync();
+            return _ctx.TemplateDocumentoList.Where(te => te.ApplicazioneTemplateDocumentoId == appTemplateDocumento.Id).ToListAsync();
         }
     }
 }

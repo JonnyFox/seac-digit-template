@@ -21,8 +21,12 @@ namespace SeacDigitTemplate.Data
         public DbSet<SituazioneVoceIva> SituazioneVoceIVAs { get; set; }
         public DbSet<VoceIva> VoceIvas { get; set; }
         public DbSet<TitoloInapplicabilita> TitoloInapplicabilitas { get; set; }
-        public DbSet<ApplicazioneTemplateEffetto> ApplicazioneTemplateEffettos { get; set; }
-        public DbSet<TemplateEffetto> TemplateEffettos { get; set; }
+        public DbSet<ApplicazioneTemplateEffetto> ApplicazioneTemplateEffettoList { get; set; }
+        public DbSet<ApplicazioneTemplateDocumento> ApplicazioneTemplateDocumentoList { get; set; }
+        public DbSet<ApplicazioneTemplateRiga> ApplicazioneTemplateRigaList { get; set; }
+        public DbSet<TemplateEffetto> TemplateEffettoList { get; set; }
+        public DbSet<TemplateDocumento> TemplateDocumentoList { get; set; }
+        public DbSet<TemplateRiga> TemplateEffettoRigaList { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder mb)

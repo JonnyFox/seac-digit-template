@@ -32,9 +32,10 @@ namespace SeacDigitTemplate.Model
         public int? RiferimentoEffettoId { get; set; }
         public Effetto RiferimentoEffetto { get; set; }
 
+
         public string DataOperazione { get; set; }
 
-        public int TemplateGenerazioneEffetto { get; set; }
+        public int TemplateGenerazioneEffettoId { get; set; }
         public TemplateEffetto TemplateEffetto { get; set; }
     }
 }

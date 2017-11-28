@@ -17,6 +17,7 @@ namespace SeacDigitTemplate.Services
     {
         private ApplicazioneTemplateEffettoService _applicazioneTemplateEffettoService;
         private TemplateEffettoService _templateEffettoService;
+        private TemplateDocumentoService _templateDocumentoService;
 
         private SeacDigitTemplateContext _ctx;
 
@@ -49,6 +50,20 @@ namespace SeacDigitTemplate.Services
                 return _rigaDigitataProperties;
             }
         }
+        private IEnumerable<PropertyInfo> _documentoProprieties;
+
+        private IEnumerable<PropertyInfo> DocumentoProprieties
+        {
+            get
+            {
+                if (_documentoProprieties == null)
+                {
+                    _documentoProprieties = (typeof(Documento)).GetProperties();
+                }
+
+                return _documentoProprieties;
+            }
+        }
 
         private IEnumerable<PropertyInfo> _effettoFields;
 
@@ -65,29 +80,46 @@ namespace SeacDigitTemplate.Services
             }
         }
 
+        private IEnumerable<PropertyInfo> _effettoDocumentoFields;
 
-        public EffettoService(SeacDigitTemplateContext context, ApplicazioneTemplateEffettoService applicazioneTemplateEffettoService, TemplateEffettoService templateEffettoService)
+        private IEnumerable<PropertyInfo> EffettoDocumentoProperties
         {
+            get
+            {
+                if (_effettoDocumentoFields == null)
+                {
+                    _effettoDocumentoFields = (typeof(Documento)).GetProperties();
+                }
+
+                return _effettoDocumentoFields;
+            }
+        }
+
+        public int x;
+
+        public EffettoService(SeacDigitTemplateContext context, ApplicazioneTemplateEffettoService applicazioneTemplateEffettoService, TemplateEffettoService templateEffettoService, TemplateDocumentoService templateDocumentoService)
+        {
+            _templateDocumentoService = templateDocumentoService;
             _applicazioneTemplateEffettoService = applicazioneTemplateEffettoService;
             _templateEffettoService = templateEffettoService;
             _ctx = context;
+            
         }
 
-
-        public async Task<List<Effetto>> GetEffettosFromRigaDigitatasAsync(Documento documento, List<RigaDigitata> rigaDigitataList)
+        public async Task<List<Effetto>> GetEffettosFromInputListAsync(Documento documento, List<RigaDigitata> rigaDigitataList)
         {
-            var effettos = new List<Effetto>();
             
+            var effettoList = new List<Effetto>();
+            var effettoDocumentoList = new List<Documento>();
 
             foreach (var rd in rigaDigitataList)
             {
-                effettos.AddRange(await GetEffettosFromRigaDigitataAsync(rd,documento));
+                effettoList.AddRange(await GetEffettoListFromInputAsync(rd,documento));
             }
-
-            return effettos.Where(e => e.Valore != 0 || e.VariazioneFiscale != 0 || e.Imponibile != 0 || e.Iva != 0).ToList();
+            //return effettoList.Where(e => e.Valore != 0 || e.VariazioneFiscale != 0 || e.Imponibile != 0 || e.Iva != 0).ToList(); 
+            return effettoList;
         }
-
-        public async Task<List<Effetto>> GetEffettosFromRigaDigitataAsync(RigaDigitata rigaDigitata, Documento documento)
+        public async Task<List<Effetto>> GetEffettoListFromInputAsync(RigaDigitata rigaDigitata, Documento documento)
         {
             var effettoList = new List<Effetto>();
 
@@ -97,10 +129,10 @@ namespace SeacDigitTemplate.Services
             {
                 return effettoList;
             }
+            
+            var templatesRiga = await _templateEffettoService.GetTemplateEffettoAsync(applicationTemplate);
 
-            var templates = await _templateEffettoService.GetTemplateEffettoAsync(applicationTemplate);
-
-            templates.ForEach(t => effettoList.Add(CreateEffetto(rigaDigitata, t)));
+            templatesRiga.ForEach(tr => effettoList.Add(CreateEffetto(rigaDigitata, tr, documento)));
 
             return effettoList;
         }
@@ -131,7 +163,7 @@ namespace SeacDigitTemplate.Services
                     {
                         ContoId = kvp.Key.Value,
                         Valore = -kvp.Sum(v => v.Valore),
-                        VariazioneFiscale = 0 //kvp.Sum(v => v.VariazioneF)
+                        VariazioneFiscale = -kvp.Sum(v => v.VariazioneFiscale) 
                     };
                 });
 
@@ -142,10 +174,11 @@ namespace SeacDigitTemplate.Services
                     Valore = cd.Valore + ca.Valore,
                     VariazioneFiscale = cd.VariazioneFiscale + ca.VariazioneFiscale
                 });
-
-            result = result.Union(contoAvereResult);
-            result = result.Union(contoDareResult);
-
+            
+            var differenceAvere = contoAvereResult.Except(contoDareResult, new MyComparer());
+            var differenceDare = contoDareResult.Except(contoAvereResult, new MyComparer());
+            result = result.Union(differenceAvere);
+            result = result.Union(differenceDare);
             return result.ToList();
 
         }
@@ -176,12 +209,12 @@ namespace SeacDigitTemplate.Services
                 .ToList();
         }
 
-
-        private Effetto CreateEffetto(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto)
+        private Effetto CreateEffetto(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto, Documento documento)
         {
             var newEffetto = new Effetto
             {
-                TemplateGenerazioneEffetto = templateEffetto.Id,
+                Id = x++,
+                TemplateGenerazioneEffettoId = templateEffetto.Id,
                 RigaDigitataId = rigaDigitata.Id,
                 DocumentoId = rigaDigitata.DocumentoId
             };
@@ -216,7 +249,14 @@ namespace SeacDigitTemplate.Services
 
                         foreach (Match match in regex.Matches(formula))
                         {
-                            variables.Add(match.Value, Convert.ToDouble(RigaDigitataProperties.Single(rdp => rdp.Name == match.Value).GetValue(rigaDigitata)));
+                            if (match.Value== "RitenutaAcconto")
+                            {
+                                variables.Add(match.Value, Convert.ToDouble(DocumentoProprieties.Single(rdp => rdp.Name == match.Value).GetValue(documento)));
+                            }
+                            else
+                            {
+                                variables.Add(match.Value, Convert.ToDouble(RigaDigitataProperties.Single(rdp => rdp.Name == match.Value).GetValue(rigaDigitata)));
+                            }
                         }
 
                         value = Convert.ToDecimal(new CalculationEngine().Calculate(formula, variables));
@@ -229,8 +269,23 @@ namespace SeacDigitTemplate.Services
                     currentEffettoProperty.SetValue(newEffetto, value);
                 }
             }
-
             return newEffetto;
+        }
+        internal class MyComparer : IEqualityComparer<SituazioneConto>
+        {
+            public bool Equals(SituazioneConto x, SituazioneConto y)
+            {
+                if (string.Equals(x.ContoId.ToString(), y.ContoId.ToString(), StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+                return false;
+            }
+
+            public int GetHashCode(SituazioneConto obj)
+            {
+                return obj.ContoId.GetHashCode();
+            }
         }
     }
 }

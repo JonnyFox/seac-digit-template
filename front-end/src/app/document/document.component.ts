@@ -25,7 +25,7 @@ import {
     VoceIva,
     EffettoIva,
     SituazioneVoceIva,
-    SituazioneConto,
+    SituazioneConto
 } from '../shared/models';
 import { DocumentoService } from '../shared/documento.service';
 import { EffettoService } from '../shared/effetto.service';
@@ -43,12 +43,17 @@ export class DocumentComponent implements OnInit {
 
     public editItemForm: FormGroup;
 
-    public displayedColumnsEfettoConto = ['rigaDigitataId', 'contoDareId',
+    public displayedColumnsEffettoConto = ['rigaDigitataId', 'contoDareId',
         'contoAvereId', 'valore', 'variazioneFiscale'];
     public displayedColumnsEffettoIva = ['rigaDigitataId', 'voceIvaId', 'trattamento',
         'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
     public displayedColumnsSituazioneConto = ['contoId', 'valore', 'variazioneFiscale'];
     public displayedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento', 'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
+    public displayedColumnsDocumento = ['id', 'totale', 'ritenutaAcconto',
+    'sospeso', 'tipo', 'caratteristica', 'cliforId', 'registro', 'riferimentoDocumentoId'];
+    public displayedColumnsRigaDigitata = ['id', 'documentoId', 'contoDareId',
+        'contoAvereId', 'voceIvaId', 'trattamento', 'titoloInapplicabilitaId', 'aliquotaIvaId',
+        'imponibile', 'iva', 'percentualeIndetraibilita', 'percentualeIndeducibilita', 'settore', 'note'];
 
     private _effettoCalcolo$: BehaviorSubject<EffettoCalcolo> = new BehaviorSubject(new EffettoCalcolo());
     public effettoCalcolo$: Observable<EffettoCalcolo> = this._effettoCalcolo$.asObservable();
@@ -57,6 +62,8 @@ export class DocumentComponent implements OnInit {
     public dataSourceEffettoIva = new DataSourceEffettoIva(this.effettoCalcolo$);
     public dataSourceSituazioneConto = new DataSourceSituazioneConto(this.effettoCalcolo$);
     public dataSourceSituazioneVoceIva = new DataSourceSituazioneVoceIva(this.effettoCalcolo$);
+    public dataSourceDocumento = new DataSourceDocumento(this.effettoCalcolo$);
+    public dataSourceRigaDigitata = new DataSourceRigaDigitata(this._effettoCalcolo$);
 
     public editItem: Documento = new Documento();
 
@@ -80,6 +87,10 @@ export class DocumentComponent implements OnInit {
     public titoloInapplicabilitaList: Array<TitoloInapplicabilita> = [];
     public voceIvaList: Array<VoceIva> = [];
     public trattamento = TrattamentoEnum;
+    public tipo = DocumentoTipoEnum;
+    public caratteristica = DocumentoCaratteristicaEnum;
+    public sospeso = DocumentoSospensioneEnum;
+    public registro = RegistroTipoEnum;
 
     public rigaDigitataList: FormArray = new FormArray([]);
 
@@ -210,7 +221,11 @@ export class DocumentComponent implements OnInit {
     }
 
     public getContoDescription(id: number): string {
+        if (id != null) {
         return this.contoList.find(c => c.id === id).nome;
+        }else {
+            return null;
+        }
     }
 
     public getVoceIvaDescription(id: number | null): string {
@@ -267,4 +282,24 @@ export class DataSourceSituazioneVoceIva extends DataSource<any> {
         return this.effettoCalcolo$.map(v => v.situazioneVoceIvas || []);
     }
     disconnect() { }
+}
+export class DataSourceDocumento extends DataSource<any> {
+    constructor(private effettoCalcolo$: Observable<EffettoCalcolo>) {
+        super();
+    }
+    connect(): Observable<Documento[]> {
+         return this.effettoCalcolo$.map(v => v.effettoDocumentoList || []);
+    }
+    disconnect() { }
+
+}
+export class DataSourceRigaDigitata extends DataSource<any> {
+    constructor(private effettoCalcolo$: Observable<EffettoCalcolo>) {
+        super();
+    }
+    connect(): Observable<RigaDigitata[]> {
+         return this.effettoCalcolo$.map(v => v.effettoRigaList || []);
+    }
+    disconnect() { }
+
 }

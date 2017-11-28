@@ -17,8 +17,11 @@ namespace SeacDigitTemplate.Services
         }
 
         public Task<List<RigaDigitata>> GetAll() => _ctx.RigaDigitatas.ToListAsync();
+
         public Task<RigaDigitata> GetByIdAsync(int id) => _ctx.RigaDigitatas.SingleOrDefaultAsync(i => i.Id == id);
 
         public Task<List<RigaDigitata>> GetByDocumentoIdAsync(int id) => _ctx.RigaDigitatas.Where(rd => rd.DocumentoId == id).ToListAsync();
+
+
     }
 }

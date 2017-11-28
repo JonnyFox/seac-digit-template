@@ -34,5 +34,8 @@ namespace SeacDigitTemplate.Model
         public decimal? PercentualeIndeducibilita { get; set; }
         public int? Settore { get; set; }
         public string Note { get; set; }
+
+        public int? TemplateGenerazioneEffettoRigaId { get; set; }
+        public TemplateRiga TemplateGenerazioneEffettoRiga { get; set; }
     }
 }

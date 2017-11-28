@@ -43,6 +43,7 @@ export class Documento {
     registro: RegistroTipoEnum;
     riferimentoDocumentoId: number | null;
     rigaDigitataList: RigaDigitata[];
+    templateGenerazioneEffettoDocumentoId: number | null;
 }
 
 export enum CliforSoggettoEnum {
@@ -144,13 +145,17 @@ export class EffettoCalcolo {
         this.effettoContos =
             this.effettoIvas =
             this.situazioneContos =
-            this.situazioneVoceIvas = [];
+            this.situazioneVoceIvas =
+            this.effettoDocumentoList =
+            this.effettoRigaList = [];
     }
 
     effettoContos: EffettoConto[];
     effettoIvas: EffettoIva[];
     situazioneContos: SituazioneConto[];
     situazioneVoceIvas: SituazioneVoceIva[];
+    effettoDocumentoList: Documento[];
+    effettoRigaList: RigaDigitata[];
 }
 
 export class EffettoConto {

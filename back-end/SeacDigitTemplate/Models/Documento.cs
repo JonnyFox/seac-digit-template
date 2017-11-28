@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SeacDigitTemplate.Models;
+using System.Collections.Generic;
 
 namespace SeacDigitTemplate.Model
 {
@@ -12,7 +13,7 @@ namespace SeacDigitTemplate.Model
         public DocumentoSospensioneEnum Sospeso { get; set; }
         public DocumentoTipoEnum Tipo { get; set; }
         public DocumentoCaratteristicaEnum Caratteristica { get; set; }
-        public int CliforId {  get; set; }
+        public int CliforId { get; set; }
         public Clifor Clifor { get; set; }
 
         public RegistroTipoEnum Registro { get; set; }
@@ -21,6 +22,8 @@ namespace SeacDigitTemplate.Model
         public string Numero { get; set; }
         public int Protocollo { get; set; }
 
+        public int? TemplateGenerazioneEffettoDocumentoId { get; set; }
+        public TemplateDocumento TemplateGenerazioneEffettoDocumento { get;set; }
         public List<RigaDigitata> rigaDigitataList { get; set; }
     }
 }
