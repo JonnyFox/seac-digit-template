@@ -109,7 +109,7 @@
             <mat-card class="some-top effects">
                 <mat-card-title>Effetto Documento</mat-card-title>
                 <mat-card-content>
-                    <mat-table #table [dataSource]="dataSourceEffettoDocumento">
+                    <mat-table #table [dataSource]="dataSourceDocumento">
     
                         <ng-container matColumnDef="id">
                             <mat-header-cell *matHeaderCellDef>Id Documento</mat-header-cell>
@@ -156,16 +156,16 @@
                             <mat-cell *matCellDef="let element">{{element.riferimentoDocumentoId}}</mat-cell>
                         </ng-container>        
     
-                        <mat-header-row *matHeaderRowDef="displayedColumnsEffettoDocumento"></mat-header-row>
+                        <mat-header-row *matHeaderRowDef="displayedColumnsDocumento"></mat-header-row>
     
-                        <mat-row *matRowDef="let row; columns: displayedColumnsEffettoDocumento;"></mat-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumnsDocumento;"></mat-row>
                     </mat-table>
                 </mat-card-content>
             </mat-card>
             <mat-card class="some-top effects">
                 <mat-card-title>Effetto RigaDigitata</mat-card-title>
                 <mat-card-content>
-                    <mat-table #table [dataSource]="dataSourceEffettoRiga">
+                    <mat-table #table [dataSource]="dataSourceRigaDigitata">
     
                         <ng-container matColumnDef="id">
                             <mat-header-cell *matHeaderCellDef>Id Riga</mat-header-cell>
@@ -237,9 +237,9 @@
                             <mat-cell *matCellDef="let element">{{element.note}}</mat-cell>
                         </ng-container>
     
-                        <mat-header-row *matHeaderRowDef="displayedColumnsEffettoRiga"></mat-header-row>
+                        <mat-header-row *matHeaderRowDef="displayedColumnsRigaDigitata"></mat-header-row>
     
-                        <mat-row *matRowDef="let row; columns: displayedColumnsEffettoRiga;"></mat-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumnsRigaDigitata;"></mat-row>
                     </mat-table>
                 </mat-card-content>
             </mat-card>
@@ -422,7 +422,6 @@
 <button mat-fab (click)="getEffettos()" [disabled]="isSync || !isFormValid()">
     <mat-icon>check</mat-icon>
 </button>
-<p>Form status: {{ editItemForm.status | json }}</p>
 
 
 

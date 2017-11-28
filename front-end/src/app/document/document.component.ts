@@ -25,9 +25,7 @@ import {
     VoceIva,
     EffettoIva,
     SituazioneVoceIva,
-    SituazioneConto,
-    EffettoDocumento,
-    EffettoRiga,
+    SituazioneConto
 } from '../shared/models';
 import { DocumentoService } from '../shared/documento.service';
 import { EffettoService } from '../shared/effetto.service';
@@ -51,9 +49,9 @@ export class DocumentComponent implements OnInit {
         'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
     public displayedColumnsSituazioneConto = ['contoId', 'valore', 'variazioneFiscale'];
     public displayedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento', 'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
-    public displayedColumnsEffettoDocumento = ['id', 'totale', 'ritenutaAcconto',
+    public displayedColumnsDocumento = ['id', 'totale', 'ritenutaAcconto',
     'sospeso', 'tipo', 'caratteristica', 'cliforId', 'registro', 'riferimentoDocumentoId'];
-    public displayedColumnsEffettoRiga = ['id', 'documentoId', 'contoDareId',
+    public displayedColumnsRigaDigitata = ['id', 'documentoId', 'contoDareId',
         'contoAvereId', 'voceIvaId', 'trattamento', 'titoloInapplicabilitaId', 'aliquotaIvaId',
         'imponibile', 'iva', 'percentualeIndetraibilita', 'percentualeIndeducibilita', 'settore', 'note'];
 
@@ -64,8 +62,8 @@ export class DocumentComponent implements OnInit {
     public dataSourceEffettoIva = new DataSourceEffettoIva(this.effettoCalcolo$);
     public dataSourceSituazioneConto = new DataSourceSituazioneConto(this.effettoCalcolo$);
     public dataSourceSituazioneVoceIva = new DataSourceSituazioneVoceIva(this.effettoCalcolo$);
-    public dataSourceEffettoDocumento = new DataSourceEffettoDocumento(this.effettoCalcolo$);
-    public dataSourceEffettoRiga = new DataSourceEffettoRiga(this._effettoCalcolo$);
+    public dataSourceDocumento = new DataSourceDocumento(this.effettoCalcolo$);
+    public dataSourceRigaDigitata = new DataSourceRigaDigitata(this._effettoCalcolo$);
 
     public editItem: Documento = new Documento();
 
@@ -285,21 +283,21 @@ export class DataSourceSituazioneVoceIva extends DataSource<any> {
     }
     disconnect() { }
 }
-export class DataSourceEffettoDocumento extends DataSource<any> {
+export class DataSourceDocumento extends DataSource<any> {
     constructor(private effettoCalcolo$: Observable<EffettoCalcolo>) {
         super();
     }
-    connect(): Observable<EffettoDocumento[]> {
+    connect(): Observable<Documento[]> {
          return this.effettoCalcolo$.map(v => v.effettoDocumentoList || []);
     }
     disconnect() { }
 
 }
-export class DataSourceEffettoRiga extends DataSource<any> {
+export class DataSourceRigaDigitata extends DataSource<any> {
     constructor(private effettoCalcolo$: Observable<EffettoCalcolo>) {
         super();
     }
-    connect(): Observable<EffettoRiga[]> {
+    connect(): Observable<RigaDigitata[]> {
          return this.effettoCalcolo$.map(v => v.effettoRigaList || []);
     }
     disconnect() { }

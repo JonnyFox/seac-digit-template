@@ -43,8 +43,7 @@ export class Documento {
     registro: RegistroTipoEnum;
     riferimentoDocumentoId: number | null;
     rigaDigitataList: RigaDigitata[];
-    TemplateGenerazioneEffettoDocumentoId: number | null;
-
+    templateGenerazioneEffettoDocumentoId: number | null;
 }
 
 export enum CliforSoggettoEnum {
@@ -155,8 +154,8 @@ export class EffettoCalcolo {
     effettoIvas: EffettoIva[];
     situazioneContos: SituazioneConto[];
     situazioneVoceIvas: SituazioneVoceIva[];
-    effettoDocumentoList: EffettoDocumento[];
-    effettoRigaList: EffettoRiga[];
+    effettoDocumentoList: Documento[];
+    effettoRigaList: RigaDigitata[];
 }
 
 export class EffettoConto {
@@ -183,31 +182,3 @@ export class EffettoIva {
     iva: number;
     riferimentoEffettoId: number;
 }
-export class EffettoDocumento {
-    id: number;
-    totale: number;
-    ritenutaAcconto: number;
-    sospeso: DocumentoSospensioneEnum;
-    tipo: DocumentoTipoEnum;
-    caratteristica: DocumentoCaratteristicaEnum;
-    cliforId: number;
-    registro: RegistroTipoEnum;
-    riferimentoDocumentoId: number | null;
-}
-export class EffettoRiga {
-    id: number;
-    documentoId: number | null;
-    contoDareId: number | null;
-    contoAvereId: number | null;
-    voceIvaId: number | null;
-    trattamento: TrattamentoEnum;
-    titoloInapplicabilitaId: number | null;
-    aliquotaIvaId: number | null;
-    imponibile: number | null;
-    iva: number | null;
-    percentualeIndetraibilita: number | null;
-    percentualeIndeducibilita: number | null;
-    settore: number | null;
-    note: string | null;
-}
-
