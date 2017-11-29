@@ -5,6 +5,7 @@ using SeacDigitTemplate.Services;
 using System.Threading.Tasks;
 using AutoMapper;
 using SeacDigitTemplate.Dtos;
+using SeacDigitTemplate.Data;
 
 namespace SeacDigitTemplate.Controllers
 {
@@ -17,9 +18,11 @@ namespace SeacDigitTemplate.Controllers
         private readonly EffettoDocumentoService _effettoDocumentoService;
         private readonly EffettoRigaService _effettoRigaService;
         private readonly IMapper _mapper;
+        private SeacDigitTemplateContext _ctx;
 
-        public EffettoController(EffettoService effettoService, RigaDigitataService rigaDigitataService, DocumentoService documentoService,EffettoDocumentoService effettoDocumentoService,EffettoRigaService effettoRigaService, IMapper mapper)
+        public EffettoController(SeacDigitTemplateContext context,EffettoService effettoService, RigaDigitataService rigaDigitataService, DocumentoService documentoService,EffettoDocumentoService effettoDocumentoService,EffettoRigaService effettoRigaService, IMapper mapper)
         {
+            _ctx = context;
             _effettoRigaService = effettoRigaService;
             _effettoDocumentoService = effettoDocumentoService;
             _documentoService = documentoService;
@@ -73,6 +76,25 @@ namespace SeacDigitTemplate.Controllers
             effettoCalcoloDto.EffettoRigaList = _mapper.Map<List<RigaDigitataDto>>(EffettoRigaList);
 
             return Ok(effettoCalcoloDto);
+        }
+        [HttpPost("setDescription")]
+        public IActionResult SetFeedbackDescription([FromBody] string Description)
+        {
+            Feedback x = new Feedback
+            {
+                Id = 1,
+                Json = Description,
+                Descrizione = Description
+
+            };
+            _ctx.FeedbackList.Add(x); 
+            return Ok();
+        }
+        [HttpPost("setJson")]
+        public IActionResult SetFeedbackJson([FromBody] string Json)
+        {
+            
+            return Ok();
         }
     }
 }

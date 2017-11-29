@@ -1,5 +1,4 @@
-﻿
-using SeacDigitTemplate.Model;
+﻿using SeacDigitTemplate.Model;
 using SeacDigitTemplate.Models;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +9,9 @@ namespace SeacDigitTemplate.Data
     {
         public static void Initialize(SeacDigitTemplateContext context)
         {
+            
             context.Database.EnsureCreated();
-
+            
             var trans = context.Database.BeginTransaction();
 
             if (context.Clifors.Any())

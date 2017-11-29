@@ -11,7 +11,7 @@ namespace SeacDigitTemplate.Data
         {
 
         }
-
+        
         public DbSet<Clifor> Clifors { get; set; }
         public DbSet<AliquotaIva> AliquotaIvas { get; set; }
         public DbSet<Conto> Contos { get; set; }
@@ -27,6 +27,8 @@ namespace SeacDigitTemplate.Data
         public DbSet<TemplateEffetto> TemplateEffettoList { get; set; }
         public DbSet<TemplateDocumento> TemplateDocumentoList { get; set; }
         public DbSet<TemplateRiga> TemplateEffettoRigaList { get; set; }
+        public DbSet<Feedback> FeedbackList { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder mb)
