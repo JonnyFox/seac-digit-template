@@ -1,5 +1,5 @@
 import { FormArray, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastrService } from 'ngx-toastr';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 import { RigaDigitataService } from '../shared/riga-digitata.service';
 import {
@@ -30,6 +31,9 @@ import {
 import { DocumentoService } from '../shared/documento.service';
 import { EffettoService } from '../shared/effetto.service';
 import { NotificationService } from '../shared/notification.service';
+import { Response } from '@angular/http/src/static_response';
+
+
 
 @Component({
     selector: 'app-document',
@@ -38,6 +42,7 @@ import { NotificationService } from '../shared/notification.service';
 })
 export class DocumentComponent implements OnInit {
 
+    description: string;
     public isSync = false;
     private syncSubscription: Subscription;
 
@@ -100,7 +105,8 @@ export class DocumentComponent implements OnInit {
         private rigaDigitataService: RigaDigitataService,
         private effettoService: EffettoService,
         private notificationService: NotificationService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private dialog: MatDialog
     ) {
         this.route.paramMap
             .switchMap((params: ParamMap) =>
@@ -246,6 +252,22 @@ export class DocumentComponent implements OnInit {
             this.subscribeFormValueChanges();
         }
     }
+
+    openDialog(): void {
+        const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+          width: '250px',
+          data: {  description: this.description }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed');
+          this.description = result;
+        });
+        this.effettoService.setFeedbackDescription(this.description);
+        const x = this.effettoService.getEffettoList(this.editItemForm.value)
+        .first()
+        .map(y => JSON.stringify(y) );
+        // this.effettoService.setFeedbackJson(this.description);
+    }
 }
 export class DataSourceEffettoConto extends DataSource<any> {
     constructor(private effettoCalcolo$: Observable<EffettoCalcolo>) {
@@ -302,4 +324,20 @@ export class DataSourceRigaDigitata extends DataSource<any> {
     }
     disconnect() { }
 
+}
+
+
+  @Component({
+    selector: 'app-dialog-overview-example-dialog',
+    templateUrl: 'dialog-overview-example-dialog.html',
+  })
+  export class DialogOverviewExampleDialogComponent {
+
+    constructor(
+      public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+    onNoClick(): void {
+      this.dialogRef.close();
+    }
 }

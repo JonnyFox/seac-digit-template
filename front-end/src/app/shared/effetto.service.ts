@@ -23,4 +23,20 @@ export class EffettoService {
             withCredentials: false
         });
     }
+    public setFeedbackDescription(description: string ): void {
+        return <any>this.http.post(this.baseUrl + `/culetto`, description, {
+            observe: 'body',
+            headers: new HttpHeaders().set('Content-Type', 'application/json'),
+            responseType: 'json',
+            withCredentials: false
+        });
+    }
+    public setFeedbackJson( json: string ): void {
+        return <any>this.http.post(this.baseUrl + `/culetto`, json, {
+            observe: 'body',
+            headers: new HttpHeaders().set('Content-Type', 'application/json'),
+            responseType: 'json',
+            withCredentials: false
+        });
+    }
 }

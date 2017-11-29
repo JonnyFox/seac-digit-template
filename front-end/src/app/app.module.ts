@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import {
     MatListModule, MatTableModule, MatButtonModule,
-    MatIconModule, MatInputModule, MatSelectModule, MatCardModule
+    MatIconModule, MatInputModule, MatSelectModule, MatCardModule, MatDialogModule
 } from '@angular/material';
 import { ToastrModule } from 'ngx-toastr';
 
@@ -17,7 +17,7 @@ import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DocumentComponent } from './document/document.component';
+import { DocumentComponent, DialogOverviewExampleDialogComponent } from './document/document.component';
 import { DocumentoService } from './shared/documento.service';
 import { AliquotaIvaListResolver } from './shared/aliquota-iva-list.resolver';
 import { TitoloInapplicabilitaListResolver } from './shared/titolo-inapplicabilita-list.resolver';
@@ -31,11 +31,13 @@ import { EffettoService } from './shared/effetto.service';
 import { RigaDigitataService } from './shared/riga-digitata.service';
 import { NotificationService } from './shared/notification.service';
 
+
 @NgModule({
     declarations: [
         AppComponent,
         DashboardComponent,
-        DocumentComponent
+        DocumentComponent,
+        DialogOverviewExampleDialogComponent
     ],
     imports: [
         FormsModule,
@@ -46,6 +48,7 @@ import { NotificationService } from './shared/notification.service';
         MatIconModule,
         MatCardModule,
         MatInputModule,
+        MatDialogModule,
         MatSelectModule,
         MatButtonModule,
         MatTableModule,
@@ -67,6 +70,7 @@ import { NotificationService } from './shared/notification.service';
         TitoloInapplicabilitaListResolver,
         VoceIvaListResolver,
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    entryComponents: [DialogOverviewExampleDialogComponent]
 })
 export class AppModule { }
