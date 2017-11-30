@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SeacDigitTemplate.Model;
 using SeacDigitTemplate.Services;
@@ -60,7 +65,6 @@ namespace SeacDigitTemplate.Controllers
         [HttpPost("calculatePost")]
         public async Task<IActionResult> GetEffettosFromRigaDigitatas([FromBody] Documento documento)
         {
-            //ResultList originalEffects;
 
             var EffettoList = await _effettoService.GetEffettosFromInputListAsync(documento, documento.rigaDigitataList);
             var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(EffettoList);
@@ -77,23 +81,11 @@ namespace SeacDigitTemplate.Controllers
 
             return Ok(effettoCalcoloDto);
         }
-        [HttpPost("setDescription")]
-        public IActionResult SetFeedbackDescription([FromBody] string Description)
+        [HttpPost("sendFeedback")]
+        public IActionResult SendFeedback([FromBody] Feedback feedback)
         {
-            Feedback x = new Feedback
-            {
-                Id = 1,
-                Json = Description,
-                Descrizione = Description
-
-            };
-            _ctx.FeedbackList.Add(x); 
-            return Ok();
-        }
-        [HttpPost("setJson")]
-        public IActionResult SetFeedbackJson([FromBody] string Json)
-        {
-            
+            _ctx.FeedbackList.Add(feedback);
+            _ctx.SaveChanges();
             return Ok();
         }
     }

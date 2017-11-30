@@ -1,10 +1,10 @@
 <div mat-dialog-content>
-  <p>Quale problema è stato riscontrato?</p>
-  <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.animal">
-  </mat-form-field>
+    <p>Quale problema è stato riscontrato?</p>
+    <mat-form-field class="fullWidthForm">
+        <input matInput [(ngModel)]="data.description">
+  	</mat-form-field>
 </div>
-<div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data.animal" tabindex="2">Ok</button>
-  <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+<div mat-dialog-actions class="actionsAlign">
+  	<button mat-button [mat-dialog-close]="data.description" >Ok</button>
+  	<button mat-button (click)="onNoClick()" >Cancel</button>
 </div>

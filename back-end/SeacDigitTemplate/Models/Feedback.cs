@@ -9,6 +9,6 @@ namespace SeacDigitTemplate.Model
     {
         public int Id { get; set; }
         public string Descrizione {get; set;}
-        public string Json { get; set; }
+        public string Effetto { get; set; }
     }
 }

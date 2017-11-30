@@ -26,12 +26,14 @@ import {
     VoceIva,
     EffettoIva,
     SituazioneVoceIva,
-    SituazioneConto
+    SituazioneConto,
+    Feedback
 } from '../shared/models';
 import { DocumentoService } from '../shared/documento.service';
 import { EffettoService } from '../shared/effetto.service';
 import { NotificationService } from '../shared/notification.service';
 import { Response } from '@angular/http/src/static_response';
+import { Jsonp } from '@angular/http/src/http';
 
 
 
@@ -45,7 +47,7 @@ export class DocumentComponent implements OnInit {
     description: string;
     public isSync = false;
     private syncSubscription: Subscription;
-
+    public feedback: Feedback;
     public editItemForm: FormGroup;
 
     public displayedColumnsEffettoConto = ['rigaDigitataId', 'contoDareId',
@@ -253,20 +255,28 @@ export class DocumentComponent implements OnInit {
         }
     }
 
-    openDialog(): void {
+    public openDialog(): void {
         const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-          width: '250px',
+          width: '500px',
           data: {  description: this.description }
         });
         dialogRef.afterClosed().subscribe(result => {
-          console.log('The dialog was closed');
-          this.description = result;
+            this.description = result;
+            this.feedback = new Feedback();
+            this.feedback.Descrizione = result;
+
+            this.effettoService.getEffettoList(this.editItemForm.value)
+            .first()
+            .map(v => JSON.stringify(v))
+            .subscribe(ef => this.setValue(ef));
+            this.description = '';
         });
-        this.effettoService.setFeedbackDescription(this.description);
-        const x = this.effettoService.getEffettoList(this.editItemForm.value)
-        .first()
-        .map(y => JSON.stringify(y) );
-        // this.effettoService.setFeedbackJson(this.description);
+    }
+
+    private setValue(ef: string): void {
+        this.feedback.Effetto = ef;
+        this.effettoService.sendFeedback(this.feedback).subscribe();
+        console.log('The dialog was closed');
     }
 }
 export class DataSourceEffettoConto extends DataSource<any> {
@@ -330,6 +340,7 @@ export class DataSourceRigaDigitata extends DataSource<any> {
   @Component({
     selector: 'app-dialog-overview-example-dialog',
     templateUrl: 'dialog-overview-example-dialog.html',
+    styleUrls: ['./document.component.scss']
   })
   export class DialogOverviewExampleDialogComponent {
 

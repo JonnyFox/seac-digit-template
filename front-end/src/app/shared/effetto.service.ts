@@ -1,5 +1,5 @@
 import { Response } from '@angular/http';
-import { EffettoCalcolo, EffettoConto, RigaDigitata, Documento } from './models';
+import { EffettoCalcolo, EffettoConto, RigaDigitata, Documento, Feedback } from './models';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -23,16 +23,8 @@ export class EffettoService {
             withCredentials: false
         });
     }
-    public setFeedbackDescription(description: string ): void {
-        return <any>this.http.post(this.baseUrl + `/culetto`, description, {
-            observe: 'body',
-            headers: new HttpHeaders().set('Content-Type', 'application/json'),
-            responseType: 'json',
-            withCredentials: false
-        });
-    }
-    public setFeedbackJson( json: string ): void {
-        return <any>this.http.post(this.baseUrl + `/culetto`, json, {
+    public sendFeedback(feedback: Feedback ): Observable<any> {
+        return <any>this.http.post(this.baseUrl + `/sendFeedback`, feedback, {
             observe: 'body',
             headers: new HttpHeaders().set('Content-Type', 'application/json'),
             responseType: 'json',

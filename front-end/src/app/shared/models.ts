@@ -182,3 +182,8 @@ export class EffettoIva {
     iva: number;
     riferimentoEffettoId: number;
 }
+export class Feedback {
+    id: number;
+    Descrizione: string;
+    Effetto: string;
+}
