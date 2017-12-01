@@ -1,24 +1,25 @@
 .form-field-small {
-    max-width: 100px;
+  max-width: 100px;
 }
 
 mat-card.effects {
+  background-color: #cecece;
+  mat-table {
     background-color: #cecece;
-
-
-    mat-table {
-        background-color: #cecece;
-    }
+  }
 }
 
 mat-card-title {
-    display: flex;
+  display: flex;
 }
 
-.icon-button{
-     color: rgba(0, 0, 0, 0.38);
+.icon-button {
+  color: rgba(0, 0, 0, 0.38);
+  &:hover {
+    color: rgba(0, 0, 0, 0.58);
+  }
+}
 
-     &:hover{
-         color: rgba(0, 0, 0, 0.58);
-     }
+.no-sync {
+  background-color: rgba(0, 0, 0, .12);
 }

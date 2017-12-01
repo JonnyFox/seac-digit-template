@@ -30,12 +30,14 @@ import { VoceIvaListResolver } from './shared/voce-iva-list.resolver';
 import { EffettoService } from './shared/effetto.service';
 import { RigaDigitataService } from './shared/riga-digitata.service';
 import { NotificationService } from './shared/notification.service';
+import { DocumentDetailComponent } from './document-detail/document-detail.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         DashboardComponent,
-        DocumentComponent
+        DocumentComponent,
+        DocumentDetailComponent
     ],
     imports: [
         FormsModule,
