@@ -1,6 +1,6 @@
 ﻿{
   "ConnectionStrings": {
-    // "DefaultConnection": "Server=localhost;Database=SeacDigitTemplate;Trusted_Connection=True;MultipleActiveResultSets=true"
-    "DefaultConnection": "Data Source=localhost;Initial Catalog=SeacDigitTemplate;Integrated Security=False;User Id=sa;Password=factorymind01!;MultipleActiveResultSets=True"
+    "DefaultConnection": "Server=localhost;Database=SeacDigitTemplate;Trusted_Connection=True;MultipleActiveResultSets=true"
+    // "DefaultConnection": "Data Source=localhost;Initial Catalog=SeacDigitTemplate;Integrated Security=False;User Id=sa;Password=factorymind01!;MultipleActiveResultSets=True"
   }
 }
