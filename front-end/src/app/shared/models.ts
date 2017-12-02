@@ -187,3 +187,15 @@ export class Feedback {
     Descrizione: string;
     Effetto: string;
 }
+
+export class EffettoFeedback {
+    documento: Documento;
+    modifiedRigaDigitataList: RigaDigitata[];
+    effettoContos: EffettoConto[];
+    effettoIvas: EffettoIva[];
+    situazioneContos: SituazioneConto[];
+    situazioneVoceIvas: SituazioneVoceIva[];
+    effettoDocumentoList: Documento[];
+    effettoRigaList: RigaDigitata[];
+}
+

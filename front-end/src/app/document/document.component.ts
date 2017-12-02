@@ -27,7 +27,8 @@ import {
     EffettoIva,
     SituazioneVoceIva,
     SituazioneConto,
-    Feedback
+    Feedback,
+    EffettoFeedback
 } from '../shared/models';
 import { DocumentoService } from '../shared/documento.service';
 import { EffettoService } from '../shared/effetto.service';
@@ -43,11 +44,11 @@ import { Jsonp } from '@angular/http/src/http';
     styleUrls: ['./document.component.scss']
 })
 export class DocumentComponent implements OnInit {
-
+    effettoFeedback: EffettoFeedback = new EffettoFeedback;
     description: string;
     public isSync = false;
     private syncSubscription: Subscription;
-    public feedback: Feedback;
+    public feedback: Feedback = new Feedback;
     public editItemForm: FormGroup;
 
     public displayedColumnsEffettoConto = ['rigaDigitataId', 'contoDareId',
@@ -261,22 +262,31 @@ export class DocumentComponent implements OnInit {
           data: {  description: this.description }
         });
         dialogRef.afterClosed().subscribe(result => {
+
             this.description = result;
-            this.feedback = new Feedback();
             this.feedback.Descrizione = result;
+            this.effettoFeedback.documento = this.editItem;
+            this.effettoFeedback.modifiedRigaDigitataList = this.rigaDigitataList.value;
 
             this.effettoService.getEffettoList(this.editItemForm.value)
             .first()
-            .map(v => JSON.stringify(v))
             .subscribe(ef => this.setValue(ef));
+
             this.description = '';
         });
     }
 
-    private setValue(ef: string): void {
-        this.feedback.Effetto = ef;
+    private setValue(ef: EffettoCalcolo): void {
+
+        this.effettoFeedback.effettoContos = ef.effettoContos;
+        this.effettoFeedback.effettoDocumentoList = ef.effettoDocumentoList;
+        this.effettoFeedback.effettoIvas = ef.effettoIvas;
+        this.effettoFeedback.effettoRigaList = ef.effettoRigaList;
+
+        this.feedback.Effetto = JSON.stringify(this.effettoFeedback);
+
         this.effettoService.sendFeedback(this.feedback).subscribe();
-        console.log('The dialog was closed');
+
     }
 }
 export class DataSourceEffettoConto extends DataSource<any> {
