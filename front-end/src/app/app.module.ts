@@ -31,6 +31,7 @@ import { EffettoService } from './shared/effetto.service';
 import { RigaDigitataService } from './shared/riga-digitata.service';
 import { NotificationService } from './shared/notification.service';
 import { DialogOverviewExampleDialogComponent } from './dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import { DocumentDetailComponent } from './document-detail/document-detail.component';
 
 
 @NgModule({
@@ -39,6 +40,8 @@ import { DialogOverviewExampleDialogComponent } from './dialog-overview-example-
         DashboardComponent,
         DocumentComponent,
         DialogOverviewExampleDialogComponent
+        DocumentDetailComponent
+
     ],
     imports: [
         FormsModule,

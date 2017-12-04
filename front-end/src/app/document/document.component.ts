@@ -36,8 +36,7 @@ import { NotificationService } from '../shared/notification.service';
 import { Response } from '@angular/http/src/static_response';
 import { Jsonp } from '@angular/http/src/http';
 import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
-
-
+import { Subject } from 'rxjs/Subject';
 
 @Component({
     selector: 'app-document',
@@ -45,9 +44,11 @@ import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example
     styleUrls: ['./document.component.scss']
 })
 export class DocumentComponent implements OnInit {
-    effettoFeedback: EffettoFeedback = new EffettoFeedback;
-    description: string;
+
+    public effettoFeedback: EffettoFeedback = new EffettoFeedback;
+    public description: string;
     public isSync = false;
+    private editDocumento: Documento;
     private syncSubscription: Subscription;
     public feedback: Feedback = new Feedback;
     public editItemForm: FormGroup;
@@ -59,13 +60,22 @@ export class DocumentComponent implements OnInit {
     public displayedColumnsSituazioneConto = ['contoId', 'valore', 'variazioneFiscale'];
     public displayedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento', 'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
     public displayedColumnsDocumento = ['id', 'totale', 'ritenutaAcconto',
-    'sospeso', 'tipo', 'caratteristica', 'cliforId', 'registro', 'riferimentoDocumentoId'];
+        'sospeso', 'tipo', 'caratteristica', 'cliforId', 'registro', 'riferimentoDocumentoId'];
     public displayedColumnsRigaDigitata = ['id', 'documentoId', 'contoDareId',
         'contoAvereId', 'voceIvaId', 'trattamento', 'titoloInapplicabilitaId', 'aliquotaIvaId',
         'imponibile', 'iva', 'percentualeIndetraibilita', 'percentualeIndeducibilita', 'settore', 'note'];
 
     private _effettoCalcolo$: BehaviorSubject<EffettoCalcolo> = new BehaviorSubject(new EffettoCalcolo());
     public effettoCalcolo$: Observable<EffettoCalcolo> = this._effettoCalcolo$.asObservable();
+
+    private _isValidDocument$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+    public isValidDocument$: Observable<boolean> = this._isValidDocument$.asObservable();
+
+    private _document$: Subject<Documento> = new Subject();
+    private document$: Observable<Documento> = this._document$.asObservable();
+
+    private _isSync$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+    public isSync$: Observable<boolean> = this._isSync$.asObservable();
 
     public dataSourceEffettoConto = new DataSourceEffettoConto(this.effettoCalcolo$);
     public dataSourceEffettoIva = new DataSourceEffettoIva(this.effettoCalcolo$);
@@ -103,6 +113,10 @@ export class DocumentComponent implements OnInit {
 
     public rigaDigitataList: FormArray = new FormArray([]);
 
+    public isButtonSync$: Observable<boolean> = this.isSync$
+        .combineLatest(this.isValidDocument$)
+        .map(([s, v]) => s && v);
+
     constructor(
         private route: ActivatedRoute,
         private documentService: DocumentoService,
@@ -120,16 +134,17 @@ export class DocumentComponent implements OnInit {
                 this.editItem = d;
                 return this.rigaDigitataService.getByDocumentoId(d.id);
             })
-            .switchMap((rigaDigitataList: RigaDigitata[]) => {
-                this.editItem.rigaDigitataList = rigaDigitataList;
-                this.setFormValues();
-
-                return this.effettoService.getEffettoList(this.editItem);
-            })
             .first()
-            .subscribe(effettoList => {
-                this._effettoCalcolo$.next(effettoList);
-            });
+            .subscribe((rigaDigitataList: RigaDigitata[]) => this.editItem.rigaDigitataList = rigaDigitataList);
+
+        this.document$
+            .withLatestFrom(this.isValidDocument$)
+            .filter(([_, bool]) => bool)
+            .map(([doc, _]) => doc)
+            .withLatestFrom(this.isSync$)
+            .filter(([_, bool]) => bool)
+            .switchMap(([doc, _]) => this.effettoService.getEffettoList(doc))
+            .subscribe(val => this._effettoCalcolo$.next(val), err => this.notificationService.notifyError(err));
 
         this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
         this.contoList = this.route.snapshot.data['contoList'];
@@ -140,6 +155,14 @@ export class DocumentComponent implements OnInit {
     }
 
     ngOnInit() { }
+
+    public inputChange(documento: Documento) {
+        this._document$.next(documento);
+    }
+
+    public isDocumentValid(isValid: boolean) {
+        this._isValidDocument$.next(isValid);
+    }
 
     private createForm(): void {
         this.editItemForm = this.fb.group({
@@ -180,56 +203,6 @@ export class DocumentComponent implements OnInit {
         return group;
     }
 
-    private subscribeFormValueChanges(): void {
-        this.syncSubscription = this.editItemForm.valueChanges
-            .takeWhile(() => this.isSync)
-            .filter(() => this.isFormValid())
-            .debounceTime(250)
-            .distinctUntilChanged()
-            .switchMap(editItem => this.effettoService.getEffettoList(editItem))
-            .subscribe(val => this._effettoCalcolo$.next(val), err => this.notificationService.notifyError(err));
-    }
-
-    private setFormValues(): void {
-        this.editItemForm.patchValue(this.editItem);
-        this.rigaDigitataList = this.fb.array(this.editItem.rigaDigitataList.map(rd => this.createRigaDigitataFormGroup(rd)));
-        this.editItemForm.setControl('rigaDigitataList', this.rigaDigitataList);
-    }
-
-    private isFormValid(): boolean {
-        return this.editItemForm.status === 'VALID';
-    }
-
-    public addRigaDigitata(): void {
-        this.rigaDigitataList = this.editItemForm.get('rigaDigitataList') as FormArray;
-
-        const newRigaDigitata = new RigaDigitata();
-        newRigaDigitata.percentualeIndeducibilita = newRigaDigitata.percentualeIndetraibilita = 0;
-        newRigaDigitata.documentoId = this.editItem.id;
-
-        const currentRigaDigitata = (this.rigaDigitataList.length > 0 ? this.rigaDigitataList.value[0] : null) as RigaDigitata;
-        if (currentRigaDigitata) {
-            newRigaDigitata.contoAvereId = currentRigaDigitata.contoAvereId;
-            newRigaDigitata.contoDareId = currentRigaDigitata.contoDareId;
-            newRigaDigitata.aliquotaIvaId = currentRigaDigitata.aliquotaIvaId;
-            newRigaDigitata.titoloInapplicabilitaId = currentRigaDigitata.titoloInapplicabilitaId;
-            newRigaDigitata.trattamento = currentRigaDigitata.trattamento;
-            newRigaDigitata.voceIvaId = currentRigaDigitata.voceIvaId;
-        }
-
-        this.rigaDigitataList.push(this.createRigaDigitataFormGroup(newRigaDigitata));
-    }
-
-    public deleteRigaDigitata(index: number): void {
-        this.rigaDigitataList.removeAt(index);
-    }
-
-    public getEffettos(): void {
-        this.effettoService.getEffettoList(this.editItemForm.value)
-            .first()
-            .subscribe(val => this._effettoCalcolo$.next(val), err => this.notificationService.notifyError(err));
-    }
-
     public getContoDescription(id: number): string {
         if (id != null) {
             return this.contoList.find(c => c.id === id).nome;
@@ -251,10 +224,7 @@ export class DocumentComponent implements OnInit {
     }
 
     public toggleSync(): void {
-        this.isSync = !this.isSync;
-        if (this.isSync && (!this.syncSubscription || this.syncSubscription.closed)) {
-            this.subscribeFormValueChanges();
-        }
+        this._isSync$.next(!this._isSync$.value);
     }
 
     public openDialog(): void {
@@ -329,7 +299,7 @@ export class DataSourceDocumento extends DataSource<any> {
         super();
     }
     connect(): Observable<Documento[]> {
-         return this.effettoCalcolo$.map(v => v.effettoDocumentoList || []);
+        return this.effettoCalcolo$.map(v => v.effettoDocumentoList || []);
     }
     disconnect() { }
 
@@ -339,7 +309,7 @@ export class DataSourceRigaDigitata extends DataSource<any> {
         super();
     }
     connect(): Observable<RigaDigitata[]> {
-         return this.effettoCalcolo$.map(v => v.effettoRigaList || []);
+        return this.effettoCalcolo$.map(v => v.effettoRigaList || []);
     }
     disconnect() { }
 
