@@ -232,7 +232,7 @@ export class DocumentComponent implements OnInit {
 
     public getContoDescription(id: number): string {
         if (id != null) {
-        return this.contoList.find(c => c.id === id).nome;
+            return this.contoList.find(c => c.id === id).nome;
         }else {
             return null;
         }
@@ -262,12 +262,11 @@ export class DocumentComponent implements OnInit {
           width: '500px',
           data: {  description: this.description }
         });
+
         dialogRef.afterClosed().subscribe(result => {
 
-            this.description = result;
             this.feedback.Descrizione = result;
-            this.effettoFeedback.documento = this.editItem;
-            this.effettoFeedback.modifiedRigaDigitataList = this.rigaDigitataList.value;
+            this.effettoFeedback.documento = this.editItemForm.value;
 
             this.effettoService.getEffettoList(this.editItemForm.value)
             .first()
@@ -287,7 +286,6 @@ export class DocumentComponent implements OnInit {
         this.feedback.Effetto = JSON.stringify(this.effettoFeedback);
 
         this.effettoService.sendFeedback(this.feedback).subscribe();
-
     }
 }
 export class DataSourceEffettoConto extends DataSource<any> {

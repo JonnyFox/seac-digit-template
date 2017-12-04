@@ -190,7 +190,6 @@ export class Feedback {
 
 export class EffettoFeedback {
     documento: Documento;
-    modifiedRigaDigitataList: RigaDigitata[];
     effettoContos: EffettoConto[];
     effettoIvas: EffettoIva[];
     situazioneContos: SituazioneConto[];
