@@ -27,7 +27,7 @@ export class EffettoService {
         return <any>this.http.post(this.baseUrl + `/sendFeedback`, feedback, {
             observe: 'body',
             headers: new HttpHeaders().set('Content-Type', 'application/json'),
-            responseType: 'json',
+            responseType: 'text',
             withCredentials: false
         });
     }
