@@ -35,6 +35,7 @@ import { EffettoService } from '../shared/effetto.service';
 import { NotificationService } from '../shared/notification.service';
 import { Response } from '@angular/http/src/static_response';
 import { Jsonp } from '@angular/http/src/http';
+import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 
 
 
@@ -347,18 +348,4 @@ export class DataSourceRigaDigitata extends DataSource<any> {
 }
 
 
-  @Component({
-    selector: 'app-dialog-overview-example-dialog',
-    templateUrl: 'dialog-overview-example-dialog.html',
-    styleUrls: ['./document.component.scss']
-  })
-  export class DialogOverviewExampleDialogComponent {
 
-    constructor(
-      public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any) { }
-
-    onNoClick(): void {
-      this.dialogRef.close();
-    }
-}

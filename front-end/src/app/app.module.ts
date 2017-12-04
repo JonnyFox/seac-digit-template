@@ -17,7 +17,7 @@ import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DocumentComponent, DialogOverviewExampleDialogComponent } from './document/document.component';
+import { DocumentComponent } from './document/document.component';
 import { DocumentoService } from './shared/documento.service';
 import { AliquotaIvaListResolver } from './shared/aliquota-iva-list.resolver';
 import { TitoloInapplicabilitaListResolver } from './shared/titolo-inapplicabilita-list.resolver';
@@ -30,6 +30,7 @@ import { VoceIvaListResolver } from './shared/voce-iva-list.resolver';
 import { EffettoService } from './shared/effetto.service';
 import { RigaDigitataService } from './shared/riga-digitata.service';
 import { NotificationService } from './shared/notification.service';
+import { DialogOverviewExampleDialogComponent } from './dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 
 
 @NgModule({
