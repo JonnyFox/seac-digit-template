@@ -143,7 +143,9 @@ export class DocumentComponent implements OnInit {
             .map(([doc, _]) => doc)
             .withLatestFrom(this.isSync$)
             .filter(([_, bool]) => bool)
-            .switchMap(([doc, _]) => this.effettoService.getEffettoList(doc))
+            .switchMap(([doc, _]) => {
+                return this.effettoService.getEffettoList(doc);
+            })
             .subscribe(val => this._effettoCalcolo$.next(val), err => this.notificationService.notifyError(err));
 
         this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
@@ -157,6 +159,7 @@ export class DocumentComponent implements OnInit {
     ngOnInit() { }
 
     public inputChange(documento: Documento) {
+        this.editDocumento = documento;
         this._document$.next(documento);
     }
 
@@ -236,9 +239,9 @@ export class DocumentComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
 
             this.feedback.Descrizione = result;
-            this.effettoFeedback.documento = this.editItemForm.value;
+            this.effettoFeedback.documento = this.editDocumento;
 
-            this.effettoService.getEffettoList(this.editItemForm.value)
+            this.effettoService.getEffettoList(this.editDocumento)
             .first()
             .subscribe(ef => this.setValue(ef));
 

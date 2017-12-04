@@ -39,7 +39,7 @@ import { DocumentDetailComponent } from './document-detail/document-detail.compo
         AppComponent,
         DashboardComponent,
         DocumentComponent,
-        DialogOverviewExampleDialogComponent
+        DialogOverviewExampleDialogComponent,
         DocumentDetailComponent
 
     ],
