@@ -19,7 +19,13 @@ mat-card-title {
     color: rgba(0, 0, 0, 0.58);
   }
 }
+.fullWidthForm {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
 
 .no-sync {
   background-color: rgba(0, 0, 0, .12);
 }
+

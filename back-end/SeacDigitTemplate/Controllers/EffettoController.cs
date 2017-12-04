@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SeacDigitTemplate.Model;
 using SeacDigitTemplate.Services;
 using System.Threading.Tasks;
 using AutoMapper;
 using SeacDigitTemplate.Dtos;
+using SeacDigitTemplate.Data;
 
 namespace SeacDigitTemplate.Controllers
 {
@@ -17,9 +23,11 @@ namespace SeacDigitTemplate.Controllers
         private readonly EffettoDocumentoService _effettoDocumentoService;
         private readonly EffettoRigaService _effettoRigaService;
         private readonly IMapper _mapper;
+        private SeacDigitTemplateContext _ctx;
 
-        public EffettoController(EffettoService effettoService, RigaDigitataService rigaDigitataService, DocumentoService documentoService,EffettoDocumentoService effettoDocumentoService,EffettoRigaService effettoRigaService, IMapper mapper)
+        public EffettoController(SeacDigitTemplateContext context,EffettoService effettoService, RigaDigitataService rigaDigitataService, DocumentoService documentoService,EffettoDocumentoService effettoDocumentoService,EffettoRigaService effettoRigaService, IMapper mapper)
         {
+            _ctx = context;
             _effettoRigaService = effettoRigaService;
             _effettoDocumentoService = effettoDocumentoService;
             _documentoService = documentoService;
@@ -57,7 +65,6 @@ namespace SeacDigitTemplate.Controllers
         [HttpPost("calculatePost")]
         public async Task<IActionResult> GetEffettosFromRigaDigitatas([FromBody] Documento documento)
         {
-            //ResultList originalEffects;
 
             var EffettoList = await _effettoService.GetEffettosFromInputListAsync(documento, documento.rigaDigitataList);
             var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(EffettoList);
@@ -73,6 +80,13 @@ namespace SeacDigitTemplate.Controllers
             effettoCalcoloDto.EffettoRigaList = _mapper.Map<List<RigaDigitataDto>>(EffettoRigaList);
 
             return Ok(effettoCalcoloDto);
+        }
+        [HttpPost("sendFeedback")]
+        public IActionResult SendFeedback([FromBody] Feedback feedback)
+        {
+            _ctx.FeedbackList.Add(feedback);
+            _ctx.SaveChanges();
+            return Ok();
         }
     }
 }

@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import {
     MatListModule, MatTableModule, MatButtonModule,
-    MatIconModule, MatInputModule, MatSelectModule, MatCardModule
+    MatIconModule, MatInputModule, MatSelectModule, MatCardModule, MatDialogModule
 } from '@angular/material';
 import { ToastrModule } from 'ngx-toastr';
 
@@ -30,14 +30,18 @@ import { VoceIvaListResolver } from './shared/voce-iva-list.resolver';
 import { EffettoService } from './shared/effetto.service';
 import { RigaDigitataService } from './shared/riga-digitata.service';
 import { NotificationService } from './shared/notification.service';
+import { DialogOverviewExampleDialogComponent } from './dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 import { DocumentDetailComponent } from './document-detail/document-detail.component';
+
 
 @NgModule({
     declarations: [
         AppComponent,
         DashboardComponent,
         DocumentComponent,
+        DialogOverviewExampleDialogComponent
         DocumentDetailComponent
+
     ],
     imports: [
         FormsModule,
@@ -48,6 +52,7 @@ import { DocumentDetailComponent } from './document-detail/document-detail.compo
         MatIconModule,
         MatCardModule,
         MatInputModule,
+        MatDialogModule,
         MatSelectModule,
         MatButtonModule,
         MatTableModule,
@@ -69,6 +74,7 @@ import { DocumentDetailComponent } from './document-detail/document-detail.compo
         TitoloInapplicabilitaListResolver,
         VoceIvaListResolver,
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    entryComponents: [DialogOverviewExampleDialogComponent]
 })
 export class AppModule { }

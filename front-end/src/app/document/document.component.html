@@ -311,6 +311,10 @@
     </mat-card>
   </div>
 </div>
+
+<button mat-mini-fab (click)="openDialog()">
+    <mat-icon>feedback</mat-icon>
+</button>
 <button mat-fab (click)="toggleSync()" [ngClass]="{'no-sync': !(isSync$ | async)}">
     
     <mat-icon *ngIf="(isSync$ | async) && (isValidDocument$ | async)">sync</mat-icon>

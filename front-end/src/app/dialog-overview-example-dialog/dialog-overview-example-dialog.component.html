@@ -1,0 +1,11 @@
+<div mat-dialog-content>
+    <p>Quale problema è stato riscontrato?</p>
+
+    <mat-form-field class="fullWidthForm">
+        <textarea matInput [(ngModel)]="data.description"></textarea>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions class="actionsAlign">
+  	<button mat-button [mat-dialog-close]="data.description" >Ok</button>
+  	<button mat-button (click)="onNoClick()" >Cancel</button>
+</div>

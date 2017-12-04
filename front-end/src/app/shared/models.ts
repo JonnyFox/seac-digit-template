@@ -182,3 +182,19 @@ export class EffettoIva {
     iva: number;
     riferimentoEffettoId: number;
 }
+export class Feedback {
+    id: number;
+    Descrizione: string;
+    Effetto: string;
+}
+
+export class EffettoFeedback {
+    documento: Documento;
+    effettoContos: EffettoConto[];
+    effettoIvas: EffettoIva[];
+    situazioneContos: SituazioneConto[];
+    situazioneVoceIvas: SituazioneVoceIva[];
+    effettoDocumentoList: Documento[];
+    effettoRigaList: RigaDigitata[];
+}
+

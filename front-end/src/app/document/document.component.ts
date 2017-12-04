@@ -1,5 +1,5 @@
 import { FormArray, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastrService } from 'ngx-toastr';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 import { RigaDigitataService } from '../shared/riga-digitata.service';
 import {
@@ -25,11 +26,16 @@ import {
     VoceIva,
     EffettoIva,
     SituazioneVoceIva,
-    SituazioneConto
+    SituazioneConto,
+    Feedback,
+    EffettoFeedback
 } from '../shared/models';
 import { DocumentoService } from '../shared/documento.service';
 import { EffettoService } from '../shared/effetto.service';
 import { NotificationService } from '../shared/notification.service';
+import { Response } from '@angular/http/src/static_response';
+import { Jsonp } from '@angular/http/src/http';
+import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -39,10 +45,12 @@ import { Subject } from 'rxjs/Subject';
 })
 export class DocumentComponent implements OnInit {
 
+    public effettoFeedback: EffettoFeedback = new EffettoFeedback;
+    public description: string;
+    public isSync = false;
     private editDocumento: Documento;
-
     private syncSubscription: Subscription;
-
+    public feedback: Feedback = new Feedback;
     public editItemForm: FormGroup;
 
     public displayedColumnsEffettoConto = ['rigaDigitataId', 'contoDareId',
@@ -115,7 +123,8 @@ export class DocumentComponent implements OnInit {
         private rigaDigitataService: RigaDigitataService,
         private effettoService: EffettoService,
         private notificationService: NotificationService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private dialog: MatDialog
     ) {
         this.route.paramMap
             .switchMap((params: ParamMap) =>
@@ -197,7 +206,7 @@ export class DocumentComponent implements OnInit {
     public getContoDescription(id: number): string {
         if (id != null) {
             return this.contoList.find(c => c.id === id).nome;
-        } else {
+        }else {
             return null;
         }
     }
@@ -216,6 +225,37 @@ export class DocumentComponent implements OnInit {
 
     public toggleSync(): void {
         this._isSync$.next(!this._isSync$.value);
+    }
+
+    public openDialog(): void {
+        const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+          width: '500px',
+          data: {  description: this.description }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+
+            this.feedback.Descrizione = result;
+            this.effettoFeedback.documento = this.editItemForm.value;
+
+            this.effettoService.getEffettoList(this.editItemForm.value)
+            .first()
+            .subscribe(ef => this.setValue(ef));
+
+            this.description = '';
+        });
+    }
+
+    private setValue(ef: EffettoCalcolo): void {
+
+        this.effettoFeedback.effettoContos = ef.effettoContos;
+        this.effettoFeedback.effettoDocumentoList = ef.effettoDocumentoList;
+        this.effettoFeedback.effettoIvas = ef.effettoIvas;
+        this.effettoFeedback.effettoRigaList = ef.effettoRigaList;
+
+        this.feedback.Effetto = JSON.stringify(this.effettoFeedback);
+
+        this.effettoService.sendFeedback(this.feedback).subscribe();
     }
 }
 export class DataSourceEffettoConto extends DataSource<any> {
@@ -274,3 +314,6 @@ export class DataSourceRigaDigitata extends DataSource<any> {
     disconnect() { }
 
 }
+
+
+
