@@ -117,7 +117,7 @@ namespace SeacDigitTemplate.Services
 
                 effettoDocumentoList.AddRange(await GetEffettoDocumentoListFromInputAsync(rd, documento));
             }
-            //return effetto.EffettoList.Where(e => e.Valore != 0 || e.VariazioneFiscale != 0 || e.Imponibile != 0 || e.Iva != 0).ToList();     A COSA SERVE QUESTA COSA  <<<!!>>>
+
             return effettoDocumentoList;
         }
         public async Task<List<Documento>> GetEffettoDocumentoListFromInputAsync(RigaDigitata rigaDigitata, Documento documento)
@@ -145,6 +145,7 @@ namespace SeacDigitTemplate.Services
                 TemplateGenerazioneEffettoDocumentoId = templateEffetto.Id,
                 RiferimentoDocumentoId = documento.Id
             };
+
             foreach (var templateEffettoField in TemplateEffettoDocumentoStringProperties)
             {
                 var templateEffettoFieldValue = templateEffettoField.GetValue(templateEffetto) as string;
@@ -164,7 +165,6 @@ namespace SeacDigitTemplate.Services
                         else
                         {
                             value = Enum.Parse(currentEffettoProperty.PropertyType, templateEffettoFieldValue.Substring(1));
-                            //value = Enum.Parse(Nullable.GetUnderlyingType(currentEffettoProperty.PropertyType), templateEffettoFieldValue.Substring(1));
                         }
 
                     }

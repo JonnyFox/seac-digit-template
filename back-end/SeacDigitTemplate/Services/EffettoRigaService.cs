@@ -191,7 +191,6 @@ namespace SeacDigitTemplate.Services
                         else
                         {
                             value = Enum.Parse(currentRigaProperty.PropertyType, templateRigaFieldValue.Substring(1));
-                            //value = Enum.Parse(Nullable.GetUnderlyingType(currentEffettoProperty.PropertyType), templateEffettoFieldValue.Substring(1));
                         }
 
                     }
