@@ -47,11 +47,11 @@ export class DocumentComponent implements OnInit {
 
     public effettoFeedback: EffettoFeedback = new EffettoFeedback;
     public description: string;
-    // public isSync = false;
     private editDocumento: Documento;
     private syncSubscription: Subscription;
     public feedback: Feedback = new Feedback;
     public editItemForm: FormGroup;
+
     public displayedColumnsEffettoConto = ['rigaDigitataId', 'contoDareId',
         'contoAvereId', 'valore', 'variazioneFiscale'];
     public displayedColumnsEffettoIva = ['rigaDigitataId', 'voceIvaId', 'trattamento',
@@ -76,6 +76,9 @@ export class DocumentComponent implements OnInit {
     private _isSync$: BehaviorSubject<boolean> = new BehaviorSubject(true);
     public isSync$: Observable<boolean> = this._isSync$.asObservable();
 
+    private _documentoEffetti$: Subject<Documento[]> = new Subject();
+    public documentoEffetti$: Observable<Documento[]> = this._documentoEffetti$.asObservable();
+
     public dataSourceEffettoConto = new DataSourceEffettoConto(this.effettoCalcolo$);
     public dataSourceEffettoIva = new DataSourceEffettoIva(this.effettoCalcolo$);
     public dataSourceSituazioneConto = new DataSourceSituazioneConto(this.effettoCalcolo$);
@@ -84,10 +87,6 @@ export class DocumentComponent implements OnInit {
     public dataSourceRigaDigitata = new DataSourceRigaDigitata(this._effettoCalcolo$);
 
     public editItem: Documento = new Documento();
-
-    private _documentoEffetto$: Subject<Documento[]> = new Subject();
-    public documentoEffetto$: Observable<Documento[]> = this._documentoEffetto$.asObservable();
-
 
     public documentoSospensioneEnumValues = Object.keys(DocumentoSospensioneEnum)
         .filter(key => !isNaN(Number(DocumentoSospensioneEnum[key])));
@@ -114,7 +113,6 @@ export class DocumentComponent implements OnInit {
     public sospeso = DocumentoSospensioneEnum;
     public registro = RegistroTipoEnum;
     public documenti: any[];
-    public rigaDigitataList: FormArray = new FormArray([]);
 
     public isButtonSync$: Observable<boolean> = this.isSync$
         .combineLatest(this.isValidDocument$)
@@ -151,7 +149,7 @@ export class DocumentComponent implements OnInit {
             .switchMap(([doc, _]) => this.effettoService.getEffettoList(doc))
             .subscribe(val => {
                 this._effettoCalcolo$.next(val);
-                this._documentoEffetto$.next(this.effettoService.match(val.effettoDocumentoList, val.effettoRigaList));
+                this._documentoEffetti$.next(this.effettoService.match(val.effettoDocumentoList, val.effettoRigaList));
             });
 
         this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
