@@ -106,7 +106,8 @@ namespace SeacDigitTemplate.Data
                     Clifor = clifors[0],
                     Registro = RegistroTipoEnum.Emesse,
                     Numero = "1",
-                    Protocollo = 1
+                    Protocollo = 1,
+                    isGenerated = false
 
                 },
                 new Documento{
@@ -118,7 +119,8 @@ namespace SeacDigitTemplate.Data
                     Clifor = clifors[1],
                     Registro = RegistroTipoEnum.Emesse,
                     Numero = "2",
-                    Protocollo = 5
+                    Protocollo = 5,
+                    isGenerated = false
                     },
                 new Documento{
                     Totale = 45.0m,
@@ -129,7 +131,8 @@ namespace SeacDigitTemplate.Data
                     Clifor = clifors[1],
                     Registro = RegistroTipoEnum.Emesse,
                     Numero = "3",
-                    Protocollo = 5
+                    Protocollo = 5,
+                    isGenerated = false
                     },
                 new Documento{
                     Totale = 30.0m,
@@ -140,7 +143,8 @@ namespace SeacDigitTemplate.Data
                     Clifor = clifors[1],
                     Registro = RegistroTipoEnum.Finanziari,
                     Numero = "4",
-                    Protocollo = 5
+                    Protocollo = 5,
+                    isGenerated = false
                     },
                 new Documento{
                     Totale = 60.0m,
@@ -151,7 +155,8 @@ namespace SeacDigitTemplate.Data
                     Clifor = clifors[1],
                     Registro = RegistroTipoEnum.Acquisti,
                     Numero = "5",
-                    Protocollo = 5
+                    Protocollo = 5,
+                    isGenerated = false
                     },
                 new Documento{
                     Totale = 320.0m,
@@ -162,7 +167,8 @@ namespace SeacDigitTemplate.Data
                     Clifor = clifors[0],
                     Registro = RegistroTipoEnum.Emesse,
                     Numero = "6",
-                    Protocollo = 5
+                    Protocollo = 5,
+                    isGenerated = false
                     }
 
             };

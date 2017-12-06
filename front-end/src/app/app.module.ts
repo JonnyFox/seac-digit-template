@@ -57,7 +57,8 @@ import { DocumentDetailComponent } from './document-detail/document-detail.compo
         MatButtonModule,
         MatTableModule,
         AppRoutingModule,
-        ToastrModule.forRoot()
+        ToastrModule.forRoot(),
+        CommonModule
     ],
     providers: [
         DocumentoService,

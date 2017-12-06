@@ -143,7 +143,8 @@ namespace SeacDigitTemplate.Services
             {
                 Id = x++,
                 TemplateGenerazioneEffettoDocumentoId = templateEffetto.Id,
-                RiferimentoDocumentoId = documento.Id
+                RiferimentoDocumentoId = documento.Id,
+                isGenerated = true
             };
 
             foreach (var templateEffettoField in TemplateEffettoDocumentoStringProperties)
