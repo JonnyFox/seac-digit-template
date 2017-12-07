@@ -319,6 +319,7 @@ namespace SeacDigitTemplate.Data
                     Documento = documentos[5],
                     VoceIva = voceivas[0],
                     AliquotaIva = aliquotas[2],
+                    Trattamento = TrattamentoEnum.Detraibile,
                     PercentualeAliquotaIva = aliquotas[2].Percentuale,
                     Imponibile = 1000m,
                     Iva = 220m,
@@ -328,6 +329,7 @@ namespace SeacDigitTemplate.Data
                     Documento = documentos[5],
                     VoceIva = voceivas[0],
                     AliquotaIva = aliquotas[1],
+                    Trattamento = TrattamentoEnum.Detraibile,
                     PercentualeAliquotaIva = aliquotas[1].Percentuale,
                     Imponibile = 1000m,
                     Iva = 100m,
@@ -425,6 +427,7 @@ namespace SeacDigitTemplate.Data
                     AliquotaIva ="*",
                     Imponibile = "*",
                     Iva ="*",
+                    Trattamento = "*",
                     RitenutaAcconto="0.0m",
                     Sospeso = "*",
                     Tipo = DocumentoTipoEnum.BollaDoganale.ToString(),
@@ -448,8 +451,9 @@ namespace SeacDigitTemplate.Data
                 {
                     VoceIva ="Merce",
                     AliquotaIva ="*",
-                    Imponibile = "*",
+                    Imponibile = "1800",
                     Iva ="100",
+                    Trattamento = "*" + (int)TrattamentoEnum.Detraibile,
                     RitenutaAcconto="0.0m",
                     Sospeso = "*",
                     Tipo = DocumentoTipoEnum.BollaDoganale.ToString(),
@@ -603,7 +607,7 @@ namespace SeacDigitTemplate.Data
                 new TemplateDocumento
                 {
                     ApplicazioneTemplateDocumento = applicazioneTemplateDocumentoList[0],
-                    Totale = "Totale", 
+                    Totale = "*1800", 
                     RitenutaAcconto ="RitenutaAcconto",
                     Sospeso ="§Sospeso" ,
                     Tipo = "*" + (int)DocumentoTipoEnum.Contabile ,
@@ -629,6 +633,7 @@ namespace SeacDigitTemplate.Data
                     AliquotaIva ="*",
                     Imponibile = "*",
                     Iva ="*",
+                    Trattamento = "*",
                     //
                     RitenutaAcconto = "0.0m",
                     Sospeso = DocumentoSospensioneEnum.None.ToString(),
@@ -656,12 +661,12 @@ namespace SeacDigitTemplate.Data
             {
                 new TemplateRiga
                 {
+                    ContoDareId ="*1",
+                    ContoAvereId ="*10",
                     ApplicazioneTemplateRiga = applicazioneTemplateRigaList[0],
-                    VoceIvaId = "&VoceIvaId",
-                    AliquotaIvaId = "&AliquotaIvaId",
                     PercentualeAliquotaIva = "&PercentualeAliquotaIva",
-                    Imponibile ="&Imponibile" ,
-                    Iva="&Iva",
+                    Imponibile ="*999" ,
+                    Iva="*0",
 
 
 

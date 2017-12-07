@@ -249,7 +249,7 @@ namespace SeacDigitTemplate.Services
 
                         foreach (Match match in regex.Matches(formula))
                         {
-                            if (match.Value== "RitenutaAcconto")
+                            if (match.Value == "RitenutaAcconto")
                             {
                                 variables.Add(match.Value, Convert.ToDouble(DocumentoProprieties.Single(rdp => rdp.Name == match.Value).GetValue(documento)));
                             }

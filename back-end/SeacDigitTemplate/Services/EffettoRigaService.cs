@@ -188,6 +188,10 @@ namespace SeacDigitTemplate.Services
                         {
                             value = templateRigaFieldValue.Substring(1).ToNullableInt();
                         }
+                        else if (currentRigaProperty.PropertyType == typeof(decimal) || currentRigaProperty.PropertyType == typeof(decimal?))
+                        {
+                            value = Convert.ToDecimal(templateRigaFieldValue.Substring(1));
+                        }
                         else
                         {
                             value = Enum.Parse(currentRigaProperty.PropertyType, templateRigaFieldValue.Substring(1));

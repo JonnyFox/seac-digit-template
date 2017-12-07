@@ -163,6 +163,10 @@ namespace SeacDigitTemplate.Services
                         {
                             value = templateEffettoFieldValue.Substring(1).ToNullableInt();
                         }
+                        else if(currentEffettoProperty.PropertyType == typeof(decimal) || currentEffettoProperty.PropertyType == typeof(decimal?))
+                        {
+                            value = Convert.ToDecimal(templateEffettoFieldValue.Substring(1));
+                        }
                         else
                         {
                             value = Enum.Parse(currentEffettoProperty.PropertyType, templateEffettoFieldValue.Substring(1));
