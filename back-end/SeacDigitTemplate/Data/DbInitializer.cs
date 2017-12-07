@@ -449,7 +449,7 @@ namespace SeacDigitTemplate.Data
                     VoceIva ="Merce",
                     AliquotaIva ="*",
                     Imponibile = "*",
-                    Iva ="*",
+                    Iva ="100",
                     RitenutaAcconto="0.0m",
                     Sospeso = "*",
                     Tipo = DocumentoTipoEnum.BollaDoganale.ToString(),
@@ -606,7 +606,7 @@ namespace SeacDigitTemplate.Data
                     Totale = "Totale", 
                     RitenutaAcconto ="RitenutaAcconto",
                     Sospeso ="§Sospeso" ,
-                    Tipo ="§Tipo" ,
+                    Tipo = "*" + (int)DocumentoTipoEnum.Contabile ,
                     Caratteristica ="§Caratteristica" ,
                     Registro="§Registro",
                     CliforId="§CliforId"
@@ -638,7 +638,7 @@ namespace SeacDigitTemplate.Data
                     //
                     RitenutaAccontoEffetto = "0.0m",
                     SospesoEffetto = DocumentoSospensioneEnum.None.ToString(),
-                    TipoEffetto = DocumentoTipoEnum.BollaDoganale.ToString(),
+                    TipoEffetto = DocumentoTipoEnum.Contabile.ToString(),
                     CaratteristicaEffetto = DocumentoCaratteristicaEnum.Normale.ToString(),
                     RegistroEffetto = RegistroTipoEnum.Emesse.ToString(),
 

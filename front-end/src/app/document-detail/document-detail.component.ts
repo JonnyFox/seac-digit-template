@@ -24,8 +24,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 })
 export class DocumentDetailComponent implements OnInit {
 
-
-
     @Input() public editItem: Documento;
 
     @Output() public onChange: Observable<Documento>;
@@ -58,6 +56,7 @@ export class DocumentDetailComponent implements OnInit {
 
     public trattamentoEnumValues = Object.keys(TrattamentoEnum)
         .filter(key => !isNaN(Number(TrattamentoEnum[key])));
+
     constructor(
         private fb: FormBuilder
     ) {
@@ -68,7 +67,6 @@ export class DocumentDetailComponent implements OnInit {
 
     ngOnInit() {
         this.setFormValues();
-        this.ceckGenerated(this.editItem);
     }
 
     private createForm(): void {
@@ -112,6 +110,7 @@ export class DocumentDetailComponent implements OnInit {
 
     private setFormValues(): void {
         if (this.editItem && this.editItem.id) {
+            this.ceckGenerated(this.editItem);
             this.editItemForm.patchValue(this.editItem);
             this.rigaDigitataList = this.fb.array(this.editItem.rigaDigitataList.map(rd => this.createRigaDigitataFormGroup(rd)));
             this.editItemForm.setControl('rigaDigitataList', this.rigaDigitataList);

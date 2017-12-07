@@ -33,11 +33,11 @@ namespace SeacDigitTemplate.Services
         {
             var query = _ctx.ApplicazioneTemplateRigaList.AsQueryable();
 
-            query = effettoDocumento.RitenutaAcconto == null ? query.Where(a => a.RitenutaAcconto == null) : query.Where(a => a.RitenutaAcconto != null);
-            query = query.Where(a => a.Sospeso == effettoDocumento.Sospeso.ToString() || a.Sospeso == "*");
-            query = query.Where(a => a.Tipo == effettoDocumento.Tipo.ToString() || a.Tipo == "*");
-            query = query.Where(a => a.Caratteristica == effettoDocumento.Caratteristica.ToString() || a.Caratteristica == "*");
-            query = query.Where(a => a.Registro == effettoDocumento.Registro.ToString() || a.Registro == "*");
+            query = effettoDocumento.RitenutaAcconto == null ? query.Where(a => a.RitenutaAccontoEffetto == null) : query.Where(a => a.RitenutaAccontoEffetto != null);
+            query = query.Where(a => a.SospesoEffetto == effettoDocumento.Sospeso.ToString() || a.Sospeso == "*");
+            query = query.Where(a => a.TipoEffetto == effettoDocumento.Tipo.ToString() || a.Tipo == "*");
+            query = query.Where(a => a.CaratteristicaEffetto == effettoDocumento.Caratteristica.ToString() || a.Caratteristica == "*");
+            query = query.Where(a => a.RegistroEffetto == effettoDocumento.Registro.ToString() || a.Registro == "*");
 
             query = documento.RitenutaAcconto == null ? query.Where(a => a.RitenutaAcconto == null) : query.Where(a => a.RitenutaAcconto != null);
             query = query.Where(a => a.Sospeso == documento.Sospeso.ToString() || a.Sospeso == "*");

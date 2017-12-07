@@ -96,7 +96,7 @@ namespace SeacDigitTemplate.Services
         }
 
 
-        public int x=0;
+        public int x=1;
 
         public EffettoDocumentoService(SeacDigitTemplateContext context, ApplicazioneTemplateEffettoService applicazioneTemplateEffettoService, TemplateDocumentoService templateDocumentoService, ApplicazioneTemplateDocumentoService applicazioneTemplateDocumentoService)
         {

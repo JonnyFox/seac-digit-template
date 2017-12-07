@@ -124,7 +124,7 @@ namespace SeacDigitTemplate.Services
 
         }
 
-        public int x;
+        public int x=1;
 
         public async Task<List<RigaDigitata>> GetEffettoRigaListFromInputListAsync(Documento documento, List<RigaDigitata> rigaDigitataList, List<Documento> effettoDocumentoList)
         {
