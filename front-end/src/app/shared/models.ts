@@ -44,6 +44,7 @@ export class Documento {
     riferimentoDocumentoId: number | null;
     rigaDigitataList: RigaDigitata[];
     templateGenerazioneEffettoDocumentoId: number | null;
+    isGenerated: boolean | null;
 }
 
 export enum CliforSoggettoEnum {

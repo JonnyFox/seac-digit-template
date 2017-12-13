@@ -96,7 +96,8 @@ namespace SeacDigitTemplate.Services
         }
 
 
-        public int x=0;
+        public int x=1;
+        public RigaDigitata empty = new RigaDigitata();
 
         public EffettoDocumentoService(SeacDigitTemplateContext context, ApplicazioneTemplateEffettoService applicazioneTemplateEffettoService, TemplateDocumentoService templateDocumentoService, ApplicazioneTemplateDocumentoService applicazioneTemplateDocumentoService)
         {
@@ -117,6 +118,9 @@ namespace SeacDigitTemplate.Services
 
                 effettoDocumentoList.AddRange(await GetEffettoDocumentoListFromInputAsync(rd, documento));
             }
+            
+            //Faccio la stessa cosa passando solo il documento cosi vedo se il documento da solo può generare altri documenti
+            effettoDocumentoList.AddRange(await GetEffettoDocumentoListFromInputAsync(empty, documento));
 
             return effettoDocumentoList;
         }
@@ -125,6 +129,7 @@ namespace SeacDigitTemplate.Services
             var effettoDocumentoList = new List<Documento>();
 
             var applicationTemplate = await _applicazioneTemplateDocumentoService.GetTemplateAsync(rigaDigitata, documento);
+
 
             if (applicationTemplate == null)
             {
@@ -143,7 +148,8 @@ namespace SeacDigitTemplate.Services
             {
                 Id = x++,
                 TemplateGenerazioneEffettoDocumentoId = templateEffetto.Id,
-                RiferimentoDocumentoId = documento.Id
+                RiferimentoDocumentoId = documento.Id,
+                isGenerated = true
             };
 
             foreach (var templateEffettoField in TemplateEffettoDocumentoStringProperties)
@@ -162,6 +168,10 @@ namespace SeacDigitTemplate.Services
                         {
                             value = templateEffettoFieldValue.Substring(1).ToNullableInt();
                         }
+                        else if(currentEffettoProperty.PropertyType == typeof(decimal) || currentEffettoProperty.PropertyType == typeof(decimal?))
+                        {
+                            value = Convert.ToDecimal(templateEffettoFieldValue.Substring(1));
+                        }
                         else
                         {
                             value = Enum.Parse(currentEffettoProperty.PropertyType, templateEffettoFieldValue.Substring(1));
@@ -171,10 +181,6 @@ namespace SeacDigitTemplate.Services
                     else if (templateEffettoFieldValue.StartsWith("§"))
                     {
                         value = DocumentoProprieties.Single(rdp => rdp.Name == templateEffettoFieldValue.Substring(1)).GetValue(documento);
-                    }
-                    else
-                    {
-                        value = DocumentoProprieties.Single(rdp => rdp.Name == templateEffettoFieldValue).GetValue(documento);
                     }
 
                     currentEffettoProperty.SetValue(newDocumento, value);

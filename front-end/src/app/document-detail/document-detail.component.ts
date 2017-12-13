@@ -15,6 +15,7 @@ import {
 import { FormArray, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
     selector: 'app-document-detail',
@@ -32,6 +33,9 @@ export class DocumentDetailComponent implements OnInit {
     @Input() public contoList: Array<Conto> = [];
     @Input() public titoloInapplicabilitaList: Array<TitoloInapplicabilita> = [];
     @Input() public voceIvaList: Array<VoceIva> = [];
+
+    private _isGenerated$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+    public isGenerated$: Observable<boolean> = this._isGenerated$.asObservable();
 
     public editItemForm: FormGroup;
     public trattamento = TrattamentoEnum;
@@ -52,6 +56,7 @@ export class DocumentDetailComponent implements OnInit {
 
     public trattamentoEnumValues = Object.keys(TrattamentoEnum)
         .filter(key => !isNaN(Number(TrattamentoEnum[key])));
+
     constructor(
         private fb: FormBuilder
     ) {
@@ -105,9 +110,16 @@ export class DocumentDetailComponent implements OnInit {
 
     private setFormValues(): void {
         if (this.editItem && this.editItem.id) {
+            this.ceckGenerated(this.editItem);
             this.editItemForm.patchValue(this.editItem);
             this.rigaDigitataList = this.fb.array(this.editItem.rigaDigitataList.map(rd => this.createRigaDigitataFormGroup(rd)));
             this.editItemForm.setControl('rigaDigitataList', this.rigaDigitataList);
+        }
+    }
+
+    public ceckGenerated(editItem: Documento): void {
+        if (!editItem.isGenerated) {
+        this._isGenerated$.next(!this._isGenerated$.value);
         }
     }
 

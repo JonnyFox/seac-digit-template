@@ -25,5 +25,6 @@ namespace SeacDigitTemplate.Model
         public int? TemplateGenerazioneEffettoDocumentoId { get; set; }
         public TemplateDocumento TemplateGenerazioneEffettoDocumento { get;set; }
         public List<RigaDigitata> rigaDigitataList { get; set; }
+        public bool? isGenerated { get; set; }
     }
 }

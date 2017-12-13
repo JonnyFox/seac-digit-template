@@ -124,7 +124,7 @@ namespace SeacDigitTemplate.Services
 
         }
 
-        public int x;
+        public int x=1;
 
         public async Task<List<RigaDigitata>> GetEffettoRigaListFromInputListAsync(Documento documento, List<RigaDigitata> rigaDigitataList, List<Documento> effettoDocumentoList)
         {
@@ -187,6 +187,10 @@ namespace SeacDigitTemplate.Services
                         if (currentRigaProperty.PropertyType == typeof(int) || currentRigaProperty.PropertyType == typeof(int?))
                         {
                             value = templateRigaFieldValue.Substring(1).ToNullableInt();
+                        }
+                        else if (currentRigaProperty.PropertyType == typeof(decimal) || currentRigaProperty.PropertyType == typeof(decimal?))
+                        {
+                            value = Convert.ToDecimal(templateRigaFieldValue.Substring(1));
                         }
                         else
                         {

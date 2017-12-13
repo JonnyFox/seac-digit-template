@@ -33,7 +33,7 @@ namespace SeacDigitTemplate.Services
         {
             var query = _ctx.ApplicazioneTemplateEffettoList.AsQueryable();
 
-            query = documento.RitenutaAcconto == null ? query.Where(a => a.RitenutaAcconto == null) : query.Where(a => a.RitenutaAcconto != null);
+            query = documento.RitenutaAcconto == null ? query.Where(a => a.RitenutaAcconto == null) : query.Where(a => a.RitenutaAcconto == documento.RitenutaAcconto.ToString() || a.RitenutaAcconto == "*");
             query = query.Where(a => a.Sospeso == documento.Sospeso.ToString() || a.Sospeso == "*");
             query = query.Where(a => a.Tipo == documento.Tipo.ToString() || a.Tipo == "*");
             query = query.Where(a => a.Caratteristica == documento.Caratteristica.ToString() || a.Caratteristica== "*");

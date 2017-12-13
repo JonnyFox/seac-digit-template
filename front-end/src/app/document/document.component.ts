@@ -47,7 +47,6 @@ export class DocumentComponent implements OnInit {
 
     public effettoFeedback: EffettoFeedback = new EffettoFeedback;
     public description: string;
-    public isSync = false;
     private editDocumento: Documento;
     private syncSubscription: Subscription;
     public feedback: Feedback = new Feedback;
@@ -72,10 +71,13 @@ export class DocumentComponent implements OnInit {
     public isValidDocument$: Observable<boolean> = this._isValidDocument$.asObservable();
 
     private _document$: Subject<Documento> = new Subject();
-    private document$: Observable<Documento> = this._document$.asObservable();
+    public document$: Observable<Documento> = this._document$.asObservable();
 
     private _isSync$: BehaviorSubject<boolean> = new BehaviorSubject(true);
     public isSync$: Observable<boolean> = this._isSync$.asObservable();
+
+    private _documentoEffetti$: Subject<Documento[]> = new Subject();
+    public documentoEffetti$: Observable<Documento[]> = this._documentoEffetti$.asObservable();
 
     public dataSourceEffettoConto = new DataSourceEffettoConto(this.effettoCalcolo$);
     public dataSourceEffettoIva = new DataSourceEffettoIva(this.effettoCalcolo$);
@@ -110,8 +112,7 @@ export class DocumentComponent implements OnInit {
     public caratteristica = DocumentoCaratteristicaEnum;
     public sospeso = DocumentoSospensioneEnum;
     public registro = RegistroTipoEnum;
-
-    public rigaDigitataList: FormArray = new FormArray([]);
+    public documenti: any[];
 
     public isButtonSync$: Observable<boolean> = this.isSync$
         .combineLatest(this.isValidDocument$)
@@ -135,7 +136,9 @@ export class DocumentComponent implements OnInit {
                 return this.rigaDigitataService.getByDocumentoId(d.id);
             })
             .first()
-            .subscribe((rigaDigitataList: RigaDigitata[]) => this.editItem.rigaDigitataList = rigaDigitataList);
+            .subscribe( evt => this.editItem.rigaDigitataList = evt);
+
+
 
         this.document$
             .withLatestFrom(this.isValidDocument$)
@@ -143,20 +146,28 @@ export class DocumentComponent implements OnInit {
             .map(([doc, _]) => doc)
             .withLatestFrom(this.isSync$)
             .filter(([_, bool]) => bool)
-            .switchMap(([doc, _]) => {
-                return this.effettoService.getEffettoList(doc);
-            })
-            .subscribe(val => this._effettoCalcolo$.next(val), err => this.notificationService.notifyError(err));
+            .switchMap(([doc, _]) => this.effettoService.getEffettoList(doc))
+            .subscribe(val => {
+                this._effettoCalcolo$.next(val);
+                this._documentoEffetti$.next(this.effettoService.match(val.effettoDocumentoList, val.effettoRigaList));
+            });
 
         this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
         this.contoList = this.route.snapshot.data['contoList'];
         this.titoloInapplicabilitaList = this.route.snapshot.data['titoloInapplicabilitaList'];
         this.voceIvaList = this.route.snapshot.data['voceIvaList'];
-
         this.createForm();
+
     }
 
     ngOnInit() { }
+
+    public inputChangeEffetto(documento: Documento) {
+        // console.log('INPUT CHANGE' + JSON.stringify(documento));
+    }
+    public isDocumentValidEffetto(isValid: boolean) {
+        // console.log('IS DOCUMENT VALID' + JSON.stringify(isValid));
+    }
 
     public inputChange(documento: Documento) {
         this.editDocumento = documento;

@@ -16,5 +16,6 @@ namespace SeacDigitTemplate.Dtos
         public string Numero { get; set; }
         public int Protocollo { get; set; }
         public int? TemplateGenerazioneEffettoDocumentoId { get; set; }
+        public bool? isGenerated { get; set; }
     }
 }

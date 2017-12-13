@@ -96,6 +96,7 @@ namespace SeacDigitTemplate.Services
         }
 
         public int x;
+        public RigaDigitata empty = new RigaDigitata();
 
         public EffettoService(SeacDigitTemplateContext context, ApplicazioneTemplateEffettoService applicazioneTemplateEffettoService, TemplateEffettoService templateEffettoService, TemplateDocumentoService templateDocumentoService)
         {
@@ -116,6 +117,8 @@ namespace SeacDigitTemplate.Services
             {
                 effettoList.AddRange(await GetEffettoListFromInputAsync(rd,documento));
             }
+
+            effettoList.AddRange(await GetEffettoListFromInputAsync(empty, documento));
             //return effettoList.Where(e => e.Valore != 0 || e.VariazioneFiscale != 0 || e.Imponibile != 0 || e.Iva != 0).ToList(); 
             return effettoList;
         }
@@ -136,7 +139,87 @@ namespace SeacDigitTemplate.Services
 
             return effettoList;
         }
+        // * Set the value
+        // § Get the value from the documento
+        // @ Get the value from the effettoDocumento
+        // & Get the value from the rigaDigitata
+        private Effetto CreateEffetto(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto, Documento documento)
+        {
+            var newEffetto = new Effetto
+            {
+                Id = x++,
+                TemplateGenerazioneEffettoId = templateEffetto.Id,
+                RigaDigitataId = rigaDigitata.Id,
+                DocumentoId = rigaDigitata.DocumentoId
+            };
 
+            foreach (var templateEffettoField in TemplateEffettoStringProperties)
+            {
+                var templateEffettoFieldValue = templateEffettoField.GetValue(templateEffetto) as string;
+
+                if (templateEffettoFieldValue != null)
+                {
+                    Object value = null;
+
+                    var currentEffettoProperty = EffettoProperties.Single(ep => ep.Name == templateEffettoField.Name);
+
+                    if (templateEffettoFieldValue.StartsWith("*"))
+                    {
+                        if (currentEffettoProperty.PropertyType == typeof(int) || currentEffettoProperty.PropertyType == typeof(int?))
+                        {
+                            value = templateEffettoFieldValue.Substring(1).ToNullableInt();
+                        }
+                        else
+                        {
+                            value = Enum.Parse(Nullable.GetUnderlyingType(currentEffettoProperty.PropertyType), templateEffettoFieldValue.Substring(1));
+                        }
+                    }
+                    else if (templateEffettoFieldValue.StartsWith("§"))
+                    {
+                        if (currentEffettoProperty.PropertyType == typeof(int) || currentEffettoProperty.PropertyType == typeof(int?))
+                        {
+                            value = templateEffettoFieldValue.Substring(1).ToNullableInt();
+                        }
+                        else
+                        {
+                            value = EffettoProperties.Single(rdp => rdp.Name == templateEffettoFieldValue.Substring(1)).GetValue(documento);
+                        }
+                    }
+                    else if (templateEffettoFieldValue.StartsWith("&"))
+                    {
+                        value = EffettoProperties.Single(rdp => rdp.Name == templateEffettoFieldValue.Substring(1)).GetValue(rigaDigitata);
+                    }
+                    else if (templateEffettoFieldValue.StartsWith("#"))
+                    {
+                        var formula = templateEffettoFieldValue.Substring(1);
+                        var regex = new Regex(@"[^\d\W]+");
+
+                        var variables = new Dictionary<string, double>();
+
+                        foreach (Match match in regex.Matches(formula))
+                        {
+                            if (match.Value == "RitenutaAcconto" || match.Value == "Totale")
+                            {
+                                variables.Add(match.Value, Convert.ToDouble(DocumentoProprieties.Single(rdp => rdp.Name == match.Value).GetValue(documento)));
+                            }
+                            else
+                            {
+                                variables.Add(match.Value, Convert.ToDouble(RigaDigitataProperties.Single(rdp => rdp.Name == match.Value).GetValue(rigaDigitata)));
+                            }
+                        }
+
+                        value = Convert.ToDecimal(new CalculationEngine().Calculate(formula, variables));
+                    }
+                    else
+                    {
+                        value = RigaDigitataProperties.Single(rdp => rdp.Name == templateEffettoFieldValue).GetValue(rigaDigitata);
+                    }
+
+                    currentEffettoProperty.SetValue(newEffetto, value);
+                }
+            }
+            return newEffetto;
+        }
 
         public List<SituazioneConto> GetSituazioneConto(List<Effetto> effettoList)
         {
@@ -163,7 +246,7 @@ namespace SeacDigitTemplate.Services
                     {
                         ContoId = kvp.Key.Value,
                         Valore = -kvp.Sum(v => v.Valore),
-                        VariazioneFiscale = -kvp.Sum(v => v.VariazioneFiscale) 
+                        VariazioneFiscale = -kvp.Sum(v => v.VariazioneFiscale)
                     };
                 });
 
@@ -174,7 +257,7 @@ namespace SeacDigitTemplate.Services
                     Valore = cd.Valore + ca.Valore,
                     VariazioneFiscale = cd.VariazioneFiscale + ca.VariazioneFiscale
                 });
-            
+
             var differenceAvere = contoAvereResult.Except(contoDareResult, new MyComparer());
             var differenceDare = contoDareResult.Except(contoAvereResult, new MyComparer());
             result = result.Union(differenceAvere);
@@ -209,68 +292,7 @@ namespace SeacDigitTemplate.Services
                 .ToList();
         }
 
-        private Effetto CreateEffetto(RigaDigitata rigaDigitata, TemplateEffetto templateEffetto, Documento documento)
-        {
-            var newEffetto = new Effetto
-            {
-                Id = x++,
-                TemplateGenerazioneEffettoId = templateEffetto.Id,
-                RigaDigitataId = rigaDigitata.Id,
-                DocumentoId = rigaDigitata.DocumentoId
-            };
 
-            foreach (var templateEffettoField in TemplateEffettoStringProperties)
-            {
-                var templateEffettoFieldValue = templateEffettoField.GetValue(templateEffetto) as string;
-
-                if (templateEffettoFieldValue != null)
-                {
-                    Object value = null;
-
-                    var currentEffettoProperty = EffettoProperties.Single(ep => ep.Name == templateEffettoField.Name);
-
-                    if (templateEffettoFieldValue.StartsWith("*"))
-                    {
-                        if (currentEffettoProperty.PropertyType == typeof(int) || currentEffettoProperty.PropertyType == typeof(int?))
-                        {
-                            value = templateEffettoFieldValue.Substring(1).ToNullableInt();
-                        }
-                        else
-                        {
-                            value = Enum.Parse(Nullable.GetUnderlyingType(currentEffettoProperty.PropertyType), templateEffettoFieldValue.Substring(1));
-                        }
-                    }
-                    else if (templateEffettoFieldValue.StartsWith("#"))
-                    {
-                        var formula = templateEffettoFieldValue.Substring(1);
-                        var regex = new Regex(@"[^\d\W]+");
-
-                        var variables = new Dictionary<string, double>();
-
-                        foreach (Match match in regex.Matches(formula))
-                        {
-                            if (match.Value== "RitenutaAcconto")
-                            {
-                                variables.Add(match.Value, Convert.ToDouble(DocumentoProprieties.Single(rdp => rdp.Name == match.Value).GetValue(documento)));
-                            }
-                            else
-                            {
-                                variables.Add(match.Value, Convert.ToDouble(RigaDigitataProperties.Single(rdp => rdp.Name == match.Value).GetValue(rigaDigitata)));
-                            }
-                        }
-
-                        value = Convert.ToDecimal(new CalculationEngine().Calculate(formula, variables));
-                    }
-                    else
-                    {
-                        value = RigaDigitataProperties.Single(rdp => rdp.Name == templateEffettoFieldValue).GetValue(rigaDigitata);
-                    }
-
-                    currentEffettoProperty.SetValue(newEffetto, value);
-                }
-            }
-            return newEffetto;
-        }
         internal class MyComparer : IEqualityComparer<SituazioneConto>
         {
             public bool Equals(SituazioneConto x, SituazioneConto y)

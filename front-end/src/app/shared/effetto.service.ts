@@ -31,4 +31,15 @@ export class EffettoService {
             withCredentials: false
         });
     }
+    public match(effettoDocumentoList: Documento[], effettoRigaList: RigaDigitata[]): Documento[] {
+            for (const doc of effettoDocumentoList){
+                doc.rigaDigitataList = new Array<RigaDigitata>();
+                for (const rig of effettoRigaList){
+                    if (doc.id === rig.documentoId) {
+                    doc.rigaDigitataList.push(rig);
+                    }
+                }
+            }
+        return effettoDocumentoList;
+    }
 }
