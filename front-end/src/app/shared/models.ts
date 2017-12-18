@@ -101,12 +101,14 @@ export class SituazioneVoceIva {
     trattamento: TrattamentoEnum;
     titoloInapplicabilita: number;
     valore: number;
+    sospeso: number;
 }
 
 export class SituazioneConto {
     contoId: number;
     valore: number;
     variazioneFiscale: number;
+    sospeso: number;
 }
 
 export class VoceIva {

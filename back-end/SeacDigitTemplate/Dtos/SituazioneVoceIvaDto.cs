@@ -10,6 +10,8 @@ namespace SeacDigitTemplate.Dtos
         public int? TitoloInapplicabilitaId { get; set; }
         public decimal Imponibile { get; set; }
         public decimal Iva { get; set; }
+        public decimal Sospeso { get; set; }
+
 
     }
 }

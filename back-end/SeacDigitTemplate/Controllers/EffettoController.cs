@@ -48,8 +48,8 @@ namespace SeacDigitTemplate.Controllers
             var documento = await _documentoService.GetByIdAsync(id);
             var righe = await _rigaDigitataService.GetByDocumentoIdAsync(id);
             var EffettoList = await _effettoService.GetEffettosFromInputListAsync(documento, righe);
-            var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(EffettoList);
-            var situazioneContos = _effettoService.GetSituazioneConto(EffettoList);
+            var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(documento, EffettoList);
+            var situazioneContos = _effettoService.GetSituazioneConto(documento, EffettoList);
             var EffettoDocumentoList = await _effettoDocumentoService.GetDocumentoListFromInputListAsync(documento, documento.rigaDigitataList);
             var EffettoRigaList = await _effettoRigaService.GetEffettoRigaListFromInputListAsync(documento, documento.rigaDigitataList, EffettoDocumentoList);
 
@@ -67,8 +67,8 @@ namespace SeacDigitTemplate.Controllers
         {
 
             var EffettoList = await _effettoService.GetEffettosFromInputListAsync(documento, documento.rigaDigitataList);
-            var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(EffettoList);
-            var situazioneContos = _effettoService.GetSituazioneConto(EffettoList);
+            var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(documento,EffettoList);
+            var situazioneContos = _effettoService.GetSituazioneConto(documento,EffettoList);
             var EffettoDocumentoList = await _effettoDocumentoService.GetDocumentoListFromInputListAsync(documento, documento.rigaDigitataList);
             var EffettoRigaList = await _effettoRigaService.GetEffettoRigaListFromInputListAsync(documento, documento.rigaDigitataList, EffettoDocumentoList);
 
@@ -78,6 +78,7 @@ namespace SeacDigitTemplate.Controllers
             effettoCalcoloDto.SituazioneVoceIvas = _mapper.Map<List<SituazioneVoceIvaDto>>(situazioneVoceIvas);
             effettoCalcoloDto.EffettoDocumentoList = _mapper.Map<List<DocumentoDto>>(EffettoDocumentoList);
             effettoCalcoloDto.EffettoRigaList = _mapper.Map<List<RigaDigitataDto>>(EffettoRigaList);
+
 
             return Ok(effettoCalcoloDto);
         }

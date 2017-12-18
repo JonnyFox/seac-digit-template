@@ -1,6 +1,6 @@
 <form [formGroup]="editItemForm" novalidate class ="padBot">
 	<mat-card [ngClass]="{'docEffettiComponent': (isGenerated$ | async) }">
-		<mat-card-title>Documento {{ editItem.id }}</mat-card-title>
+		<mat-card-title>Documento <p style="display:inline" *ngIf="(isGenerated$ | async)">&nbsp;effetto</p> {{ editItem.id }}</mat-card-title>
 		<mat-card-content>
 			<mat-form-field class="form-field-small">
 				<input type="text" matInput placeholder="Numero" formControlName="numero">
@@ -39,6 +39,7 @@
 			</mat-form-field>
 		</mat-card-content>
 	</mat-card>
+	<div class="some-left">
 	<mat-card class="some-top" [ngClass]="{'docEffettiComponent': (isGenerated$ | async) }">
 		<mat-card-title style>
 			<span style="align-self: center;">Riga digitata {{ this.editItem.rigaDigitataList?.length }}</span>
@@ -104,5 +105,6 @@
 			</div>
 		</mat-card-content>
 	</mat-card>
+	</div>
 </form>
 <!--<pre>{{editItemForm.valid}}</pre><-->

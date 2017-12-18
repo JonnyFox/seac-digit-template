@@ -5,5 +5,6 @@
         public int ContoId { get; set; }
         public decimal Valore { get; set; }
         public decimal VariazioneFiscale { get; set; }
+        public decimal Sospeso { get; set; }
     }
 }
