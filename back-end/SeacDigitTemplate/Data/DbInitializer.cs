@@ -580,12 +580,9 @@ namespace SeacDigitTemplate.Data
                     ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[1],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
-                    VoceIvaId = "VoceIvaId",
-                    Trattamento = "*" + (int)TrattamentoEnum.Detraibile,
-                    AliquotaIvaId = "AliquotaIvaId",
-                    Valore = "#Iva*PercentualeIndetraibilita/100",
+                    Valore = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
                     VariazioneFiscale = "#Iva*PercentualeIndetraibilita/100*PercentualeIndeducibilita/100",
-                    Imponibile = "#Imponibile*PercentualeIndetraibilita/100",
+                    Imponibile = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
                     Iva = "#Iva*PercentualeIndetraibilita/100"
                 },
                 new TemplateEffetto
