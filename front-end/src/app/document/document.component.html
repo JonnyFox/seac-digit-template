@@ -1,8 +1,9 @@
 <div class="row some-top">
 	<div class="col-lg-8">
 		<div *ngIf="editItem && editItem.rigaDigitataList">
-				<app-document-detail [editItem]="editItem" [aliquotaIvaList]="aliquotaIvaList" [contoList]="contoList" [titoloInapplicabilitaList]="titoloInapplicabilitaList"
-				[voceIvaList]="voceIvaList" (onChange)="inputChange($event)" (isValid)="isDocumentValid($event)"></app-document-detail>	
+			<!--<pre>{{editItem | json}}</pre>-->	
+			<app-document-detail [editItem]="editItem" [aliquotaIvaList]="aliquotaIvaList" [contoList]="contoList" [titoloInapplicabilitaList]="titoloInapplicabilitaList"
+				[voceIvaList]="voceIvaList" (onChange)="inputChange($event)" (isValid)="isDocumentValid($event)"> </app-document-detail>	
 			<ul class ="cleanList">
 				<li *ngFor="let doc of (documentoEffetti$ | async)">
 					<!--<pre>{{doc | json}}</pre>-->
@@ -116,9 +117,9 @@
 		</mat-card>
 	</div>
 </div>
-<div class="row some-top">
+<div class="row padBot ">
 	<div class="col-lg-6">
-		<mat-card class="effects ">
+		<mat-card class="effects some-top">
 			<mat-card-title>Situazione Conto</mat-card-title>
 			<mat-card-content>
 				<mat-table #table [dataSource]="dataSourceSituazioneConto">
@@ -148,8 +149,8 @@
 			</mat-card-content>
 		</mat-card>
 	</div>
-	<div class="col-lg-6">
-		<mat-card class="effects padBot">
+	<div class="col-lg-6 ">
+		<mat-card class="effects some-top">
 			<mat-card-title>Situazione IVA</mat-card-title>
 			<mat-card-content>
 				<mat-table #table [dataSource]="dataSourceSituazioneVoceIva">
@@ -197,7 +198,9 @@
 			</mat-card-content>
 		</mat-card>
 	</div>
+	
 </div>
+
 
 <button mat-mini-fab (click)="openDialog()">
 		<mat-icon>feedback</mat-icon>

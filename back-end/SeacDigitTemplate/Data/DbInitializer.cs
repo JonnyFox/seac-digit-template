@@ -246,7 +246,7 @@ namespace SeacDigitTemplate.Data
                     ContoDare = contos[2],
                     ContoAvere = contos[9],
                     VoceIva = voceivas[0],
-                    TitoloInapplicabilita = titoloInapplicabilitas[2],
+                    TitoloInapplicabilita = titoloInapplicabilitas[0],
                     Imponibile = 2.0m
                 },
                 //Documento 2
@@ -772,6 +772,19 @@ namespace SeacDigitTemplate.Data
                 new TemplateEffetto
                 {
                     ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[8],
+                    ContoDareId = "*4",
+                    ContoAvereId = "*7",
+                    VoceIvaId = "VoceIvaId",
+                    Trattamento = "*" + (int)TrattamentoEnum.Detraibile,
+                    AliquotaIvaId = "AliquotaIvaId",
+                    Valore = "#Iva*(1 - PercentualeIndetraibilita/100)",
+                    Imponibile = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
+                    Iva = "#Iva*(1 - PercentualeIndetraibilita/100)"
+
+                },
+                new TemplateEffetto
+                {
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[9],
                     ContoDareId = "ContoDareId",
                     ContoAvereId = "ContoAvereId",
                     Valore = "#Imponibile*(1 - PercentualeIndetraibilita/100)"
@@ -784,14 +797,14 @@ namespace SeacDigitTemplate.Data
                     ContoAvereId = "ContoAvereId",
                     VoceIvaId = "VoceIvaId",
                     Trattamento = "*" + (int)TrattamentoEnum.Detraibile,
+                    Imponibile = "#Iva*(1 - PercentualeIndetraibilita/100)",
                     AliquotaIvaId = "AliquotaIvaId",
                     Valore = "#Iva*(1 - PercentualeIndetraibilita/100)",
-                    Imponibile = "#Iva*(1 - PercentualeIndetraibilita/100)"
 
                 },
                 new TemplateEffetto
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[9],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[10],
                     ContoDareId = "*10",
                     ContoAvereId = "*21",
                     Valore = "#Totale",
@@ -802,7 +815,7 @@ namespace SeacDigitTemplate.Data
                     ContoDareId = "*10",
                     ContoAvereId = "*19",
                     Valore = "#RitenutaAcconto",
-                }
+                },
 
             };
 
