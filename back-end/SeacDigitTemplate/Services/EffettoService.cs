@@ -174,21 +174,6 @@ namespace SeacDigitTemplate.Services
                             value = Enum.Parse(Nullable.GetUnderlyingType(currentEffettoProperty.PropertyType), templateEffettoFieldValue.Substring(1));
                         }
                     }
-                    else if (templateEffettoFieldValue.StartsWith("§"))
-                    {
-                        if (currentEffettoProperty.PropertyType == typeof(int) || currentEffettoProperty.PropertyType == typeof(int?))
-                        {
-                            value = templateEffettoFieldValue.Substring(1).ToNullableInt();
-                        }
-                        else
-                        {
-                            value = EffettoProperties.Single(rdp => rdp.Name == templateEffettoFieldValue.Substring(1)).GetValue(documento);
-                        }
-                    }
-                    else if (templateEffettoFieldValue.StartsWith("&"))
-                    {
-                        value = EffettoProperties.Single(rdp => rdp.Name == templateEffettoFieldValue.Substring(1)).GetValue(rigaDigitata);
-                    }
                     else if (templateEffettoFieldValue.StartsWith("#"))
                     {
                         var formula = templateEffettoFieldValue.Substring(1);
@@ -221,7 +206,7 @@ namespace SeacDigitTemplate.Services
             return newEffetto;
         }
 
-        public List<SituazioneConto> GetSituazioneConto(List<Effetto> effettoList)
+        public List<SituazioneConto> GetSituazioneConto(Documento documento ,List<Effetto> effettoList)
         {
 
             var contoDareResult = effettoList
@@ -229,12 +214,27 @@ namespace SeacDigitTemplate.Services
                 .Where(g => g.Key.HasValue)
                 .Select(kvp =>
                 {
-                    return new SituazioneConto
+                    if (((int)documento.Sospeso == 3 || (int)documento.Sospeso == 2 && kvp.Key.Value != 4) || ((int)documento.Sospeso == 1 && kvp.Key.Value == 4))
                     {
-                        ContoId = kvp.Key.Value,
-                        Valore = kvp.Sum(v => v.Valore),
-                        VariazioneFiscale = kvp.Sum(v => v.VariazioneFiscale)
-                    };
+                        return new SituazioneConto
+                        {
+                            ContoId = kvp.Key.Value,
+                            Valore = 0,
+                            Sospeso = kvp.Sum(v => v.Valore),
+                            VariazioneFiscale = kvp.Sum(v => v.VariazioneFiscale)
+                        };
+                        
+                    }
+                    else
+                    {
+                        return new SituazioneConto
+                        {
+                            ContoId = kvp.Key.Value,
+                            Valore = kvp.Sum(v => v.Valore),
+                            Sospeso = 0,
+                            VariazioneFiscale = kvp.Sum(v => v.VariazioneFiscale)
+                        };
+                    }
                 });
 
             var contoAvereResult = effettoList
@@ -242,12 +242,27 @@ namespace SeacDigitTemplate.Services
                 .Where(g => g.Key.HasValue)
                 .Select(kvp =>
                 {
-                    return new SituazioneConto
+                    if (((int)documento.Sospeso == 3 || (int)documento.Sospeso == 2 && kvp.Key.Value != 4) || ((int)documento.Sospeso == 1 && kvp.Key.Value == 4))
                     {
-                        ContoId = kvp.Key.Value,
-                        Valore = -kvp.Sum(v => v.Valore),
-                        VariazioneFiscale = -kvp.Sum(v => v.VariazioneFiscale)
-                    };
+                        return new SituazioneConto
+                        {
+                            ContoId = kvp.Key.Value,
+                            Valore = 0,
+                            Sospeso = -kvp.Sum(v => v.Valore),
+                            VariazioneFiscale = -kvp.Sum(v => v.VariazioneFiscale)
+                        };
+
+                    }
+                    else
+                    {
+                        return new SituazioneConto
+                        {
+                            ContoId = kvp.Key.Value,
+                            Valore = -kvp.Sum(v => v.Valore),
+                            Sospeso = 0,
+                            VariazioneFiscale = -kvp.Sum(v => v.VariazioneFiscale)
+                        };
+                    }
                 });
 
             var result = contoDareResult
@@ -266,7 +281,7 @@ namespace SeacDigitTemplate.Services
 
         }
 
-        public List<SituazioneVoceIva> GetSituazioneVoceIva(List<Effetto> effettoList)
+        public List<SituazioneVoceIva> GetSituazioneVoceIva(Documento documento, List<Effetto> effettoList)
         {
             return effettoList
                 .GroupBy(e => new
@@ -279,19 +294,35 @@ namespace SeacDigitTemplate.Services
                 .Where(g => g.Key.VoceIvaId != null)
                 .Select(kvp =>
                 {
-                    return new SituazioneVoceIva
+                    if ((int)documento.Sospeso == 0 || (int)documento.Sospeso == 2 )
                     {
-                        VoceIvaId = kvp.Key.VoceIvaId,
-                        Trattamento = kvp.Key.Trattamento,
-                        TitoloInapplicabilitaId = kvp.Key.TitoloInapplicabilitaId,
-                        AliquotaIvaId = kvp.Key.AliquotaIvaId,
-                        Imponibile = kvp.Sum(s => s.Imponibile),
-                        Iva = kvp.Sum(s => s.Iva)
-                    };
+                        return new SituazioneVoceIva
+                        {
+                            VoceIvaId = kvp.Key.VoceIvaId,
+                            Trattamento = kvp.Key.Trattamento,
+                            TitoloInapplicabilitaId = kvp.Key.TitoloInapplicabilitaId,
+                            AliquotaIvaId = kvp.Key.AliquotaIvaId,
+                            Imponibile = kvp.Sum(s => s.Imponibile),
+                            Sospeso = 0,
+                            Iva = kvp.Sum(s => s.Iva)
+                        };
+                    }
+                    else
+                    {
+                        return new SituazioneVoceIva
+                        {
+                            VoceIvaId = kvp.Key.VoceIvaId,
+                            Trattamento = kvp.Key.Trattamento,
+                            TitoloInapplicabilitaId = kvp.Key.TitoloInapplicabilitaId,
+                            AliquotaIvaId = kvp.Key.AliquotaIvaId,
+                            Imponibile = 0,
+                            Sospeso = kvp.Sum(s => s.Imponibile),
+                            Iva = kvp.Sum(s => s.Iva)
+                        };
+                    }
                 })
                 .ToList();
         }
-
 
         internal class MyComparer : IEqualityComparer<SituazioneConto>
         {

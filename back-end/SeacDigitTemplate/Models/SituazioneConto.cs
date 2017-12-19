@@ -9,6 +9,7 @@ namespace SeacDigitTemplate.Model
 
         public decimal Valore { get; set; }
         public decimal VariazioneFiscale { get; set; }
+        public decimal Sospeso { get; set; }
 
         public bool Equals(SituazioneConto other)
         {

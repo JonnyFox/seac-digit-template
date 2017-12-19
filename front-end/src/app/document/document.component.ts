@@ -56,8 +56,9 @@ export class DocumentComponent implements OnInit {
         'contoAvereId', 'valore', 'variazioneFiscale'];
     public displayedColumnsEffettoIva = ['rigaDigitataId', 'voceIvaId', 'trattamento',
         'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
-    public displayedColumnsSituazioneConto = ['contoId', 'valore', 'variazioneFiscale'];
-    public displayedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento', 'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
+    public displayedColumnsSituazioneConto = ['contoId', 'valore', 'variazioneFiscale', 'sospeso'];
+    public displayedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento',
+     'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva', 'sospeso'];
     public displayedColumnsDocumento = ['id', 'totale', 'ritenutaAcconto',
         'sospeso', 'tipo', 'caratteristica', 'cliforId', 'registro', 'riferimentoDocumentoId'];
     public displayedColumnsRigaDigitata = ['id', 'documentoId', 'contoDareId',
