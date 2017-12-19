@@ -1,4 +1,7 @@
-<h1>Documents</h1>
+<h1 class="textline">Documents</h1>
+<button mat-icon-button (click)="addDocumento()" class="add">
+    <mat-icon>add</mat-icon>
+</button>
 <div class="example-container mat-elevation-z8">
   <mat-table #table [dataSource]="dataSource">
     <ng-container matColumnDef="id">

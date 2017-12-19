@@ -1,12 +1,10 @@
 <div class="row some-top">
 	<div class="col-lg-8">
 		<div *ngIf="editItem && editItem.rigaDigitataList">
-			<!--<pre>{{editItem | json}}</pre>-->	
 			<app-document-detail [editItem]="editItem" [aliquotaIvaList]="aliquotaIvaList" [contoList]="contoList" [titoloInapplicabilitaList]="titoloInapplicabilitaList"
 				[voceIvaList]="voceIvaList" (onChange)="inputChange($event)" (isValid)="isDocumentValid($event)"> </app-document-detail>	
 			<ul class ="cleanList">
 				<li *ngFor="let doc of (documentoEffetti$ | async)">
-					<!--<pre>{{doc | json}}</pre>-->
 					<app-document-detail class ="docEffettiComponent"
 						[editItem]="doc" 
 						[aliquotaIvaList]="aliquotaIvaList" 
