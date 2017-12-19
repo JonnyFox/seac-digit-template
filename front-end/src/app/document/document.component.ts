@@ -85,7 +85,7 @@ export class DocumentComponent implements OnInit {
     public dataSourceSituazioneConto = new DataSourceSituazioneConto(this.effettoCalcolo$);
     public dataSourceSituazioneVoceIva = new DataSourceSituazioneVoceIva(this.effettoCalcolo$);
     public dataSourceDocumento = new DataSourceDocumento(this.effettoCalcolo$);
-    public dataSourceRigaDigitata = new DataSourceRigaDigitata(this._effettoCalcolo$);
+    public dataSourceRigaDigitata = new DataSourceRigaDigitata(this.effettoCalcolo$);
 
     public editItem: Documento = new Documento();
 
