@@ -89,5 +89,20 @@ namespace SeacDigitTemplate.Controllers
             _ctx.SaveChanges();
             return Ok();
         }
+        [HttpPost("saveChanges")]
+        public IActionResult SaveDocument([FromBody] Documento documento)
+        {
+            var tmp = _ctx.Documentos.Find(documento.Id);
+            _ctx.Entry(tmp).CurrentValues.SetValues(documento);
+            _ctx.SaveChanges();
+            for (int i = 0; i < documento.rigaDigitataList.Count; i++)
+            {
+                var tmpriga = _ctx.RigaDigitatas.Find(documento.rigaDigitataList[i].Id);
+                _ctx.Entry(tmpriga).CurrentValues.SetValues(documento.rigaDigitataList[i]);
+            }
+            _ctx.SaveChanges();
+
+            return Ok();
+        }
     }
 }

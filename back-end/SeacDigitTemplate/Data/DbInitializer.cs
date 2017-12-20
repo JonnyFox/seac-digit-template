@@ -54,6 +54,7 @@ namespace SeacDigitTemplate.Data
             context.SaveChanges();
 
             context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Contos OFF");
+            
 
             trans.Commit();
 
@@ -109,7 +110,8 @@ namespace SeacDigitTemplate.Data
                     Registro = RegistroTipoEnum.Emesse,
                     Numero = "1",
                     Protocollo = 1,
-                    isGenerated = false
+                    isGenerated = false,
+                    Descrizione ="Caso base"
 
                 },
                 new Documento{
@@ -122,7 +124,8 @@ namespace SeacDigitTemplate.Data
                     Registro = RegistroTipoEnum.Emesse,
                     Numero = "2",
                     Protocollo = 5,
-                    isGenerated = false
+                    isGenerated = false,
+                    Descrizione ="Caso indetraibilità"
                     },
                 new Documento{
                     Totale = 45.0m,
@@ -134,7 +137,8 @@ namespace SeacDigitTemplate.Data
                     Registro = RegistroTipoEnum.Acquisti,
                     Numero = "3",
                     Protocollo = 5,
-                    isGenerated = false
+                    isGenerated = false,
+                    Descrizione ="Caso Indetraibilità/Indeducibilità"
                     },
                 new Documento{
                     Totale = 30.0m,
@@ -146,7 +150,8 @@ namespace SeacDigitTemplate.Data
                     Registro = RegistroTipoEnum.Acquisti,
                     Numero = "4",
                     Protocollo = 5,
-                    isGenerated = false
+                    isGenerated = false,
+                    Descrizione ="Caso base esteso"
                     },
                 new Documento{
                     Totale = 60.0m,
@@ -158,7 +163,8 @@ namespace SeacDigitTemplate.Data
                     Registro = RegistroTipoEnum.Acquisti,
                     Numero = "5",
                     Protocollo = 5,
-                    isGenerated = false
+                    isGenerated = false,
+                    Descrizione ="Caso base"
                     },
                 new Documento{
                     Totale = 320.0m,
@@ -170,7 +176,8 @@ namespace SeacDigitTemplate.Data
                     Registro = RegistroTipoEnum.Emesse,
                     Numero = "6",
                     Protocollo = 5,
-                    isGenerated = false
+                    isGenerated = false,
+                    Descrizione ="Caso creazione documento"
                     },
                 new Documento{
                     Totale = 1000.0m,
@@ -182,7 +189,8 @@ namespace SeacDigitTemplate.Data
                     Registro = RegistroTipoEnum.Acquisti,
                     Numero = "7",
                     Protocollo = 5,
-                    isGenerated = false
+                    isGenerated = false,
+                    Descrizione ="Caso creazione documento doppia"
                     },
                 new Documento{
                     Totale = 1040.4m,
@@ -194,7 +202,8 @@ namespace SeacDigitTemplate.Data
                     Registro = RegistroTipoEnum.Acquisti,
                     Numero = "8",
                     Protocollo = 5,
-                    isGenerated = false
+                    isGenerated = false,
+                    Descrizione ="Caso Sospensione"
                     }
 
             };

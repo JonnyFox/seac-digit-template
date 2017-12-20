@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { query } from '@angular/animations/src/animation_metadata';
+import { stringify } from 'querystring';
 
 @Injectable()
 export class EffettoService {
@@ -41,5 +43,19 @@ export class EffettoService {
                 }
             }
         return effettoDocumentoList;
+    }
+    public SaveDocument(documento: Documento, editItem: Documento): Observable<any> {
+        documento.id = editItem.id;
+        documento.descrizione = editItem.descrizione;
+        for (let i = 0; i < editItem.rigaDigitataList.length; i++) {
+            documento.rigaDigitataList[i].id = editItem.rigaDigitataList[i].id;
+            documento.rigaDigitataList[i].documentoId = editItem.rigaDigitataList[i].documentoId;
+        }
+        return <any>this.http.post(this.baseUrl + `/saveChanges`, documento, {
+            observe: 'body',
+            headers: new HttpHeaders().set('Content-Type', 'application/json'),
+            responseType: 'text',
+            withCredentials: false
+        });
     }
 }
