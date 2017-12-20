@@ -218,7 +218,26 @@ export class DocumentComponent implements OnInit {
         return group;
     }
     public saveDocument() {
-        this.effettoService.SaveDocument(this.editDocumento, this.editItem).subscribe();
+        this.editDocumento.id = this.editItem.id;
+        this.editDocumento.descrizione = this.editItem.descrizione;
+        for (let i = 0; i < this.editDocumento.rigaDigitataList.length; i++) {
+
+            if ( this.editDocumento.rigaDigitataList[i].toAdd === null) {
+            this.editDocumento.rigaDigitataList[i].id = this.editItem.rigaDigitataList[i].id;
+            }
+            this.editDocumento.rigaDigitataList[i].documentoId = this.editItem.id;
+
+        }
+        /*for (let i = 0; i < this.editDocumento.rigaDigitataList.length; i++) {
+            if ( this.editDocumento.rigaDigitataList[i].id !== this.editItem.rigaDigitataList[i].id &&
+                this.editDocumento.rigaDigitataList[i].toAdd === null) {
+                this.editItem.rigaDigitataList[i].toAdd = false;
+                this.editDocumento.rigaDigitataList.push(this.editItem.rigaDigitataList[i]);
+            }else {
+                this.editDocumento.rigaDigitataList[i].toAdd = null;
+            }
+        }*/
+        this.effettoService.SaveDocument(this.editDocumento).subscribe();
     }
     public getContoDescription(id: number): string {
         if (id != null) {

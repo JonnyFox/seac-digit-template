@@ -16,6 +16,7 @@ import { FormArray, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { EffettoService } from '../shared/effetto.service';
 
 @Component({
     selector: 'app-document-detail',
@@ -58,6 +59,7 @@ export class DocumentDetailComponent implements OnInit {
         .filter(key => !isNaN(Number(TrattamentoEnum[key])));
 
     constructor(
+        private effettoService: EffettoService,
         private fb: FormBuilder
     ) {
         this.createForm();
@@ -87,6 +89,7 @@ export class DocumentDetailComponent implements OnInit {
     private createRigaDigitataFormGroup(rd: RigaDigitata): FormGroup {
 
         const group = this.fb.group({
+            documentoId: [],
             contoDareId: [],
             contoAvereId: [],
             voceIvaId: [],
@@ -98,7 +101,8 @@ export class DocumentDetailComponent implements OnInit {
             percentualeIndetraibilita: ['', Validators.required],
             percentualeIndeducibilita: ['', Validators.required],
             settore: [],
-            note: []
+            note: [],
+            toAdd: [],
         }, { updateOn: 'blur'});
 
         if (rd) {
@@ -133,6 +137,7 @@ export class DocumentDetailComponent implements OnInit {
         const newRigaDigitata = new RigaDigitata();
         newRigaDigitata.percentualeIndeducibilita = newRigaDigitata.percentualeIndetraibilita = 0;
         newRigaDigitata.documentoId = this.editItem.id;
+        newRigaDigitata.toAdd = true;
 
         const currentRigaDigitata = (this.rigaDigitataList.length > 0 ? this.rigaDigitataList.value[0] : null) as RigaDigitata;
         if (currentRigaDigitata) {

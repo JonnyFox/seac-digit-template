@@ -82,6 +82,7 @@ export class RigaDigitata {
     percentualeIndeducibilita: number | null;
     settore: number | null;
     note: string | null;
+    toAdd: boolean | null;
 }
 
 export class Conto {
