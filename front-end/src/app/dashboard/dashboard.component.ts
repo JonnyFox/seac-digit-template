@@ -23,7 +23,8 @@ export class DashboardComponent implements OnInit {
     public sospeso = DocumentoSospensioneEnum;
     public registro = RegistroTipoEnum;
 
-    public displayedColumns = ['id', 'numero', 'protocollo', 'tipo', 'caratteristica', 'sospeso', 'registro', 'totale', 'action'];
+    public displayedColumns = ['id', 'numero', 'protocollo', 'tipo', 'caratteristica', 'sospeso',
+     'registro', 'totale', 'action', 'descrizione'];
 
     public dataSource: ExampleDataSource | null;
 

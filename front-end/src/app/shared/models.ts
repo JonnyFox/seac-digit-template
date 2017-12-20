@@ -33,6 +33,7 @@ export enum RegistroTipoEnum {
 export class Documento {
     id: number;
     numero: string;
+    descrizione: string;
     protocollo: number;
     totale: number;
     ritenutaAcconto: number;

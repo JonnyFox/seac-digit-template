@@ -217,7 +217,9 @@ export class DocumentComponent implements OnInit {
 
         return group;
     }
-
+    public saveDocument() {
+        this.effettoService.SaveDocument(this.editDocumento, this.editItem).subscribe();
+    }
     public getContoDescription(id: number): string {
         if (id != null) {
             return this.contoList.find(c => c.id === id).nome;
@@ -244,7 +246,7 @@ export class DocumentComponent implements OnInit {
 
     public openDialog(): void {
         const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-          width: '500px',
+          width: '1000px',
           data: {  description: this.description }
         });
 

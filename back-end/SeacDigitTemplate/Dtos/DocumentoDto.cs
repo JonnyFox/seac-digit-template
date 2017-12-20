@@ -14,6 +14,7 @@ namespace SeacDigitTemplate.Dtos
         public RegistroTipoEnum Registro { get; set; }
         public int RiferimentoDocumentoId { get; set; }
         public string Numero { get; set; }
+        public string Descrizione { get; set; }
         public int Protocollo { get; set; }
         public int? TemplateGenerazioneEffettoDocumentoId { get; set; }
         public bool? isGenerated { get; set; }
