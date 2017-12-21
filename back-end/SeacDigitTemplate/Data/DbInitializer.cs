@@ -160,7 +160,7 @@ namespace SeacDigitTemplate.Data
                     Tipo = DocumentoTipoEnum.Fattura,
                     Caratteristica = DocumentoCaratteristicaEnum.Normale,
                     Clifor = clifors[1],
-                    Registro = RegistroTipoEnum.Acquisti,
+                    Registro = RegistroTipoEnum.Finanziari,
                     Numero = "5",
                     Protocollo = 5,
                     isGenerated = false,
@@ -492,7 +492,7 @@ namespace SeacDigitTemplate.Data
                     Sospeso = DocumentoSospensioneEnum.None.ToString(),
                     Tipo = DocumentoTipoEnum.Fattura.ToString(),
                     Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
-                    Registro = RegistroTipoEnum.Acquisti.ToString(),
+                    Registro = RegistroTipoEnum.Finanziari.ToString(),
                 },
 
                 //Documento 5
@@ -510,23 +510,15 @@ namespace SeacDigitTemplate.Data
                     Sospeso = DocumentoSospensioneEnum.None.ToString(),
                     Tipo = DocumentoTipoEnum.Fattura.ToString(),
                     Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
-                    Registro = RegistroTipoEnum.Acquisti.ToString(),
+                    Registro = RegistroTipoEnum.Finanziari.ToString(),
                 },
                 new ApplicazioneTemplateEffetto
                 {
-                    ContoDare = "*",
-                    ContoAvere = "Fornitore",
-                    VoceIva ="Spese",
-                    AliquotaIva ="*",
-                    Imponibile = "*",
-                    Iva ="220",
-                    PercentualeIndetraibilita = "*",
-                    PercentualeIndeducibilita = "*",
                     RitenutaAcconto="204",
                     Sospeso = DocumentoSospensioneEnum.None.ToString(),
                     Tipo = DocumentoTipoEnum.Fattura.ToString(),
                     Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
-                    Registro = RegistroTipoEnum.Acquisti.ToString(),
+                    Registro = RegistroTipoEnum.Finanziari.ToString(),
                 },
                 //Documento 6
                 new ApplicazioneTemplateEffetto
@@ -737,31 +729,10 @@ namespace SeacDigitTemplate.Data
                 //Per aggiunta della ritenuta acconto
                 new TemplateEffetto
                 {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[5],
+                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[6],
                     ContoDareId = "*10",
                     ContoAvereId = "*19",
                     Valore = "#RitenutaAcconto"
-                },
-                new TemplateEffetto
-                {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[6],
-                    ContoDareId = "*4",
-                    ContoAvereId = "ContoAvereId",
-                    VoceIvaId = "VoceIvaId",
-                    Trattamento = "*" + (int)TrattamentoEnum.Detraibile,
-                    AliquotaIvaId = "AliquotaIvaId",
-                    Valore = "#Iva*(1 - PercentualeIndetraibilita/100)",
-                    Imponibile = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
-                    Iva = "#Iva*(1 - PercentualeIndetraibilita/100)"
-
-                },
-                new TemplateEffetto
-                {
-                    ApplicazioneTemplateEffetto = applicazioneTemplateEffettoList[6],
-                    ContoDareId = "ContoDareId",
-                    ContoAvereId = "ContoAvereId",
-                    Valore = "#Imponibile*(1 - PercentualeIndetraibilita/100)",
-
                 },
                 //Documento 6
                 new TemplateEffetto

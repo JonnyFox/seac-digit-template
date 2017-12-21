@@ -64,7 +64,8 @@ export class DocumentDetailComponent implements OnInit {
     ) {
         this.createForm();
         this.onChange = this.editItemForm.valueChanges as Observable<Documento>;
-        this.isValid = this.onChange.map(v => this.editItemForm.valid);
+        // this.isValid = this.editItemForm.statusChanges.map(v => !!v && v !== 'INVALID');
+        this.isValid = this.editItemForm.valueChanges.map(v => this.editItemForm.valid);
     }
 
     ngOnInit() {
@@ -73,15 +74,17 @@ export class DocumentDetailComponent implements OnInit {
 
     private createForm(): void {
         this.editItemForm = this.fb.group({
+            id : [],
             numero: [],
             protocollo: [],
-            totale: [],
-            ritenutaAcconto: [],
+            totale: ['', Validators.required],
+            ritenutaAcconto: ['', Validators.required],
             sospeso: [],
             tipo: [],
             caratteristica: [],
             cliforId: [],
             registro: [],
+            descrizione: [],
             rigaDigitataList: this.fb.array([])
         }, { updateOn: 'blur'});
     }
@@ -89,6 +92,7 @@ export class DocumentDetailComponent implements OnInit {
     private createRigaDigitataFormGroup(rd: RigaDigitata): FormGroup {
 
         const group = this.fb.group({
+            id : [],
             documentoId: [],
             contoDareId: [],
             contoAvereId: [],

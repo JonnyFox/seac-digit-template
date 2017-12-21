@@ -37,13 +37,14 @@ import { Response } from '@angular/http/src/static_response';
 import { Jsonp } from '@angular/http/src/http';
 import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 import { Subject } from 'rxjs/Subject';
+import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
     selector: 'app-document',
     templateUrl: './document.component.html',
     styleUrls: ['./document.component.scss']
 })
-export class DocumentComponent implements OnInit {
+export class DocumentComponent implements AfterViewInit {
 
     public effettoFeedback: EffettoFeedback = new EffettoFeedback;
     public description: string;
@@ -68,8 +69,9 @@ export class DocumentComponent implements OnInit {
     private _effettoCalcolo$: BehaviorSubject<EffettoCalcolo> = new BehaviorSubject(new EffettoCalcolo());
     public effettoCalcolo$: Observable<EffettoCalcolo> = this._effettoCalcolo$.asObservable();
 
-    private _isValidDocument$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+    private _isValidDocument$: Subject<boolean> = new Subject();
     public isValidDocument$: Observable<boolean> = this._isValidDocument$.asObservable();
+    public isValidDocumentValue = true;
 
     private _document$: Subject<Documento> = new Subject();
     public document$: Observable<Documento> = this._document$.asObservable();
@@ -129,11 +131,11 @@ export class DocumentComponent implements OnInit {
         private dialog: MatDialog,
         private router: Router,
     ) {
-        this.populateDocument()
+        this.populateDocument();
 
         this.document$
-            .withLatestFrom(this.isValidDocument$)
-            .filter(([_, bool]) => bool)
+            .zip(this.isValidDocument$)
+            .filter(([doc, bool]) => !!doc && !!bool)
             .map(([doc, _]) => doc)
             .withLatestFrom(this.isSync$)
             .filter(([_, bool]) => bool)
@@ -151,13 +153,13 @@ export class DocumentComponent implements OnInit {
 
     }
 
-    ngOnInit() { }
+    ngAfterViewInit() {
+        this._isValidDocument$.subscribe(v => this.isValidDocumentValue = v);
+    }
 
     public inputChangeEffetto(documento: Documento) {
-        // console.log('INPUT CHANGE' + JSON.stringify(documento));
     }
     public isDocumentValidEffetto(isValid: boolean) {
-        // console.log('IS DOCUMENT VALID' + JSON.stringify(isValid));
     }
 
     public inputChange(documento: Documento) {
@@ -165,8 +167,8 @@ export class DocumentComponent implements OnInit {
         this._document$.next(documento);
     }
 
-    public isDocumentValid(isValid: boolean) {
-        this._isValidDocument$.next(isValid);
+    public isDocumentValid(isValid: boolean | null) {
+        this._isValidDocument$.next(!!isValid);
     }
 
     private createForm(): void {
@@ -187,6 +189,7 @@ export class DocumentComponent implements OnInit {
     private createRigaDigitataFormGroup(rd: RigaDigitata): FormGroup {
 
         const group = this.fb.group({
+            id : [],
             contoDareId: [],
             contoAvereId: [],
             voceIvaId: [],
@@ -220,28 +223,13 @@ export class DocumentComponent implements OnInit {
             .subscribe( evt => this.editItem.rigaDigitataList = evt);
     }
     public saveDocument() {
-        this.editDocumento.id = this.editItem.id;
-        this.editDocumento.descrizione = this.editItem.descrizione;
-        for (let i = 0; i < this.editDocumento.rigaDigitataList.length; i++) {
-
-            if ( this.editDocumento.rigaDigitataList[i].toAdd === null) {
-            this.editDocumento.rigaDigitataList[i].id = this.editItem.rigaDigitataList[i].id;
-            }
-
-            this.editDocumento.rigaDigitataList[i].documentoId = this.editItem.id;
-
-        }
-        /*for (let i = 0; i < this.editDocumento.rigaDigitataList.length; i++) {
-            if ( this.editDocumento.rigaDigitataList[i].id !== this.editItem.rigaDigitataList[i].id &&
-                this.editDocumento.rigaDigitataList[i].toAdd === null) {
+        for (let i = 0; i < this.editItem.rigaDigitataList.length; i++) {
+            if (!this.editDocumento.rigaDigitataList.some(x => x.id === this.editItem.rigaDigitataList[i].id)) {
                 this.editItem.rigaDigitataList[i].toAdd = false;
                 this.editDocumento.rigaDigitataList.push(this.editItem.rigaDigitataList[i]);
-            }else {
-                this.editDocumento.rigaDigitataList[i].toAdd = null;
             }
-        }*/
+        }
         this.effettoService.SaveDocument(this.editDocumento).subscribe();
-
     }
     public getContoDescription(id: number): string {
         if (id != null) {
