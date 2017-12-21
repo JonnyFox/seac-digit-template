@@ -1,6 +1,6 @@
 import { FormArray, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -126,20 +126,10 @@ export class DocumentComponent implements OnInit {
         private effettoService: EffettoService,
         private notificationService: NotificationService,
         private fb: FormBuilder,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private router: Router,
     ) {
-        this.route.paramMap
-            .switchMap((params: ParamMap) =>
-                this.documentService.getById(+params.get('id')))
-            .first()
-            .switchMap((d: Documento) => {
-                this.editItem = d;
-                return this.rigaDigitataService.getByDocumentoId(d.id);
-            })
-            .first()
-            .subscribe( evt => this.editItem.rigaDigitataList = evt);
-
-
+        this.populateDocument()
 
         this.document$
             .withLatestFrom(this.isValidDocument$)
@@ -217,6 +207,18 @@ export class DocumentComponent implements OnInit {
 
         return group;
     }
+    private populateDocument() {
+        this.route.paramMap
+            .switchMap((params: ParamMap) =>
+                this.documentService.getById(+params.get('id')))
+            .first()
+            .switchMap((d: Documento) => {
+                this.editItem = d;
+                return this.rigaDigitataService.getByDocumentoId(d.id);
+            })
+            .first()
+            .subscribe( evt => this.editItem.rigaDigitataList = evt);
+    }
     public saveDocument() {
         this.editDocumento.id = this.editItem.id;
         this.editDocumento.descrizione = this.editItem.descrizione;
@@ -225,6 +227,7 @@ export class DocumentComponent implements OnInit {
             if ( this.editDocumento.rigaDigitataList[i].toAdd === null) {
             this.editDocumento.rigaDigitataList[i].id = this.editItem.rigaDigitataList[i].id;
             }
+
             this.editDocumento.rigaDigitataList[i].documentoId = this.editItem.id;
 
         }
@@ -238,6 +241,7 @@ export class DocumentComponent implements OnInit {
             }
         }*/
         this.effettoService.SaveDocument(this.editDocumento).subscribe();
+
     }
     public getContoDescription(id: number): string {
         if (id != null) {
@@ -292,6 +296,9 @@ export class DocumentComponent implements OnInit {
         this.feedback.Effetto = JSON.stringify(this.effettoFeedback);
 
         this.effettoService.sendFeedback(this.feedback).subscribe();
+    }
+    public goBackToDashboard() {
+        this.router.navigate(['/dashboard']);
     }
 }
 export class DataSourceEffettoConto extends DataSource<any> {
