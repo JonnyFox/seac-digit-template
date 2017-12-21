@@ -39,7 +39,8 @@ export class DashboardComponent implements OnInit {
     public documentoEffetti$: Observable<Documento[]> = this._documentoEffetti$.asObservable();
 
 
-    public displayedColumns = ['id', 'numero', 'protocollo', 'tipo', 'caratteristica', 'sospeso', 'registro', 'totale', 'action'];
+    public displayedColumns = ['id', 'numero', 'protocollo', 'tipo', 'caratteristica', 'sospeso',
+     'registro', 'totale', 'action', 'descrizione'];
 
     public dataSource: ExampleDataSource | null;
     public prova: String;

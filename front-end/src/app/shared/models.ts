@@ -33,6 +33,7 @@ export enum RegistroTipoEnum {
 export class Documento {
     id: number;
     numero: string;
+    descrizione: string;
     protocollo: number;
     totale: number;
     ritenutaAcconto: number;
@@ -81,6 +82,7 @@ export class RigaDigitata {
     percentualeIndeducibilita: number | null;
     settore: number | null;
     note: string | null;
+    toAdd: boolean | null;
 }
 
 export class Conto {

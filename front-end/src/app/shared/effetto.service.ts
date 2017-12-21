@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { query } from '@angular/animations/src/animation_metadata';
+import { stringify } from 'querystring';
 
 @Injectable()
 export class EffettoService {
@@ -41,5 +43,13 @@ export class EffettoService {
                 }
             }
         return effettoDocumentoList;
+    }
+    public SaveDocument(documento: Documento): Observable<any> {
+        return <any>this.http.post(this.baseUrl + `/saveChanges`, documento, {
+            observe: 'body',
+            headers: new HttpHeaders().set('Content-Type', 'application/json'),
+            responseType: 'text',
+            withCredentials: false
+        });
     }
 }
