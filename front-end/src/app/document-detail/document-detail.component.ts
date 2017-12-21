@@ -109,7 +109,7 @@ export class DocumentDetailComponent implements OnInit {
     }
 
     private setFormValues(): void {
-        if (this.editItem && this.editItem.id) {
+        if (this.editItem) {
             this.ceckGenerated(this.editItem);
             this.editItemForm.patchValue(this.editItem);
             this.rigaDigitataList = this.fb.array(this.editItem.rigaDigitataList.map(rd => this.createRigaDigitataFormGroup(rd)));

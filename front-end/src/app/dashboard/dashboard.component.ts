@@ -6,6 +6,8 @@ import {
     DocumentoSospensioneEnum,
     DocumentoTipoEnum,
     RegistroTipoEnum,
+    Clifor,
+    RigaDigitata,
 } from '../shared/models';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
@@ -25,9 +27,12 @@ export class DashboardComponent implements OnInit {
     public sospeso = DocumentoSospensioneEnum;
     public registro = RegistroTipoEnum;
     public documentoList: Documento[];
-    public newDocument : Documento;
+    public newDocument: Documento;
 
-    private _Documento$: Subject<Documento[]> = new Subject();
+    private _isValidDocument$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+    public isValidDocument$: Observable<boolean> = this._isValidDocument$.asObservable();
+
+    private _Documento$: BehaviorSubject<Documento[]> = new BehaviorSubject(new Array<Documento>());
     public Documento$: Observable<Documento[]> = this._Documento$.asObservable();
 
     private _documentoEffetti$: Subject<Documento[]> = new Subject();
@@ -37,36 +42,52 @@ export class DashboardComponent implements OnInit {
     public displayedColumns = ['id', 'numero', 'protocollo', 'tipo', 'caratteristica', 'sospeso', 'registro', 'totale', 'action'];
 
     public dataSource: ExampleDataSource | null;
-    public prova:String;
+    public prova: String;
 
     constructor(
         private documentService: DocumentoService,
         private router: Router
-    ) { 
-        this.Documento$ = this.documentService.getAll()
+    ) {
+        this.documentService.getAll().subscribe(x => this._Documento$.next(x));
         this.documentoList = new Array<Documento>();
     }
 
     ngOnInit() {
-        
         this.dataSource = new ExampleDataSource(this.Documento$);
-        
     }
 
     public editDocument(id: number) {
         this.router.navigate(['/document', id]);
     }
-    public populate(){
+    public populate() {
         this.Documento$.subscribe(x => this.documentoList = x);
     }
-    public addDocument(){
-        this.newDocument = new Documento;
+
+    public addDocument() {
         this.Documento$.subscribe(x => this.documentoList = x);
-        this.newDocument=this.documentoList[0];
+
+        this.newDocument = new Documento;
+        this.newDocument.id = 0;
+        this.newDocument.caratteristica = DocumentoCaratteristicaEnum.Normale;
+        this.newDocument.cliforId = 1;
+        this.newDocument.isGenerated = false;
+        this.newDocument.numero = (this.documentoList.length + 1).toString();
+        this.newDocument.protocollo = 0;
+        this.newDocument.registro = RegistroTipoEnum.Emesse;
+        this.newDocument.rigaDigitataList = new Array<RigaDigitata>();
+        this.newDocument.ritenutaAcconto = 0;
+        this.newDocument.sospeso = DocumentoSospensioneEnum.None;
+        this.newDocument.tipo = DocumentoTipoEnum.Fattura;
+        this.newDocument.totale = 0;
+        // this.newDocument. = ;
+
+        console.log(JSON.stringify(this.newDocument));
         this.documentoList.push(this.newDocument);
         this._Documento$.next(this.documentoList);
     }
-    public clear (){
+
+
+    public clear () {
         this._Documento$.next(null);
     }
 }

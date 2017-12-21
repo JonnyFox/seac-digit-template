@@ -4,6 +4,7 @@ using SeacDigitTemplate.Dtos;
 using SeacDigitTemplate.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SeacDigitTemplate.Model;
 
 namespace SeacDigitTemplate.Controllers
 {
@@ -36,7 +37,18 @@ namespace SeacDigitTemplate.Controllers
         public async Task<IActionResult> GetById(int id) => Ok(_mapper.Map<RigaDigitataDto>(await _rigaDigitataService.GetByIdAsync(id)));
 
         [HttpGet("documento/{id}")]
-        public async Task<IActionResult> GetByDocumentoIdAsync(int id) => Ok(_mapper.Map<List<RigaDigitataDto>>(await _rigaDigitataService.GetByDocumentoIdAsync(id)));
+        public async Task<IActionResult> GetByDocumentoIdAsync(int id)
+        {
+            var rigaDigitataList = new List<RigaDigitata>();
 
+            if (id == 0)
+            {
+                return Ok(_mapper.Map<List<RigaDigitataDto>>(rigaDigitataList));
+            }
+            else
+            {
+                return Ok(_mapper.Map<List<RigaDigitataDto>>(await _rigaDigitataService.GetByDocumentoIdAsync(id)));
+            }
+        }
     }
 }
