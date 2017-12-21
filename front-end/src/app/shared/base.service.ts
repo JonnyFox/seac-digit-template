@@ -27,4 +27,5 @@ export abstract class BaseService<T> {
     public genericGetAll<U>(): Observable<U[]> {
         return this.httpClient.get<U[]>(this.baseUrl);
     }
+    
 }

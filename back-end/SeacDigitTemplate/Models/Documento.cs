@@ -21,6 +21,7 @@ namespace SeacDigitTemplate.Model
 
         public string Numero { get; set; }
         public int Protocollo { get; set; }
+        public string Descrizione { get; set; }
 
         public int? TemplateGenerazioneEffettoDocumentoId { get; set; }
         public TemplateDocumento TemplateGenerazioneEffettoDocumento { get;set; }

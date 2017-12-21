@@ -27,6 +27,7 @@ namespace SeacDigitTemplate.Model
 
         public int? TitoloInapplicabilitaId { get; set; }
         public TitoloInapplicabilita TitoloInapplicabilita { get; set; }
+        public bool? toAdd { get; set; }
 
         public decimal? Imponibile { get; set; }
         public decimal? Iva { get; set; }

@@ -65,28 +65,33 @@ namespace SeacDigitTemplate.Controllers
         [HttpPost("calculatePost")]
         public async Task<IActionResult> GetEffettosFromRigaDigitatas([FromBody] Documento documento)
         {
-
-            var EffettoList = await _effettoService.GetEffettosFromInputListAsync(documento, documento.rigaDigitataList);
-            var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(documento,EffettoList);
-            var situazioneContos = _effettoService.GetSituazioneConto(documento,EffettoList);
-            var EffettoDocumentoList = await _effettoDocumentoService.GetDocumentoListFromInputListAsync(documento, documento.rigaDigitataList);
-            var EffettoRigaList = await _effettoRigaService.GetEffettoRigaListFromInputListAsync(documento, documento.rigaDigitataList, EffettoDocumentoList);
-
-
-            var effettoCalcoloDto = _mapper.Map<EffettoCalcoloDto>(EffettoList);
-            effettoCalcoloDto.SituazioneContos = _mapper.Map<List<SituazioneContoDto>>(situazioneContos);
-            effettoCalcoloDto.SituazioneVoceIvas = _mapper.Map<List<SituazioneVoceIvaDto>>(situazioneVoceIvas);
-            effettoCalcoloDto.EffettoDocumentoList = _mapper.Map<List<DocumentoDto>>(EffettoDocumentoList);
-            effettoCalcoloDto.EffettoRigaList = _mapper.Map<List<RigaDigitataDto>>(EffettoRigaList);
+                var EffettoList = await _effettoService.GetEffettosFromInputListAsync(documento, documento.rigaDigitataList);
+                var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(documento, EffettoList);
+                var situazioneContos = _effettoService.GetSituazioneConto(documento, EffettoList);
+                var EffettoDocumentoList = await _effettoDocumentoService.GetDocumentoListFromInputListAsync(documento, documento.rigaDigitataList);
+                var EffettoRigaList = await _effettoRigaService.GetEffettoRigaListFromInputListAsync(documento, documento.rigaDigitataList, EffettoDocumentoList);
 
 
-            return Ok(effettoCalcoloDto);
+                var effettoCalcoloDto = _mapper.Map<EffettoCalcoloDto>(EffettoList);
+                effettoCalcoloDto.SituazioneContos = _mapper.Map<List<SituazioneContoDto>>(situazioneContos);
+                effettoCalcoloDto.SituazioneVoceIvas = _mapper.Map<List<SituazioneVoceIvaDto>>(situazioneVoceIvas);
+                effettoCalcoloDto.EffettoDocumentoList = _mapper.Map<List<DocumentoDto>>(EffettoDocumentoList);
+                effettoCalcoloDto.EffettoRigaList = _mapper.Map<List<RigaDigitataDto>>(EffettoRigaList);
+
+
+                return Ok(effettoCalcoloDto);
         }
         [HttpPost("sendFeedback")]
         public IActionResult SendFeedback([FromBody] Feedback feedback)
         {
             _ctx.FeedbackList.Add(feedback);
             _ctx.SaveChanges();
+            return Ok();
+        }
+        [HttpPost("saveChanges")]
+        public IActionResult SaveDocument([FromBody] Documento documento)
+        {
+            _documentoService.SaveDocument(documento);
             return Ok();
         }
     }

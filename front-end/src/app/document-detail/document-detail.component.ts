@@ -16,6 +16,7 @@ import { FormArray, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { EffettoService } from '../shared/effetto.service';
 
 @Component({
     selector: 'app-document-detail',
@@ -58,11 +59,13 @@ export class DocumentDetailComponent implements OnInit {
         .filter(key => !isNaN(Number(TrattamentoEnum[key])));
 
     constructor(
+        private effettoService: EffettoService,
         private fb: FormBuilder
     ) {
         this.createForm();
         this.onChange = this.editItemForm.valueChanges as Observable<Documento>;
-        this.isValid = this.onChange.map(v => this.editItemForm.valid);
+        // this.isValid = this.editItemForm.statusChanges.map(v => !!v && v !== 'INVALID');
+        this.isValid = this.editItemForm.valueChanges.map(v => this.editItemForm.valid);
     }
 
     ngOnInit() {
@@ -71,15 +74,17 @@ export class DocumentDetailComponent implements OnInit {
 
     private createForm(): void {
         this.editItemForm = this.fb.group({
+            id : [],
             numero: [],
             protocollo: [],
-            totale: [],
-            ritenutaAcconto: [],
+            totale: ['', Validators.required],
+            ritenutaAcconto: ['', Validators.required],
             sospeso: [],
             tipo: [],
             caratteristica: [],
             cliforId: [],
             registro: [],
+            descrizione: [],
             rigaDigitataList: this.fb.array([])
         }, { updateOn: 'blur'});
     }
@@ -87,6 +92,8 @@ export class DocumentDetailComponent implements OnInit {
     private createRigaDigitataFormGroup(rd: RigaDigitata): FormGroup {
 
         const group = this.fb.group({
+            id : [],
+            documentoId: [],
             contoDareId: [],
             contoAvereId: [],
             voceIvaId: [],
@@ -98,7 +105,8 @@ export class DocumentDetailComponent implements OnInit {
             percentualeIndetraibilita: ['', Validators.required],
             percentualeIndeducibilita: ['', Validators.required],
             settore: [],
-            note: []
+            note: [],
+            toAdd: [],
         }, { updateOn: 'blur'});
 
         if (rd) {
@@ -109,7 +117,7 @@ export class DocumentDetailComponent implements OnInit {
     }
 
     private setFormValues(): void {
-        if (this.editItem && this.editItem.id) {
+        if (this.editItem) {
             this.ceckGenerated(this.editItem);
             this.editItemForm.patchValue(this.editItem);
             this.rigaDigitataList = this.fb.array(this.editItem.rigaDigitataList.map(rd => this.createRigaDigitataFormGroup(rd)));
@@ -133,6 +141,7 @@ export class DocumentDetailComponent implements OnInit {
         const newRigaDigitata = new RigaDigitata();
         newRigaDigitata.percentualeIndeducibilita = newRigaDigitata.percentualeIndetraibilita = 0;
         newRigaDigitata.documentoId = this.editItem.id;
+        newRigaDigitata.toAdd = true;
 
         const currentRigaDigitata = (this.rigaDigitataList.length > 0 ? this.rigaDigitataList.value[0] : null) as RigaDigitata;
         if (currentRigaDigitata) {

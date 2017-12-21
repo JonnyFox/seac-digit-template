@@ -1,5 +1,5 @@
 <h1 class="textline">Documents</h1>
-<button mat-icon-button (click)="addDocumento()" class="add">
+<button mat-icon-button (click)="addDocument()" class="add">
     <mat-icon>add</mat-icon>
 </button>
 <div class="example-container mat-elevation-z8">
@@ -42,6 +42,11 @@
     <ng-container matColumnDef="totale">
       <mat-header-cell *matHeaderCellDef> Totale </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.totale}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="descrizione">
+      <mat-header-cell *matHeaderCellDef> Descrizione </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.descrizione}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="action">

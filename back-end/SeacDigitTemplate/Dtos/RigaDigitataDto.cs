@@ -20,5 +20,6 @@ namespace SeacDigitTemplate.Dtos
         public decimal PercentualeIndeducibilita { get; set; }
         public int? Settore { get; set; }
         public string Note { get; set; }
+        public bool? toAdd { get; set; }
     }
 }
