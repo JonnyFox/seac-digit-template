@@ -66,7 +66,6 @@ export class DashboardComponent implements OnInit {
 
     public addDocument() {
         this.Documento$.subscribe(x => this.documentoList = x);
-
         this.newDocument = new Documento;
         this.newDocument.id = 0;
         this.newDocument.caratteristica = DocumentoCaratteristicaEnum.Normale;
@@ -80,11 +79,10 @@ export class DashboardComponent implements OnInit {
         this.newDocument.sospeso = DocumentoSospensioneEnum.None;
         this.newDocument.tipo = DocumentoTipoEnum.Fattura;
         this.newDocument.totale = 0;
-        // this.newDocument. = ;
-
         this.documentoList.push(this.newDocument);
         this._Documento$.next(this.documentoList);
     }
+
 }
 
 export class ExampleDataSource extends DataSource<any> {

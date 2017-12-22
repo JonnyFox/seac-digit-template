@@ -492,7 +492,7 @@ namespace SeacDigitTemplate.Data
                     Sospeso = DocumentoSospensioneEnum.None.ToString(),
                     Tipo = DocumentoTipoEnum.Fattura.ToString(),
                     Caratteristica = DocumentoCaratteristicaEnum.Normale.ToString(),
-                    Registro = RegistroTipoEnum.Acquisti.ToString(),
+                    Registro = RegistroTipoEnum.Finanziari.ToString(),
                 },
 
                 //Documento 5

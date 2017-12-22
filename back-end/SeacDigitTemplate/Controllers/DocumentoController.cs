@@ -36,7 +36,10 @@ namespace SeacDigitTemplate.Controllers
             Documento x = new Documento {
                 isGenerated = false,
                 CliforId = 1,
+<<<<<<< HEAD
                 rigaDigitataList = new List<RigaDigitata>()
+=======
+>>>>>>> dev
             };
             //if( lastDoc.isGenerated == null && id == 0)
             //{

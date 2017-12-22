@@ -222,7 +222,6 @@ export class DocumentComponent implements AfterViewInit {
             .first()
             .subscribe( evt => this.editItem.rigaDigitataList = evt);
     }
-
     public saveDocument() {
         for (let i = 0; i < this.editItem.rigaDigitataList.length; i++) {
             if (!this.editDocumento.rigaDigitataList.some(x => x.id === this.editItem.rigaDigitataList[i].id)) {
