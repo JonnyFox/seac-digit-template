@@ -251,7 +251,11 @@ export class DocumentComponent implements AfterViewInit {
                 this.editDocumento.rigaDigitataList.push(this.editItem.rigaDigitataList[i]);
             }
         }
-        this.effettoService.SaveDocument(this.editDocumento).subscribe();
+        this.effettoService.SaveDocument(this.editDocumento).subscribe( x =>{
+            if(this.editDocumento.id===0){
+                this.goBackToDashboard()
+            }
+        });
     }
 
     public getContoDescription(id: number): string {
