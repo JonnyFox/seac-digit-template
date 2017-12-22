@@ -35,33 +35,11 @@ namespace SeacDigitTemplate.Controllers
             return Ok(_mapper.Map<DocumentoDto>(await _documentoService.GetByIdAsync(id)));
         }
 
-<<<<<<< HEAD
-            var lastDoc = _ctx.Documentos.LastAsync().Result;
-            Documento x = new Documento {
-                isGenerated = false,
-                CliforId = 1,
-<<<<<<< HEAD
-                rigaDigitataList = new List<RigaDigitata>()
-=======
->>>>>>> dev
-            };
-            //if( lastDoc.isGenerated == null && id == 0)
-            //{
-            //    x.Id = lastDoc.Id;
-            //    return Ok(_mapper.Map<DocumentoDto>(x));
-            //}
-            if (id == 0)
-            {
-                return Ok(_mapper.Map<DocumentoDto>(x));
-            }
-            else
-=======
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(int id)
         {
             var result = await _documentoService.DeleteByIdAsync(id);
             if (result == 0)
->>>>>>> dev
             {
                 return NotFound();
             }

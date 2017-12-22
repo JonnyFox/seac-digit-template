@@ -51,14 +51,7 @@ namespace SeacDigitTemplate.Services
                 _ctx.Entry(tmp).CurrentValues.SetValues(documento);
                 _ctx.SaveChanges();
             }
-<<<<<<< HEAD
-<<<<<<< HEAD
-            lastDoc = _ctx.Documentos.LastAsync().Result;
-=======
->>>>>>> dev
-=======
-            lastDoc = _ctx.Documentos.LastAsync().Result;
->>>>>>> dev
+            
             lastDoc.isGenerated = false;
             lastDoc = _ctx.Documentos.LastAsync().Result;
             //Ciclo per assegnare gli id alle righe
