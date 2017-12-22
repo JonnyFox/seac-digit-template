@@ -142,6 +142,7 @@ export class DocumentDetailComponent implements OnInit {
         newRigaDigitata.percentualeIndeducibilita = newRigaDigitata.percentualeIndetraibilita = 0;
         newRigaDigitata.documentoId = this.editItem.id;
         newRigaDigitata.toAdd = true;
+        newRigaDigitata.id = 0;
 
         const currentRigaDigitata = (this.rigaDigitataList.length > 0 ? this.rigaDigitataList.value[0] : null) as RigaDigitata;
         if (currentRigaDigitata) {

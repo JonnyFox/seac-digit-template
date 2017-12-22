@@ -82,14 +82,8 @@ export class DashboardComponent implements OnInit {
         this.newDocument.totale = 0;
         // this.newDocument. = ;
 
-        console.log(JSON.stringify(this.newDocument));
         this.documentoList.push(this.newDocument);
         this._Documento$.next(this.documentoList);
-    }
-
-
-    public clear () {
-        this._Documento$.next(null);
     }
 }
 
