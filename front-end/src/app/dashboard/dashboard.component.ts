@@ -73,10 +73,6 @@ export class DashboardComponent implements OnInit {
         this.router.navigateByUrl('/document/0');
     }
 
-
-    public clear () {
-        this._Documento$.next(null);
-    }
 }
 
 export class ExampleDataSource extends DataSource<any> {
