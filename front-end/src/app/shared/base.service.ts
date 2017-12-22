@@ -27,5 +27,8 @@ export abstract class BaseService<T> {
     public genericGetAll<U>(): Observable<U[]> {
         return this.httpClient.get<U[]>(this.baseUrl);
     }
-    
+
+    public delete(id: number): Observable<any> {
+        return this.httpClient.delete(this.baseUrl + `/${id}`);
+    }
 }

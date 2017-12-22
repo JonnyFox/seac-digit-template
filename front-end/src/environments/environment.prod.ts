@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://localhost:5000/api',
+    apiUrl: 'http://contabilita-poc.azurewebsites.net/services/api/',
     firebase: {
         apiKey: 'AIzaSyBBR1NS7bn5onuK2achpioXWqWBBVUYwhs',
         authDomain: 'seac-digit-template.firebaseapp.com',

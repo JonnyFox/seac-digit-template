@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastrService } from 'ngx-toastr';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { RigaDigitataService } from '../shared/riga-digitata.service';
 import {
@@ -59,7 +59,7 @@ export class DocumentComponent implements AfterViewInit {
         'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva'];
     public displayedColumnsSituazioneConto = ['contoId', 'valore', 'variazioneFiscale', 'sospeso'];
     public displayedColumnsSituazioneVoceIVA = ['voceIvaId', 'trattamento',
-     'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva', 'sospeso'];
+        'titoloInapplicabilita', 'aliquotaIvaId', 'imponibile', 'iva', 'sospeso'];
     public displayedColumnsDocumento = ['id', 'totale', 'ritenutaAcconto',
         'sospeso', 'tipo', 'caratteristica', 'cliforId', 'registro', 'riferimentoDocumentoId'];
     public displayedColumnsRigaDigitata = ['id', 'documentoId', 'contoDareId',
@@ -189,7 +189,7 @@ export class DocumentComponent implements AfterViewInit {
     private createRigaDigitataFormGroup(rd: RigaDigitata): FormGroup {
 
         const group = this.fb.group({
-            id : [],
+            id: [],
             contoDareId: [],
             contoAvereId: [],
             voceIvaId: [],
@@ -210,18 +210,40 @@ export class DocumentComponent implements AfterViewInit {
 
         return group;
     }
+
     private populateDocument() {
         this.route.paramMap
-            .switchMap((params: ParamMap) =>
-                this.documentService.getById(+params.get('id')))
+            .switchMap((params: ParamMap) => {
+                const documentId = +params.get('id');
+                if (!documentId) {
+                    const newDocument = new Documento;
+                    newDocument.id = documentId;
+                    newDocument.caratteristica = DocumentoCaratteristicaEnum.Normale;
+                    newDocument.cliforId = 1;
+                    newDocument.isGenerated = false;
+                    newDocument.numero = '0';
+                    newDocument.protocollo = 0;
+                    newDocument.registro = RegistroTipoEnum.Emesse;
+                    newDocument.ritenutaAcconto = 0;
+                    newDocument.sospeso = DocumentoSospensioneEnum.None;
+                    newDocument.tipo = DocumentoTipoEnum.Fattura;
+                    newDocument.totale = 0;
+                    return Observable.of(newDocument);
+                }
+                return this.documentService.getById(+params.get('id'));
+            })
             .first()
             .switchMap((d: Documento) => {
                 this.editItem = d;
+                if (!d.id) {
+                    return Observable.of([]);
+                }
                 return this.rigaDigitataService.getByDocumentoId(d.id);
             })
             .first()
-            .subscribe( evt => this.editItem.rigaDigitataList = evt);
+            .subscribe(evt => this.editItem.rigaDigitataList = evt);
     }
+
     public saveDocument() {
         for (let i = 0; i < this.editItem.rigaDigitataList.length; i++) {
             if (!this.editDocumento.rigaDigitataList.some(x => x.id === this.editItem.rigaDigitataList[i].id)) {
@@ -231,10 +253,11 @@ export class DocumentComponent implements AfterViewInit {
         }
         this.effettoService.SaveDocument(this.editDocumento).subscribe();
     }
+
     public getContoDescription(id: number): string {
         if (id != null) {
             return this.contoList.find(c => c.id === id).nome;
-        }else {
+        } else {
             return null;
         }
     }
@@ -257,8 +280,8 @@ export class DocumentComponent implements AfterViewInit {
 
     public openDialog(): void {
         const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-          width: '1000px',
-          data: {  description: this.description }
+            width: '1000px',
+            data: { description: this.description }
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -267,8 +290,8 @@ export class DocumentComponent implements AfterViewInit {
             this.effettoFeedback.documento = this.editDocumento;
 
             this.effettoService.getEffettoList(this.editDocumento)
-            .first()
-            .subscribe(ef => this.setValue(ef));
+                .first()
+                .subscribe(ef => this.setValue(ef));
 
             this.description = '';
         });
@@ -285,6 +308,7 @@ export class DocumentComponent implements AfterViewInit {
 
         this.effettoService.sendFeedback(this.feedback).subscribe();
     }
+
     public goBackToDashboard() {
         this.router.navigate(['/dashboard']);
     }

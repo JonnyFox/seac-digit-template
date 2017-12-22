@@ -1,6 +1,6 @@
 <h1 class="textline">Documents</h1>
 <button mat-icon-button (click)="addDocument()" class="add">
-    <mat-icon>add</mat-icon>
+  <mat-icon>add</mat-icon>
 </button>
 <div class="example-container mat-elevation-z8">
   <mat-table #table [dataSource]="dataSource">
@@ -55,6 +55,9 @@
         <button mat-icon-button (click)="editDocument(element.id)">
           <mat-icon>edit</mat-icon>
         </button>
+        <!-- <button mat-icon-button (click)="deleteDocument(element.id)">
+          <mat-icon>delete</mat-icon>
+        </button> -->
       </mat-cell>
     </ng-container>
 
