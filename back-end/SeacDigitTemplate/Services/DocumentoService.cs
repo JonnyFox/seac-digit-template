@@ -16,7 +16,18 @@ namespace SeacDigitTemplate.Services
 
         public Task<Documento> GetByIdAsync(int id) => _ctx.Documentos.SingleOrDefaultAsync(i => i.Id == id);
 
-        public void SaveDocument (Documento documento)
+        public async Task<int> DeleteByIdAsync(int id)
+        {
+            var document = await this.GetByIdAsync(id);
+            if (document == null)
+            {
+                return 0;
+            }
+            _ctx.Documentos.Remove(document);
+            return await _ctx.SaveChangesAsync();
+        }
+
+        public void SaveDocument(Documento documento)
         {
             var lastDoc = _ctx.Documentos.LastAsync().Result;
             var tmp = _ctx.Documentos.Find(documento.Id);
@@ -40,6 +51,7 @@ namespace SeacDigitTemplate.Services
                 _ctx.Entry(tmp).CurrentValues.SetValues(documento);
                 _ctx.SaveChanges();
             }
+            lastDoc = _ctx.Documentos.LastAsync().Result;
             lastDoc.isGenerated = false;
             lastDoc = _ctx.Documentos.LastAsync().Result;
             //Ciclo per assegnare gli id alle righe

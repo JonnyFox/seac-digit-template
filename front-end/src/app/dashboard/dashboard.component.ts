@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
     public documentoEffetti$: Observable<Documento[]> = this._documentoEffetti$.asObservable();
 
 
-    public displayedColumns = ['id', 'numero', 'protocollo', 'tipo', 'caratteristica', 'sospeso',
+    public displayedColumns = ['numero', 'protocollo', 'tipo', 'caratteristica', 'sospeso',
      'registro', 'totale', 'action', 'descrizione'];
 
     public dataSource: ExampleDataSource | null;
@@ -60,31 +60,17 @@ export class DashboardComponent implements OnInit {
     public editDocument(id: number) {
         this.router.navigate(['/document', id]);
     }
+
+    public deleteDocument(id: number) {
+        this.documentService.delete(id);
+    }
+
     public populate() {
         this.Documento$.subscribe(x => this.documentoList = x);
     }
 
     public addDocument() {
-        this.Documento$.subscribe(x => this.documentoList = x);
-
-        this.newDocument = new Documento;
-        this.newDocument.id = 0;
-        this.newDocument.caratteristica = DocumentoCaratteristicaEnum.Normale;
-        this.newDocument.cliforId = 1;
-        this.newDocument.isGenerated = false;
-        this.newDocument.numero = (this.documentoList.length + 1).toString();
-        this.newDocument.protocollo = 0;
-        this.newDocument.registro = RegistroTipoEnum.Emesse;
-        this.newDocument.rigaDigitataList = new Array<RigaDigitata>();
-        this.newDocument.ritenutaAcconto = 0;
-        this.newDocument.sospeso = DocumentoSospensioneEnum.None;
-        this.newDocument.tipo = DocumentoTipoEnum.Fattura;
-        this.newDocument.totale = 0;
-        // this.newDocument. = ;
-
-        console.log(JSON.stringify(this.newDocument));
-        this.documentoList.push(this.newDocument);
-        this._Documento$.next(this.documentoList);
+        this.router.navigateByUrl('/document/0');
     }
 
 

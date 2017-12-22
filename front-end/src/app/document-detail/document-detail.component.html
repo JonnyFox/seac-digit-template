@@ -2,10 +2,8 @@
 <form [formGroup]="editItemForm" novalidate class ="padBot">
 	<mat-card [ngClass]="{'docEffettiComponent': (isGenerated$ | async) }">
 		<mat-card-title>
-			<span *ngIf="!editItem.id">Nuovo&nbsp;</span>
-			Documento 
-			<span *ngIf="(isGenerated$ | async)">&nbsp;effetto&nbsp;</span> 
-			<span *ngIf="editItem.id">&nbsp;{{editItem.id}}</span>
+			<span *ngIf="(isGenerated$ | async)">Documento generato</span> 
+            <input *ngIf="!(isGenerated$ | async)" type="text" matInput formControlName="descrizione">
 		</mat-card-title>
 		<mat-card-content>
 			<mat-form-field class="form-field-small">
