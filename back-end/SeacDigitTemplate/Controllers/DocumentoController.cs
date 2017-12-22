@@ -19,7 +19,7 @@ namespace SeacDigitTemplate.Controllers
         private readonly IMapper _mapper;
         private SeacDigitTemplateContext _ctx;
 
-        public DocumentoController(SeacDigitTemplateContext context,DocumentoService documentoService, IMapper mapper)
+        public DocumentoController(SeacDigitTemplateContext context, DocumentoService documentoService, IMapper mapper)
         {
             _ctx = context;
             _documentoService = documentoService;
@@ -30,26 +30,20 @@ namespace SeacDigitTemplate.Controllers
         public async Task<IActionResult> Get() => Ok(_mapper.Map<List<DocumentoDto>>(await _documentoService.GetAll()));
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id) {
-
-            var lastDoc = _ctx.Documentos.LastAsync().Result;
-            Documento x = new Documento {
-                isGenerated = false,
-                CliforId = 1,
-            };
-            //if( lastDoc.isGenerated == null && id == 0)
-            //{
-            //    x.Id = lastDoc.Id;
-            //    return Ok(_mapper.Map<DocumentoDto>(x));
-            //}
-            if (id == 0)
-            {
-                return Ok(_mapper.Map<DocumentoDto>(x));
-            }
-            else
-            {
-                return Ok(_mapper.Map<DocumentoDto>(await _documentoService.GetByIdAsync(id)));
-            }
+        public async Task<IActionResult> GetById(int id)
+        {
+            return Ok(_mapper.Map<DocumentoDto>(await _documentoService.GetByIdAsync(id)));
         }
-}
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteById(int id)
+        {
+            var result = await _documentoService.DeleteByIdAsync(id);
+            if (result == 0)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
+    }
 }

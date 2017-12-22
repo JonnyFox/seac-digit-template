@@ -65,7 +65,11 @@ export class DocumentDetailComponent implements OnInit {
         this.createForm();
         this.onChange = this.editItemForm.valueChanges as Observable<Documento>;
         // this.isValid = this.editItemForm.statusChanges.map(v => !!v && v !== 'INVALID');
-        this.isValid = this.editItemForm.valueChanges.map(v => this.editItemForm.valid);
+        this.isValid = this.editItemForm.valueChanges.map(v => {
+            const isOk = this.editItemForm.valid && this.editItemForm.value.rigaDigitataList && this.editItemForm.value.rigaDigitataList.length;
+            console.log(isOk);
+            return isOk;
+        });
     }
 
     ngOnInit() {
@@ -119,9 +123,19 @@ export class DocumentDetailComponent implements OnInit {
     private setFormValues(): void {
         if (this.editItem) {
             this.ceckGenerated(this.editItem);
+            if(!this.editItem.id){
+                this.editItem.descrizione = 'Nuovo documento';
+            }
             this.editItemForm.patchValue(this.editItem);
             this.rigaDigitataList = this.fb.array(this.editItem.rigaDigitataList.map(rd => this.createRigaDigitataFormGroup(rd)));
             this.editItemForm.setControl('rigaDigitataList', this.rigaDigitataList);
+        }
+    }
+
+    public getDocumentDescription(){
+        if(this.editItem){
+           
+            return this.editItemForm.value.descrizione;
         }
     }
 
@@ -142,6 +156,7 @@ export class DocumentDetailComponent implements OnInit {
         newRigaDigitata.percentualeIndeducibilita = newRigaDigitata.percentualeIndetraibilita = 0;
         newRigaDigitata.documentoId = this.editItem.id;
         newRigaDigitata.toAdd = true;
+        newRigaDigitata.id = 0;
 
         const currentRigaDigitata = (this.rigaDigitataList.length > 0 ? this.rigaDigitataList.value[0] : null) as RigaDigitata;
         if (currentRigaDigitata) {

@@ -1,6 +1,3 @@
-<button mat-icon-button (click)="goBackToDashboard()">
-	<mat-icon>arrow_back</mat-icon>
-</button>
 <div class="row some-top">
 	<div class="col-lg-8">
 		<div *ngIf="editItem && editItem.rigaDigitataList">
@@ -197,14 +194,17 @@
 
 </div>
 
-<button mat-mini-fab class="padBotButton" (click)="saveDocument()">
-	<mat-icon>save</mat-icon>
+<button mat-mini-fab (click)="openDialog()" class="padBotButton2">
+	<mat-icon>sms_failed</mat-icon>
 </button>
-<button mat-mini-fab (click)="openDialog()">
-	<mat-icon>feedback</mat-icon>
-</button>
-<button mat-fab (click)="toggleSync()" [ngClass]="{'no-sync': !(isSync$ | async)}">
+<button mat-mini-fab (click)="toggleSync()" [ngClass]="{'no-sync': !(isSync$ | async)}" class="padBotButton">
 	<mat-icon *ngIf="(isSync$ | async) && isValidDocumentValue">sync</mat-icon>
 	<mat-icon *ngIf="!(isSync$ | async)">sync_disabled</mat-icon>
 	<mat-icon *ngIf="(isSync$ | async) && !isValidDocumentValue">sync_problem</mat-icon>
+</button>
+<button mat-mini-fab (click)="goBackToDashboard()">
+	<mat-icon>navigate_before</mat-icon>
+</button>
+<button mat-fab  (click)="saveDocument()">
+	<mat-icon>save</mat-icon>
 </button>

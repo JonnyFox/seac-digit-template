@@ -32,3 +32,7 @@ button[mat-fab] {
         border-bottom-color: rgba(0, 0, 0, 0.38)
     }
 }
+
+mat-table.mat-table {
+    max-height: none !important;
+}
