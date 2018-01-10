@@ -123,7 +123,7 @@ export class DocumentComponent implements AfterViewInit {
 
     constructor(
         private route: ActivatedRoute,
-        private documentService: DocumentoService,
+        private documentoService: DocumentoService,
         private rigaDigitataService: RigaDigitataService,
         private effettoService: EffettoService,
         private notificationService: NotificationService,
@@ -142,14 +142,13 @@ export class DocumentComponent implements AfterViewInit {
             .switchMap(([doc, _]) => this.effettoService.getEffettoList(doc))
             .subscribe(val => {
                 this._effettoCalcolo$.next(val);
-                this._documentoEffetti$.next(this.effettoService.match(val.effettoDocumentoList, val.effettoRigaList));
+                this._documentoEffetti$.next(this.documentoService.match(val.effettoDocumentoList, val.effettoRigaList));
             });
 
         this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
         this.contoList = this.route.snapshot.data['contoList'];
         this.titoloInapplicabilitaList = this.route.snapshot.data['titoloInapplicabilitaList'];
         this.voceIvaList = this.route.snapshot.data['voceIvaList'];
-        this.createForm();
 
     }
 
@@ -171,46 +170,6 @@ export class DocumentComponent implements AfterViewInit {
         this._isValidDocument$.next(!!isValid);
     }
 
-    private createForm(): void {
-        this.editItemForm = this.fb.group({
-            numero: [],
-            protocollo: [],
-            totale: [],
-            ritenutaAcconto: [],
-            sospeso: [],
-            tipo: [],
-            caratteristica: [],
-            cliforId: [],
-            registro: [],
-            rigaDigitataList: this.fb.array([])
-        });
-    }
-
-    private createRigaDigitataFormGroup(rd: RigaDigitata): FormGroup {
-
-        const group = this.fb.group({
-            id: [],
-            contoDareId: [],
-            contoAvereId: [],
-            voceIvaId: [],
-            trattamento: [],
-            titoloInapplicabilitaId: [],
-            aliquotaIvaId: [],
-            imponibile: [],
-            iva: [],
-            percentualeIndetraibilita: ['', Validators.required],
-            percentualeIndeducibilita: ['', Validators.required],
-            settore: [],
-            note: []
-        });
-
-        if (rd) {
-            group.patchValue(rd);
-        }
-
-        return group;
-    }
-
     private populateDocument() {
         this.route.paramMap
             .switchMap((params: ParamMap) => {
@@ -230,7 +189,7 @@ export class DocumentComponent implements AfterViewInit {
                     newDocument.totale = 0;
                     return Observable.of(newDocument);
                 }
-                return this.documentService.getById(+params.get('id'));
+                return this.documentoService.getById(+params.get('id'));
             })
             .first()
             .switchMap((d: Documento) => {
@@ -251,9 +210,9 @@ export class DocumentComponent implements AfterViewInit {
                 this.editDocumento.rigaDigitataList.push(this.editItem.rigaDigitataList[i]);
             }
         }
-        this.effettoService.SaveDocument(this.editDocumento).subscribe( x =>{
-            if(this.editDocumento.id===0){
-                this.goBackToDashboard()
+        this.documentoService.SaveDocument(this.editDocumento).subscribe( x => {
+            if (this.editDocumento.id === 0) {
+                this.goBackToDashboard();
             }
         });
     }
@@ -289,8 +248,9 @@ export class DocumentComponent implements AfterViewInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-
-            this.feedback.Descrizione = result;
+            this.feedback.idDoc = this.editDocumento.id;
+            this.feedback.descrizioneDoc = this.editDocumento.descrizione;
+            this.feedback.descrizione = result;
             this.effettoFeedback.documento = this.editDocumento;
 
             this.effettoService.getEffettoList(this.editDocumento)
@@ -308,7 +268,7 @@ export class DocumentComponent implements AfterViewInit {
         this.effettoFeedback.effettoIvas = ef.effettoIvas;
         this.effettoFeedback.effettoRigaList = ef.effettoRigaList;
 
-        this.feedback.Effetto = JSON.stringify(this.effettoFeedback);
+        this.feedback.effetto = JSON.stringify(this.effettoFeedback);
 
         this.effettoService.sendFeedback(this.feedback).subscribe();
     }

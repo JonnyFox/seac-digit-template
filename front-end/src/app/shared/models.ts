@@ -189,8 +189,10 @@ export class EffettoIva {
 }
 export class Feedback {
     id: number;
-    Descrizione: string;
-    Effetto: string;
+    idDoc: number;
+    descrizione: string;
+    descrizioneDoc: string;
+    effetto: string;
 }
 
 export class EffettoFeedback {

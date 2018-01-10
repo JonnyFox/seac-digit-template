@@ -88,11 +88,5 @@ namespace SeacDigitTemplate.Controllers
             _ctx.SaveChanges();
             return Ok();
         }
-        [HttpPost("saveChanges")]
-        public IActionResult SaveDocument([FromBody] Documento documento)
-        {
-            _documentoService.SaveDocument(documento);
-            return Ok();
-        }
     }
 }

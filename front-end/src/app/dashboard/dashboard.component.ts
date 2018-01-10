@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
 
 
     public displayedColumns = ['numero', 'protocollo', 'tipo', 'caratteristica', 'sospeso',
-     'registro', 'totale', 'action', 'descrizione'];
+        'registro', 'totale', 'action', 'descrizione'];
 
     public dataSource: ExampleDataSource | null;
     public prova: String;
@@ -87,4 +87,3 @@ export class ExampleDataSource extends DataSource<any> {
 
     disconnect() { }
 }
-

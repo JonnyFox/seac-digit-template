@@ -49,6 +49,7 @@ namespace SeacDigitTemplate
             services.AddTransient<TemplateRigaService>();
             services.AddTransient<ApplicazioneTemplateRigaService>();
             services.AddTransient<EffettoRigaService>();
+            services.AddTransient<FeedbackService>();
             services.AddCors();
 
             var config = new AutoMapper.MapperConfiguration(cfg =>
@@ -63,8 +64,10 @@ namespace SeacDigitTemplate
             cfg.CreateMap<ContoDto, Conto>();
             cfg.CreateMap<Clifor, CliforDto>();
             cfg.CreateMap<CliforDto, Clifor>();
+            cfg.CreateMap<Feedback, FeedbackDto>();
+            cfg.CreateMap<FeedbackDto, Feedback>();
 
-            cfg.CreateMap<AliquotaIva, AliquotaIvaDto>();
+                cfg.CreateMap<AliquotaIva, AliquotaIvaDto>();
             cfg.CreateMap<AliquotaIvaDto, AliquotaIva>();
             cfg.CreateMap<Effetto, EffettoDto>();
             cfg.CreateMap<EffettoDto, Effetto>();

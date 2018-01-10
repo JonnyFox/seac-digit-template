@@ -8,9 +8,11 @@ import { NgModule } from '@angular/core';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { VoceIvaListResolver } from './shared/voce-iva-list.resolver';
+import { FeedbackComponent } from './feedback/feedback.component';
 
 const appRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
+    { path: 'feedback', component: FeedbackComponent },
     {
         path: 'document/:id',
         component: DocumentComponent,
