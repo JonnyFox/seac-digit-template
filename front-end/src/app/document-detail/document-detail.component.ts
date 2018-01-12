@@ -69,7 +69,6 @@ export class DocumentDetailComponent implements OnInit {
             const isOk = this.editItemForm.valid
                         && this.editItemForm.value.rigaDigitataList
                         && this.editItemForm.value.rigaDigitataList.length;
-            console.log(isOk);
             return isOk;
         });
     }

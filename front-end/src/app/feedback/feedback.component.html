@@ -1,6 +1,6 @@
 <h1 class="textline">Feedback</h1>
 
-<div class="example-container mat-elevation-z8">
+<div class="example-container mat-elevation-z8 tableFeed">
 	<mat-table #table [dataSource]="dataSource">
 		<ng-container matColumnDef="descrizioneDoc">
 			<mat-header-cell *matHeaderCellDef> Descrizione </mat-header-cell>
@@ -13,9 +13,9 @@
 		</ng-container>
 
 		<ng-container matColumnDef="action">
-			<mat-header-cell *matHeaderCellDef> </mat-header-cell>
+			<mat-header-cell class="alIcon" *matHeaderCellDef> </mat-header-cell>
 			<mat-cell class="alIcon"*matCellDef="let element">
-				<button class="alIcon" mat-icon-button (click)="openDialog(element.descrizione)">
+				<button mat-icon-button (click)="goToDocument(element.effetto,element.idDoc)">
 					<mat-icon>search</mat-icon>
 				</button>
 			</mat-cell>

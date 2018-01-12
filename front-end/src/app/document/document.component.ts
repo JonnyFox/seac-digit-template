@@ -1,5 +1,5 @@
 import { FormArray, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -33,6 +33,7 @@ import {
 import { DocumentoService } from '../shared/documento.service';
 import { EffettoService } from '../shared/effetto.service';
 import { NotificationService } from '../shared/notification.service';
+import { RouterPassCheckService } from '../shared/router-pass-check.service';
 import { Response } from '@angular/http/src/static_response';
 import { Jsonp } from '@angular/http/src/http';
 import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
@@ -130,10 +131,13 @@ export class DocumentComponent implements AfterViewInit {
         private fb: FormBuilder,
         private dialog: MatDialog,
         private router: Router,
+        public routerPassCheckService: RouterPassCheckService,
     ) {
-        this.populateDocument();
+        const effettoFeed = this.routerPassCheckService.getEffect();
+        if (effettoFeed.length === 0) {
+            this.populateDocument();
 
-        this.document$
+            this.document$
             .zip(this.isValidDocument$)
             .filter(([doc, bool]) => !!doc && !!bool)
             .map(([doc, _]) => doc)
@@ -145,11 +149,15 @@ export class DocumentComponent implements AfterViewInit {
                 this._documentoEffetti$.next(this.documentoService.match(val.effettoDocumentoList, val.effettoRigaList));
             });
 
+        }else {
+
+            this.populateFeedbackDocument(effettoFeed);
+        }
+
         this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
         this.contoList = this.route.snapshot.data['contoList'];
         this.titoloInapplicabilitaList = this.route.snapshot.data['titoloInapplicabilitaList'];
         this.voceIvaList = this.route.snapshot.data['voceIvaList'];
-
     }
 
     ngAfterViewInit() {
@@ -202,6 +210,20 @@ export class DocumentComponent implements AfterViewInit {
             .first()
             .subscribe(evt => this.editItem.rigaDigitataList = evt);
     }
+    private populateFeedbackDocument(effettoFeed: string) {
+
+        const parsedData = JSON.parse(effettoFeed);
+        this.editItem = parsedData.documento;
+        const x = new EffettoCalcolo() ;
+        x.effettoContos = parsedData.effettoContos;
+        x.effettoDocumentoList = parsedData.effettoDocumentoList;
+        x.effettoIvas = parsedData.effettoIvas;
+        x.effettoRigaList = parsedData.effettoRigaList;
+        x.situazioneContos = parsedData.situazioneContos;
+        x.situazioneVoceIvas = parsedData.situazioneVoceIvas;
+
+        this._effettoCalcolo$.next(x);
+    }
 
     public saveDocument() {
         for (let i = 0; i < this.editItem.rigaDigitataList.length; i++) {
@@ -248,6 +270,7 @@ export class DocumentComponent implements AfterViewInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
+            if (result != null) {
             this.feedback.idDoc = this.editDocumento.id;
             this.feedback.descrizioneDoc = this.editDocumento.descrizione;
             this.feedback.descrizione = result;
@@ -258,6 +281,7 @@ export class DocumentComponent implements AfterViewInit {
                 .subscribe(ef => this.setValue(ef));
 
             this.description = '';
+            }
         });
     }
 
@@ -267,6 +291,8 @@ export class DocumentComponent implements AfterViewInit {
         this.effettoFeedback.effettoDocumentoList = ef.effettoDocumentoList;
         this.effettoFeedback.effettoIvas = ef.effettoIvas;
         this.effettoFeedback.effettoRigaList = ef.effettoRigaList;
+        this.effettoFeedback.situazioneContos = ef.situazioneContos;
+        this.effettoFeedback.situazioneVoceIvas = ef.situazioneVoceIvas;
 
         this.feedback.effetto = JSON.stringify(this.effettoFeedback);
 

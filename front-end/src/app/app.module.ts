@@ -35,6 +35,7 @@ import { DocumentDetailComponent } from './document-detail/document-detail.compo
 import { FeedbackComponent } from './feedback/feedback.component';
 import { FeedbackService } from './shared/feedback.service';
 import { FeedbackDialogComponent } from './feedback-dialog/feedback-dialog.component';
+import { RouterPassCheckService } from './shared/router-pass-check.service';
 
 
 
@@ -71,6 +72,7 @@ import { FeedbackDialogComponent } from './feedback-dialog/feedback-dialog.compo
         RigaDigitataService,
         EffettoService,
         AliquotaIvaService,
+        RouterPassCheckService,
         ContoService,
         TitoloInapplicabilitaService,
         FeedbackService,
@@ -83,6 +85,6 @@ import { FeedbackDialogComponent } from './feedback-dialog/feedback-dialog.compo
         VoceIvaListResolver,
     ],
     bootstrap: [AppComponent],
-    entryComponents: [DialogOverviewExampleDialogComponent,FeedbackDialogComponent]
+    entryComponents: [DialogOverviewExampleDialogComponent, FeedbackDialogComponent]
 })
 export class AppModule { }

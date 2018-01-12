@@ -4,8 +4,10 @@ import { Observable } from 'rxjs/Observable';
 import { DataSource } from '@angular/cdk/collections';
 import { Feedback } from '../shared/models';
 import { FeedbackService } from '../shared/feedback.service';
+import { RouterPassCheckService } from '../shared/router-pass-check.service';
 import { FeedbackDialogComponent } from '../feedback-dialog/feedback-dialog.component';
 import { MatDialog } from '@angular/material';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -23,7 +25,11 @@ export class FeedbackComponent implements OnInit {
 
     public displayedColumns = ['descrizione', 'descrizioneDoc', 'action'];
 
-    constructor(private feedbackservice: FeedbackService, private dialog: MatDialog) {
+    constructor(private feedbackservice: FeedbackService,
+                private dialog: MatDialog,
+                public routerPassCheckService: RouterPassCheckService,
+                private router: Router
+                ) {
         this.feedbackservice.getAll().subscribe(x => this._Feedback$.next(x));
         this.feedbackList = new Array<Feedback>();
     }
@@ -37,9 +43,13 @@ export class FeedbackComponent implements OnInit {
     }
     public openDialog(text: string): void {
         const dialogRef = this.dialog.open(FeedbackDialogComponent, {
-            width: '1000px',
+            width: '800px',
             data: { description : text}
         });
+    }
+    public goToDocument(effetto: string, idDoc: number) {
+        this.routerPassCheckService.setEffect(effetto);
+        this.router.navigate(['/document', idDoc]);
     }
 
 }
