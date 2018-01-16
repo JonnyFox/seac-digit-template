@@ -79,7 +79,6 @@ export class DocumentComponent implements AfterViewInit {
     private _document$: Subject<Documento> = new Subject();
     public document$: Observable<Documento> = this._document$.asObservable();
 
-
     private _isSync$: BehaviorSubject<boolean> = new BehaviorSubject(true);
     public isSync$: Observable<boolean> = this._isSync$.asObservable();
 
@@ -110,7 +109,6 @@ export class DocumentComponent implements AfterViewInit {
     public trattamentoEnumValues = Object.keys(TrattamentoEnum)
         .filter(key => !isNaN(Number(TrattamentoEnum[key])));
 
-    public feedbackEffetto: Feedback;
     public aliquotaIvaList: Array<AliquotaIva> = [];
     public contoList: Array<Conto> = [];
     public titoloInapplicabilitaList: Array<TitoloInapplicabilita> = [];
@@ -120,12 +118,10 @@ export class DocumentComponent implements AfterViewInit {
     public caratteristica = DocumentoCaratteristicaEnum;
     public sospeso = DocumentoSospensioneEnum;
     public registro = RegistroTipoEnum;
-    public documenti: any[];
 
     public isButtonSync$: Observable<boolean> = this.isSync$
         .combineLatest(this.isValidDocument$)
         .map(([s, v]) => s && v);
-
 
     private isFeedbackMode = false;
 
@@ -143,7 +139,7 @@ export class DocumentComponent implements AfterViewInit {
     ) {
 
         const feedback = this.route.snapshot.data['feedback'] as Feedback;
-        this.isFeedbackMode = feedback !== null;
+        this.isFeedbackMode = feedback !== undefined;
 
         if (!this.isFeedbackMode) {
             this.populateDocument();
@@ -161,7 +157,8 @@ export class DocumentComponent implements AfterViewInit {
                 });
 
         } else {
-            this.populateFeedbackDocument(feedback.effetto);
+
+            this.populateFeedbackDocument(feedback.effetto, feedback.descrizione);
         }
 
         this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
@@ -176,15 +173,13 @@ export class DocumentComponent implements AfterViewInit {
         }
     }
 
-
-    public inputChangeEffetto(documento: Documento) {
-    }
-    public isDocumentValidEffetto(isValid: boolean) {
-    }
-
     public inputChange(documento: Documento) {
         this.editDocumento = documento;
         this._document$.next(documento);
+    }
+
+    public toggleSync(): void {
+        this._isSync$.next(!this._isSync$.value);
     }
 
     public isDocumentValid(isValid: boolean | null) {
@@ -224,9 +219,10 @@ export class DocumentComponent implements AfterViewInit {
             .subscribe(evt => this.editItem.rigaDigitataList = evt);
     }
 
-    private populateFeedbackDocument(effettoFeed: string) {
+    private populateFeedbackDocument(effettoFeed: string, descrizione: string) {
         const parsedData = JSON.parse(effettoFeed);
-        this.editItem = this.feedbackService.populateDoc(parsedData);
+        this.editItem = parsedData.documento;
+        this.editItem.descrizione = descrizione;
         this._effettoCalcolo$.next(this.feedbackService.populateEffect(parsedData));
         this._documentoEffetti$.next(this.documentoService.match(parsedData.effettoDocumentoList, parsedData.effettoRigaList));
     }
@@ -245,30 +241,6 @@ export class DocumentComponent implements AfterViewInit {
         });
     }
 
-    public getContoDescription(id: number): string {
-        if (id != null) {
-            return this.contoList.find(c => c.id === id).nome;
-        } else {
-            return null;
-        }
-    }
-
-    public getVoceIvaDescription(id: number | null): string {
-        return this.voceIvaList.find(c => c.id === id).nome;
-    }
-
-    public getTitoloInapplicabilitaDescription(id: number): string {
-        return id == null ? '' : this.titoloInapplicabilitaList.find(c => c.id === id).nome;
-    }
-
-    public getAliquotaDescription(id: number): string {
-        return id == null ? '' : this.aliquotaIvaList.find(c => c.id === id).percentuale + '%';
-    }
-
-    public toggleSync(): void {
-        this._isSync$.next(!this._isSync$.value);
-    }
-
     public openDialog(): void {
         const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
             width: '1000px',
@@ -281,7 +253,6 @@ export class DocumentComponent implements AfterViewInit {
                 this.feedback.descrizioneDoc = this.editDocumento.descrizione;
                 this.feedback.descrizione = result;
                 this.effettoFeedback.documento = this.editDocumento;
-
                 this.effettoService.getEffettoList(this.editDocumento)
                     .first()
                     .subscribe(ef => this.setValue(ef));
@@ -306,8 +277,30 @@ export class DocumentComponent implements AfterViewInit {
     }
 
     public goBackToDashboard() {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/documentList']);
     }
+
+    public getContoDescription(id: number): string {
+        if (id != null) {
+            return this.contoList.find(c => c.id === id).nome;
+        } else {
+            return null;
+        }
+    }
+
+    public getVoceIvaDescription(id: number | null): string {
+        return this.voceIvaList.find(c => c.id === id).nome;
+    }
+
+    public getTitoloInapplicabilitaDescription(id: number): string {
+        return id == null ? '' : this.titoloInapplicabilitaList.find(c => c.id === id).nome;
+    }
+
+    public getAliquotaDescription(id: number): string {
+        return id == null ? '' : this.aliquotaIvaList.find(c => c.id === id).percentuale + '%';
+    }
+
+
 }
 export class DataSourceEffettoConto extends DataSource<any> {
     constructor(private effettoCalcolo$: Observable<EffettoCalcolo>) {

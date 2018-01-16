@@ -27,15 +27,6 @@ export class FeedbackService extends BaseService<Feedback> {
         return this.httpClient.get<Feedback>(this.baseUrl + `/${id}`);
     }
 
-    public getEffect(): string {
-        return this.effect && this.effect.length ? this.effect : null;
-    }
-
-    public setEffect(newValue: string, newFeedbackDesc: string): any {
-        this.effect = newValue;
-        this.feedbackDesc = newFeedbackDesc;
-    }
-
     public populateEffect(parsedData): EffettoCalcolo {
         const x = new EffettoCalcolo();
         x.effettoContos = parsedData.effettoContos;
