@@ -8,9 +8,12 @@ import { NgModule } from '@angular/core';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { VoceIvaListResolver } from './shared/voce-iva-list.resolver';
+import { FeedbackComponent } from './feedback/feedback.component';
+import { FeedbackResolver } from './shared/feedback.resolver';
 
 const appRoutes: Routes = [
-    { path: 'dashboard', component: DashboardComponent },
+    { path: 'documentList', component: DashboardComponent },
+    { path: 'feedbackList', component: FeedbackComponent },
     {
         path: 'document/:id',
         component: DocumentComponent,
@@ -21,8 +24,19 @@ const appRoutes: Routes = [
             voceIvaList: VoceIvaListResolver
         }
     },
-    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-    { path: '**', component: DashboardComponent }
+    {
+        path: 'feedback/:id',
+        component: DocumentComponent,
+        resolve: {
+            aliquotaIvaList: AliquotaIvaListResolver,
+            contoList: ContoListResolver,
+            titoloInapplicabilitaList: TitoloInapplicabilitaListResolver,
+            voceIvaList: VoceIvaListResolver,
+            feedback: FeedbackResolver
+        }
+    },
+    { path: '', redirectTo: '/documentList', pathMatch: 'full' },
+    { path: '**', redirectTo: '/documentList' }
 ];
 
 @NgModule({

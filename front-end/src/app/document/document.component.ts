@@ -1,5 +1,5 @@
 import { FormArray, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -33,11 +33,14 @@ import {
 import { DocumentoService } from '../shared/documento.service';
 import { EffettoService } from '../shared/effetto.service';
 import { NotificationService } from '../shared/notification.service';
+import { FeedbackService } from '../shared/feedback.service';
 import { Response } from '@angular/http/src/static_response';
 import { Jsonp } from '@angular/http/src/http';
 import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 import { Subject } from 'rxjs/Subject';
 import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { startTimeRange } from '@angular/core/src/profile/wtf_impl';
+import { NgZone } from '@angular/core';
 
 @Component({
     selector: 'app-document',
@@ -79,7 +82,7 @@ export class DocumentComponent implements AfterViewInit {
     private _isSync$: BehaviorSubject<boolean> = new BehaviorSubject(true);
     public isSync$: Observable<boolean> = this._isSync$.asObservable();
 
-    private _documentoEffetti$: Subject<Documento[]> = new Subject();
+    private _documentoEffetti$: BehaviorSubject<Documento[]> = new BehaviorSubject([]);
     public documentoEffetti$: Observable<Documento[]> = this._documentoEffetti$.asObservable();
 
     public dataSourceEffettoConto = new DataSourceEffettoConto(this.effettoCalcolo$);
@@ -115,51 +118,59 @@ export class DocumentComponent implements AfterViewInit {
     public caratteristica = DocumentoCaratteristicaEnum;
     public sospeso = DocumentoSospensioneEnum;
     public registro = RegistroTipoEnum;
-    public documenti: any[];
 
     public isButtonSync$: Observable<boolean> = this.isSync$
         .combineLatest(this.isValidDocument$)
         .map(([s, v]) => s && v);
 
+    private isFeedbackMode = false;
+
     constructor(
         private route: ActivatedRoute,
-        private documentService: DocumentoService,
+        private documentoService: DocumentoService,
         private rigaDigitataService: RigaDigitataService,
         private effettoService: EffettoService,
         private notificationService: NotificationService,
+        private feedbackService: FeedbackService,
         private fb: FormBuilder,
         private dialog: MatDialog,
         private router: Router,
+        private zone: NgZone
     ) {
-        this.populateDocument();
 
-        this.document$
-            .zip(this.isValidDocument$)
-            .filter(([doc, bool]) => !!doc && !!bool)
-            .map(([doc, _]) => doc)
-            .withLatestFrom(this.isSync$)
-            .filter(([_, bool]) => bool)
-            .switchMap(([doc, _]) => this.effettoService.getEffettoList(doc))
-            .subscribe(val => {
-                this._effettoCalcolo$.next(val);
-                this._documentoEffetti$.next(this.effettoService.match(val.effettoDocumentoList, val.effettoRigaList));
-            });
+        const feedback = this.route.snapshot.data['feedback'] as Feedback;
+        this.isFeedbackMode = feedback !== undefined;
+
+        if (!this.isFeedbackMode) {
+            this.populateDocument();
+
+            this.document$
+                .zip(this.isValidDocument$)
+                .filter(([doc, bool]) => !!doc && !!bool)
+                .map(([doc, _]) => doc)
+                .withLatestFrom(this.isSync$)
+                .filter(([_, bool]) => bool)
+                .switchMap(([doc, _]) => this.effettoService.getEffettoList(doc))
+                .subscribe(val => {
+                    this._effettoCalcolo$.next(val);
+                    this._documentoEffetti$.next(this.documentoService.match(val.effettoDocumentoList, val.effettoRigaList));
+                });
+
+        } else {
+
+            this.populateFeedbackDocument(feedback.effetto, feedback.descrizione);
+        }
 
         this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
         this.contoList = this.route.snapshot.data['contoList'];
         this.titoloInapplicabilitaList = this.route.snapshot.data['titoloInapplicabilitaList'];
         this.voceIvaList = this.route.snapshot.data['voceIvaList'];
-        this.createForm();
-
     }
 
     ngAfterViewInit() {
-        this._isValidDocument$.subscribe(v => this.isValidDocumentValue = v);
-    }
-
-    public inputChangeEffetto(documento: Documento) {
-    }
-    public isDocumentValidEffetto(isValid: boolean) {
+        if (!this.isFeedbackMode) {
+            this._isValidDocument$.subscribe(v => this.isValidDocumentValue = v);
+        }
     }
 
     public inputChange(documento: Documento) {
@@ -167,48 +178,12 @@ export class DocumentComponent implements AfterViewInit {
         this._document$.next(documento);
     }
 
+    public toggleSync(): void {
+        this._isSync$.next(!this._isSync$.value);
+    }
+
     public isDocumentValid(isValid: boolean | null) {
         this._isValidDocument$.next(!!isValid);
-    }
-
-    private createForm(): void {
-        this.editItemForm = this.fb.group({
-            numero: [],
-            protocollo: [],
-            totale: [],
-            ritenutaAcconto: [],
-            sospeso: [],
-            tipo: [],
-            caratteristica: [],
-            cliforId: [],
-            registro: [],
-            rigaDigitataList: this.fb.array([])
-        });
-    }
-
-    private createRigaDigitataFormGroup(rd: RigaDigitata): FormGroup {
-
-        const group = this.fb.group({
-            id: [],
-            contoDareId: [],
-            contoAvereId: [],
-            voceIvaId: [],
-            trattamento: [],
-            titoloInapplicabilitaId: [],
-            aliquotaIvaId: [],
-            imponibile: [],
-            iva: [],
-            percentualeIndetraibilita: ['', Validators.required],
-            percentualeIndeducibilita: ['', Validators.required],
-            settore: [],
-            note: []
-        });
-
-        if (rd) {
-            group.patchValue(rd);
-        }
-
-        return group;
     }
 
     private populateDocument() {
@@ -230,7 +205,7 @@ export class DocumentComponent implements AfterViewInit {
                     newDocument.totale = 0;
                     return Observable.of(newDocument);
                 }
-                return this.documentService.getById(+params.get('id'));
+                return this.documentoService.getById(+params.get('id'));
             })
             .first()
             .switchMap((d: Documento) => {
@@ -244,6 +219,14 @@ export class DocumentComponent implements AfterViewInit {
             .subscribe(evt => this.editItem.rigaDigitataList = evt);
     }
 
+    private populateFeedbackDocument(effettoFeed: string, descrizione: string) {
+        const parsedData = JSON.parse(effettoFeed);
+        this.editItem = parsedData.documento;
+        this.editItem.descrizione = descrizione;
+        this._effettoCalcolo$.next(this.feedbackService.populateEffect(parsedData));
+        this._documentoEffetti$.next(this.documentoService.match(parsedData.effettoDocumentoList, parsedData.effettoRigaList));
+    }
+
     public saveDocument() {
         for (let i = 0; i < this.editItem.rigaDigitataList.length; i++) {
             if (!this.editDocumento.rigaDigitataList.some(x => x.id === this.editItem.rigaDigitataList[i].id)) {
@@ -251,11 +234,50 @@ export class DocumentComponent implements AfterViewInit {
                 this.editDocumento.rigaDigitataList.push(this.editItem.rigaDigitataList[i]);
             }
         }
-        this.effettoService.SaveDocument(this.editDocumento).subscribe( x =>{
-            if(this.editDocumento.id===0){
-                this.goBackToDashboard()
+        this.documentoService.SaveDocument(this.editDocumento).subscribe(x => {
+            if (this.editDocumento.id === 0) {
+                this.goBackToDashboard();
             }
         });
+    }
+
+    public openDialog(): void {
+        const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+            width: '1000px',
+            data: { description: this.description }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result != null) {
+                this.feedback.idDoc = this.editDocumento.id;
+                this.feedback.descrizioneDoc = this.editDocumento.descrizione;
+                this.feedback.descrizione = result;
+                this.effettoFeedback.documento = this.editDocumento;
+                this.effettoService.getEffettoList(this.editDocumento)
+                    .first()
+                    .subscribe(ef => this.setValue(ef));
+
+                this.description = '';
+            }
+        });
+    }
+
+    private setValue(ef: EffettoCalcolo): void {
+
+        this.effettoFeedback.effettoContos = ef.effettoContos;
+        this.effettoFeedback.effettoDocumentoList = ef.effettoDocumentoList;
+        this.effettoFeedback.effettoIvas = ef.effettoIvas;
+        this.effettoFeedback.effettoRigaList = ef.effettoRigaList;
+        this.effettoFeedback.situazioneContos = ef.situazioneContos;
+        this.effettoFeedback.situazioneVoceIvas = ef.situazioneVoceIvas;
+
+        this.feedback.effetto = JSON.stringify(this.effettoFeedback);
+
+        this.effettoService.sendFeedback(this.feedback).subscribe();
+    }
+
+    public goBackToDashboard() {
+        this.router.navigate(['/documentList']);
     }
 
     public getContoDescription(id: number): string {
@@ -278,44 +300,7 @@ export class DocumentComponent implements AfterViewInit {
         return id == null ? '' : this.aliquotaIvaList.find(c => c.id === id).percentuale + '%';
     }
 
-    public toggleSync(): void {
-        this._isSync$.next(!this._isSync$.value);
-    }
 
-    public openDialog(): void {
-        const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-            width: '1000px',
-            data: { description: this.description }
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-
-            this.feedback.Descrizione = result;
-            this.effettoFeedback.documento = this.editDocumento;
-
-            this.effettoService.getEffettoList(this.editDocumento)
-                .first()
-                .subscribe(ef => this.setValue(ef));
-
-            this.description = '';
-        });
-    }
-
-    private setValue(ef: EffettoCalcolo): void {
-
-        this.effettoFeedback.effettoContos = ef.effettoContos;
-        this.effettoFeedback.effettoDocumentoList = ef.effettoDocumentoList;
-        this.effettoFeedback.effettoIvas = ef.effettoIvas;
-        this.effettoFeedback.effettoRigaList = ef.effettoRigaList;
-
-        this.feedback.Effetto = JSON.stringify(this.effettoFeedback);
-
-        this.effettoService.sendFeedback(this.feedback).subscribe();
-    }
-
-    public goBackToDashboard() {
-        this.router.navigate(['/dashboard']);
-    }
 }
 export class DataSourceEffettoConto extends DataSource<any> {
     constructor(private effettoCalcolo$: Observable<EffettoCalcolo>) {

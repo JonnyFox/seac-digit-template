@@ -64,10 +64,11 @@ export class DocumentDetailComponent implements OnInit {
     ) {
         this.createForm();
         this.onChange = this.editItemForm.valueChanges as Observable<Documento>;
-        // this.isValid = this.editItemForm.statusChanges.map(v => !!v && v !== 'INVALID');
+        this.isValid = this.editItemForm.statusChanges.map(v => !!v && v !== 'INVALID');
         this.isValid = this.editItemForm.valueChanges.map(v => {
-            const isOk = this.editItemForm.valid && this.editItemForm.value.rigaDigitataList && this.editItemForm.value.rigaDigitataList.length;
-            console.log(isOk);
+            const isOk = this.editItemForm.valid
+                        && this.editItemForm.value.rigaDigitataList
+                        && this.editItemForm.value.rigaDigitataList.length;
             return isOk;
         });
     }
@@ -123,7 +124,7 @@ export class DocumentDetailComponent implements OnInit {
     private setFormValues(): void {
         if (this.editItem) {
             this.ceckGenerated(this.editItem);
-            if(!this.editItem.id){
+            if (!this.editItem.id) {
                 this.editItem.descrizione = 'Nuovo documento';
             }
             this.editItemForm.patchValue(this.editItem);
@@ -132,9 +133,8 @@ export class DocumentDetailComponent implements OnInit {
         }
     }
 
-    public getDocumentDescription(){
-        if(this.editItem){
-           
+    public getDocumentDescription() {
+        if (this.editItem) {
             return this.editItemForm.value.descrizione;
         }
     }

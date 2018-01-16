@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DocumentoService } from '../shared/documento.service';
+import { FeedbackService } from '../shared/feedback.service';
 import {
     Documento,
     DocumentoCaratteristicaEnum,
@@ -40,14 +41,15 @@ export class DashboardComponent implements OnInit {
 
 
     public displayedColumns = ['numero', 'protocollo', 'tipo', 'caratteristica', 'sospeso',
-     'registro', 'totale', 'action', 'descrizione'];
+        'registro', 'totale', 'action', 'descrizione'];
 
     public dataSource: ExampleDataSource | null;
     public prova: String;
 
     constructor(
         private documentService: DocumentoService,
-        private router: Router
+        private router: Router,
+        private feedbackService: FeedbackService,
     ) {
         this.documentService.getAll().subscribe(x => this._Documento$.next(x));
         this.documentoList = new Array<Documento>();
@@ -87,4 +89,3 @@ export class ExampleDataSource extends DataSource<any> {
 
     disconnect() { }
 }
-

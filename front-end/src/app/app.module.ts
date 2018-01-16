@@ -32,6 +32,10 @@ import { RigaDigitataService } from './shared/riga-digitata.service';
 import { NotificationService } from './shared/notification.service';
 import { DialogOverviewExampleDialogComponent } from './dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 import { DocumentDetailComponent } from './document-detail/document-detail.component';
+import { FeedbackComponent } from './feedback/feedback.component';
+import { FeedbackService } from './shared/feedback.service';
+import { FeedbackResolver } from './shared/feedback.resolver';
+
 
 
 @NgModule({
@@ -40,8 +44,8 @@ import { DocumentDetailComponent } from './document-detail/document-detail.compo
         DashboardComponent,
         DocumentComponent,
         DialogOverviewExampleDialogComponent,
-        DocumentDetailComponent
-
+        DocumentDetailComponent,
+        FeedbackComponent,
     ],
     imports: [
         FormsModule,
@@ -67,6 +71,7 @@ import { DocumentDetailComponent } from './document-detail/document-detail.compo
         AliquotaIvaService,
         ContoService,
         TitoloInapplicabilitaService,
+        FeedbackService,
         VoceIvaService,
         NotificationService,
         AliquotaIvaListResolver,
@@ -74,6 +79,7 @@ import { DocumentDetailComponent } from './document-detail/document-detail.compo
         ContoListResolver,
         TitoloInapplicabilitaListResolver,
         VoceIvaListResolver,
+        FeedbackResolver
     ],
     bootstrap: [AppComponent],
     entryComponents: [DialogOverviewExampleDialogComponent]
