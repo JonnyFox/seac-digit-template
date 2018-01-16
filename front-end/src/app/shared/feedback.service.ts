@@ -35,16 +35,6 @@ export class FeedbackService extends BaseService<Feedback> {
         x.situazioneVoceIvas = parsedData.situazioneVoceIvas;
         return x;
     }
-
-    public populateDoc(parsedData): Documento {
-        const tmp: Documento = parsedData.documento;
-        tmp.descrizione = this.feedbackDesc;
-        return tmp;
-    }
-
-    public populateDocEffetti(parsedData): Documento[] {
-        return this.documentoService.match(parsedData.effettoDocumentoList, parsedData.effettoRigaList);
-    }
 }
 
 
