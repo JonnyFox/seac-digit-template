@@ -54,6 +54,8 @@ namespace SeacDigitTemplate.Services
             
             lastDoc.isGenerated = false;
             lastDoc = _ctx.Documentos.LastAsync().Result;
+            
+            
             //Ciclo per assegnare gli id alle righe
             for (int i = 0; i < documento.rigaDigitataList.Count; i++)
             {
