@@ -1,5 +1,4 @@
 import { BaseService } from './base.service';
-
 import { Response } from '@angular/http';
 import { EffettoCalcolo, EffettoConto, RigaDigitata, Documento, Feedback } from './models';
 import { Injectable } from '@angular/core';
@@ -9,13 +8,52 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { query } from '@angular/animations/src/animation_metadata';
 import { stringify } from 'querystring';
+import { DocumentoService } from '../shared/documento.service';
+
 
 
 @Injectable()
 export class FeedbackService extends BaseService<Feedback> {
 
-    constructor(private http: HttpClient) {
+    private effect: string;
+    private feedbackDesc: string;
+
+    constructor(private http: HttpClient, private documentoService: DocumentoService) {
         super();
         this.baseUrl += 'feedback';
     }
+
+    public getById(id: number) {
+        return this.httpClient.get<Feedback>(this.baseUrl + `/${id}`);
+    }
+
+    public getEffect(): string {
+        return this.effect && this.effect.length ? this.effect : null;
+    }
+
+    public setEffect(newValue: string, newFeedbackDesc: string): any {
+        this.effect = newValue;
+        this.feedbackDesc = newFeedbackDesc;
+    }
+
+    public populateEffect(parsedData): EffettoCalcolo {
+        const x = new EffettoCalcolo();
+        x.effettoContos = parsedData.effettoContos;
+        x.effettoIvas = parsedData.effettoIvas;
+        x.situazioneContos = parsedData.situazioneContos;
+        x.situazioneVoceIvas = parsedData.situazioneVoceIvas;
+        return x;
+    }
+
+    public populateDoc(parsedData): Documento {
+        const tmp: Documento = parsedData.documento;
+        tmp.descrizione = this.feedbackDesc;
+        return tmp;
+    }
+
+    public populateDocEffetti(parsedData): Documento[] {
+        return this.documentoService.match(parsedData.effettoDocumentoList, parsedData.effettoRigaList);
+    }
 }
+
+

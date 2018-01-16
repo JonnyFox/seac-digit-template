@@ -33,12 +33,14 @@ import {
 import { DocumentoService } from '../shared/documento.service';
 import { EffettoService } from '../shared/effetto.service';
 import { NotificationService } from '../shared/notification.service';
-import { RouterPassCheckService } from '../shared/router-pass-check.service';
+import { FeedbackService } from '../shared/feedback.service';
 import { Response } from '@angular/http/src/static_response';
 import { Jsonp } from '@angular/http/src/http';
 import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 import { Subject } from 'rxjs/Subject';
 import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { startTimeRange } from '@angular/core/src/profile/wtf_impl';
+import { NgZone } from '@angular/core';
 
 @Component({
     selector: 'app-document',
@@ -77,10 +79,11 @@ export class DocumentComponent implements AfterViewInit {
     private _document$: Subject<Documento> = new Subject();
     public document$: Observable<Documento> = this._document$.asObservable();
 
+
     private _isSync$: BehaviorSubject<boolean> = new BehaviorSubject(true);
     public isSync$: Observable<boolean> = this._isSync$.asObservable();
 
-    private _documentoEffetti$: Subject<Documento[]> = new Subject();
+    private _documentoEffetti$: BehaviorSubject<Documento[]> = new BehaviorSubject([]);
     public documentoEffetti$: Observable<Documento[]> = this._documentoEffetti$.asObservable();
 
     public dataSourceEffettoConto = new DataSourceEffettoConto(this.effettoCalcolo$);
@@ -107,6 +110,7 @@ export class DocumentComponent implements AfterViewInit {
     public trattamentoEnumValues = Object.keys(TrattamentoEnum)
         .filter(key => !isNaN(Number(TrattamentoEnum[key])));
 
+    public feedbackEffetto: Feedback;
     public aliquotaIvaList: Array<AliquotaIva> = [];
     public contoList: Array<Conto> = [];
     public titoloInapplicabilitaList: Array<TitoloInapplicabilita> = [];
@@ -122,36 +126,42 @@ export class DocumentComponent implements AfterViewInit {
         .combineLatest(this.isValidDocument$)
         .map(([s, v]) => s && v);
 
+
+    private isFeedbackMode = false;
+
     constructor(
         private route: ActivatedRoute,
         private documentoService: DocumentoService,
         private rigaDigitataService: RigaDigitataService,
         private effettoService: EffettoService,
         private notificationService: NotificationService,
+        private feedbackService: FeedbackService,
         private fb: FormBuilder,
         private dialog: MatDialog,
         private router: Router,
-        public routerPassCheckService: RouterPassCheckService,
+        private zone: NgZone
     ) {
-        const effettoFeed = this.routerPassCheckService.getEffect();
-        if (effettoFeed.length === 0) {
+
+        const feedback = this.route.snapshot.data['feedback'] as Feedback;
+        this.isFeedbackMode = feedback !== null;
+
+        if (!this.isFeedbackMode) {
             this.populateDocument();
 
             this.document$
-            .zip(this.isValidDocument$)
-            .filter(([doc, bool]) => !!doc && !!bool)
-            .map(([doc, _]) => doc)
-            .withLatestFrom(this.isSync$)
-            .filter(([_, bool]) => bool)
-            .switchMap(([doc, _]) => this.effettoService.getEffettoList(doc))
-            .subscribe(val => {
-                this._effettoCalcolo$.next(val);
-                this._documentoEffetti$.next(this.documentoService.match(val.effettoDocumentoList, val.effettoRigaList));
-            });
+                .zip(this.isValidDocument$)
+                .filter(([doc, bool]) => !!doc && !!bool)
+                .map(([doc, _]) => doc)
+                .withLatestFrom(this.isSync$)
+                .filter(([_, bool]) => bool)
+                .switchMap(([doc, _]) => this.effettoService.getEffettoList(doc))
+                .subscribe(val => {
+                    this._effettoCalcolo$.next(val);
+                    this._documentoEffetti$.next(this.documentoService.match(val.effettoDocumentoList, val.effettoRigaList));
+                });
 
-        }else {
-
-            this.populateFeedbackDocument(effettoFeed);
+        } else {
+            this.populateFeedbackDocument(feedback.effetto);
         }
 
         this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
@@ -161,8 +171,11 @@ export class DocumentComponent implements AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this._isValidDocument$.subscribe(v => this.isValidDocumentValue = v);
+        if (!this.isFeedbackMode) {
+            this._isValidDocument$.subscribe(v => this.isValidDocumentValue = v);
+        }
     }
+
 
     public inputChangeEffetto(documento: Documento) {
     }
@@ -210,19 +223,12 @@ export class DocumentComponent implements AfterViewInit {
             .first()
             .subscribe(evt => this.editItem.rigaDigitataList = evt);
     }
+
     private populateFeedbackDocument(effettoFeed: string) {
-
         const parsedData = JSON.parse(effettoFeed);
-        this.editItem = parsedData.documento;
-        const x = new EffettoCalcolo() ;
-        x.effettoContos = parsedData.effettoContos;
-        x.effettoDocumentoList = parsedData.effettoDocumentoList;
-        x.effettoIvas = parsedData.effettoIvas;
-        x.effettoRigaList = parsedData.effettoRigaList;
-        x.situazioneContos = parsedData.situazioneContos;
-        x.situazioneVoceIvas = parsedData.situazioneVoceIvas;
-
-        this._effettoCalcolo$.next(x);
+        this.editItem = this.feedbackService.populateDoc(parsedData);
+        this._effettoCalcolo$.next(this.feedbackService.populateEffect(parsedData));
+        this._documentoEffetti$.next(this.documentoService.match(parsedData.effettoDocumentoList, parsedData.effettoRigaList));
     }
 
     public saveDocument() {
@@ -232,7 +238,7 @@ export class DocumentComponent implements AfterViewInit {
                 this.editDocumento.rigaDigitataList.push(this.editItem.rigaDigitataList[i]);
             }
         }
-        this.documentoService.SaveDocument(this.editDocumento).subscribe( x => {
+        this.documentoService.SaveDocument(this.editDocumento).subscribe(x => {
             if (this.editDocumento.id === 0) {
                 this.goBackToDashboard();
             }
@@ -271,16 +277,16 @@ export class DocumentComponent implements AfterViewInit {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result != null) {
-            this.feedback.idDoc = this.editDocumento.id;
-            this.feedback.descrizioneDoc = this.editDocumento.descrizione;
-            this.feedback.descrizione = result;
-            this.effettoFeedback.documento = this.editDocumento;
+                this.feedback.idDoc = this.editDocumento.id;
+                this.feedback.descrizioneDoc = this.editDocumento.descrizione;
+                this.feedback.descrizione = result;
+                this.effettoFeedback.documento = this.editDocumento;
 
-            this.effettoService.getEffettoList(this.editDocumento)
-                .first()
-                .subscribe(ef => this.setValue(ef));
+                this.effettoService.getEffettoList(this.editDocumento)
+                    .first()
+                    .subscribe(ef => this.setValue(ef));
 
-            this.description = '';
+                this.description = '';
             }
         });
     }

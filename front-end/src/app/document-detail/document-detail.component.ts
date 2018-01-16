@@ -64,7 +64,7 @@ export class DocumentDetailComponent implements OnInit {
     ) {
         this.createForm();
         this.onChange = this.editItemForm.valueChanges as Observable<Documento>;
-        // this.isValid = this.editItemForm.statusChanges.map(v => !!v && v !== 'INVALID');
+        this.isValid = this.editItemForm.statusChanges.map(v => !!v && v !== 'INVALID');
         this.isValid = this.editItemForm.valueChanges.map(v => {
             const isOk = this.editItemForm.valid
                         && this.editItemForm.value.rigaDigitataList

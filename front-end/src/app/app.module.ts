@@ -34,8 +34,7 @@ import { DialogOverviewExampleDialogComponent } from './dialog-overview-example-
 import { DocumentDetailComponent } from './document-detail/document-detail.component';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { FeedbackService } from './shared/feedback.service';
-import { FeedbackDialogComponent } from './feedback-dialog/feedback-dialog.component';
-import { RouterPassCheckService } from './shared/router-pass-check.service';
+import { FeedbackResolver } from './shared/feedback.resolver';
 
 
 
@@ -47,8 +46,6 @@ import { RouterPassCheckService } from './shared/router-pass-check.service';
         DialogOverviewExampleDialogComponent,
         DocumentDetailComponent,
         FeedbackComponent,
-        FeedbackDialogComponent,
-
     ],
     imports: [
         FormsModule,
@@ -72,7 +69,6 @@ import { RouterPassCheckService } from './shared/router-pass-check.service';
         RigaDigitataService,
         EffettoService,
         AliquotaIvaService,
-        RouterPassCheckService,
         ContoService,
         TitoloInapplicabilitaService,
         FeedbackService,
@@ -83,8 +79,9 @@ import { RouterPassCheckService } from './shared/router-pass-check.service';
         ContoListResolver,
         TitoloInapplicabilitaListResolver,
         VoceIvaListResolver,
+        FeedbackResolver
     ],
     bootstrap: [AppComponent],
-    entryComponents: [DialogOverviewExampleDialogComponent, FeedbackDialogComponent]
+    entryComponents: [DialogOverviewExampleDialogComponent]
 })
 export class AppModule { }

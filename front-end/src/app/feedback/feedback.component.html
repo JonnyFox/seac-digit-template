@@ -15,7 +15,7 @@
 		<ng-container matColumnDef="action">
 			<mat-header-cell class="alIcon" *matHeaderCellDef> </mat-header-cell>
 			<mat-cell class="alIcon"*matCellDef="let element">
-				<button mat-icon-button (click)="goToDocument(element.effetto,element.idDoc)">
+				<button mat-icon-button (click)="goToDocument(element)">
 					<mat-icon>search</mat-icon>
 				</button>
 			</mat-cell>

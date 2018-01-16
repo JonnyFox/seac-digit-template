@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DocumentoService } from '../shared/documento.service';
-import { RouterPassCheckService } from '../shared/router-pass-check.service';
+import { FeedbackService } from '../shared/feedback.service';
 import {
     Documento,
     DocumentoCaratteristicaEnum,
@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit {
     constructor(
         private documentService: DocumentoService,
         private router: Router,
-        public routerPassCheckService: RouterPassCheckService,
+        private feedbackService: FeedbackService,
     ) {
         this.documentService.getAll().subscribe(x => this._Documento$.next(x));
         this.documentoList = new Array<Documento>();
@@ -60,7 +60,6 @@ export class DashboardComponent implements OnInit {
     }
 
     public editDocument(id: number) {
-        this.routerPassCheckService.setEffect('');
         this.router.navigate(['/document', id]);
     }
 
@@ -73,7 +72,6 @@ export class DashboardComponent implements OnInit {
     }
 
     public addDocument() {
-        this.routerPassCheckService.setEffect('');
         this.router.navigateByUrl('/document/0');
     }
 
