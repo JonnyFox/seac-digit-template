@@ -12,7 +12,7 @@ using System;
 namespace SeacDigitTemplate.Migrations
 {
     [DbContext(typeof(SeacDigitTemplateContext))]
-    [Migration("20171103161116_Startup")]
+    [Migration("20180117101312_Startup")]
     partial class Startup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,6 +71,8 @@ namespace SeacDigitTemplate.Migrations
 
                     b.Property<int>("CliforId");
 
+                    b.Property<string>("Descrizione");
+
                     b.Property<string>("Numero");
 
                     b.Property<int>("Protocollo");
@@ -79,19 +81,39 @@ namespace SeacDigitTemplate.Migrations
 
                     b.Property<int>("RiferimentoDocumentoId");
 
-                    b.Property<decimal>("RitenutaAcconto");
+                    b.Property<decimal?>("RitenutaAcconto");
 
                     b.Property<int>("Sospeso");
+
+                    b.Property<int?>("TemplateGenerazioneEffettoDocumentoId");
 
                     b.Property<int>("Tipo");
 
                     b.Property<decimal>("Totale");
 
+                    b.Property<bool?>("isGenerated");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CliforId");
 
+                    b.HasIndex("TemplateGenerazioneEffettoDocumentoId");
+
                     b.ToTable("Documentos");
+                });
+
+            modelBuilder.Entity("SeacDigitTemplate.Model.Feedback", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Descrizione");
+
+                    b.Property<string>("Effetto");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FeedbackList");
                 });
 
             modelBuilder.Entity("SeacDigitTemplate.Model.RigaDigitata", b =>
@@ -115,17 +137,21 @@ namespace SeacDigitTemplate.Migrations
 
                     b.Property<decimal?>("PercentualeAliquotaIva");
 
-                    b.Property<decimal>("PercentualeIndeducibilita");
+                    b.Property<decimal?>("PercentualeIndeducibilita");
 
-                    b.Property<decimal>("PercentualeIndetraibilita");
+                    b.Property<decimal?>("PercentualeIndetraibilita");
 
                     b.Property<int?>("Settore");
+
+                    b.Property<int?>("TemplateGenerazioneEffettoRigaId");
 
                     b.Property<int?>("TitoloInapplicabilitaId");
 
                     b.Property<int?>("Trattamento");
 
                     b.Property<int?>("VoceIvaId");
+
+                    b.Property<bool?>("toAdd");
 
                     b.HasKey("Id");
 
@@ -136,6 +162,8 @@ namespace SeacDigitTemplate.Migrations
                     b.HasIndex("ContoDareId");
 
                     b.HasIndex("DocumentoId");
+
+                    b.HasIndex("TemplateGenerazioneEffettoRigaId");
 
                     b.HasIndex("TitoloInapplicabilitaId");
 
@@ -151,6 +179,8 @@ namespace SeacDigitTemplate.Migrations
 
                     b.Property<int?>("ContoId1");
 
+                    b.Property<decimal>("Sospeso");
+
                     b.Property<decimal>("Valore");
 
                     b.Property<decimal>("VariazioneFiscale");
@@ -164,7 +194,7 @@ namespace SeacDigitTemplate.Migrations
 
             modelBuilder.Entity("SeacDigitTemplate.Model.SituazioneVoceIva", b =>
                 {
-                    b.Property<int>("VoceIvaId")
+                    b.Property<int?>("VoceIvaId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int?>("AliquotaIvaId");
@@ -172,6 +202,8 @@ namespace SeacDigitTemplate.Migrations
                     b.Property<decimal>("Imponibile");
 
                     b.Property<decimal>("Iva");
+
+                    b.Property<decimal>("Sospeso");
 
                     b.Property<int?>("TitoloInapplicabilitaId");
 
@@ -200,12 +232,14 @@ namespace SeacDigitTemplate.Migrations
                     b.ToTable("VoceIvas");
                 });
 
-            modelBuilder.Entity("SeacDigitTemplate.Models.ApplicazioneTemplateEffetto", b =>
+            modelBuilder.Entity("SeacDigitTemplate.Models.ApplicazioneTemplateDocumento", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AliquotaIva");
+
+                    b.Property<string>("Caratteristica");
 
                     b.Property<string>("ContoAvere");
 
@@ -221,7 +255,15 @@ namespace SeacDigitTemplate.Migrations
 
                     b.Property<string>("PercentualeIndetraibilita");
 
+                    b.Property<string>("Registro");
+
+                    b.Property<string>("RitenutaAcconto");
+
                     b.Property<string>("Settore");
+
+                    b.Property<string>("Sospeso");
+
+                    b.Property<string>("Tipo");
 
                     b.Property<string>("TitoloInapplicabilita");
 
@@ -231,7 +273,139 @@ namespace SeacDigitTemplate.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicazioneTemplateEffettos");
+                    b.ToTable("ApplicazioneTemplateDocumentoList");
+                });
+
+            modelBuilder.Entity("SeacDigitTemplate.Models.ApplicazioneTemplateEffetto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AliquotaIva");
+
+                    b.Property<string>("Caratteristica");
+
+                    b.Property<string>("ContoAvere");
+
+                    b.Property<string>("ContoDare");
+
+                    b.Property<string>("Imponibile");
+
+                    b.Property<string>("Iva");
+
+                    b.Property<string>("Note");
+
+                    b.Property<string>("PercentualeIndeducibilita");
+
+                    b.Property<string>("PercentualeIndetraibilita");
+
+                    b.Property<string>("Registro");
+
+                    b.Property<string>("RitenutaAcconto");
+
+                    b.Property<string>("Settore");
+
+                    b.Property<string>("Sospeso");
+
+                    b.Property<string>("Tipo");
+
+                    b.Property<string>("TitoloInapplicabilita");
+
+                    b.Property<string>("Trattamento");
+
+                    b.Property<string>("VoceIva");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicazioneTemplateEffettoList");
+                });
+
+            modelBuilder.Entity("SeacDigitTemplate.Models.ApplicazioneTemplateRiga", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AliquotaIva");
+
+                    b.Property<string>("Caratteristica");
+
+                    b.Property<string>("CaratteristicaEffetto");
+
+                    b.Property<string>("ContoAvere");
+
+                    b.Property<string>("ContoDare");
+
+                    b.Property<string>("Imponibile");
+
+                    b.Property<string>("Iva");
+
+                    b.Property<string>("Note");
+
+                    b.Property<string>("PercentualeIndeducibilita");
+
+                    b.Property<string>("PercentualeIndetraibilita");
+
+                    b.Property<string>("Registro");
+
+                    b.Property<string>("RegistroEffetto");
+
+                    b.Property<string>("RitenutaAcconto");
+
+                    b.Property<string>("RitenutaAccontoEffetto");
+
+                    b.Property<string>("Settore");
+
+                    b.Property<string>("Sospeso");
+
+                    b.Property<string>("SospesoEffetto");
+
+                    b.Property<string>("Tipo");
+
+                    b.Property<string>("TipoEffetto");
+
+                    b.Property<string>("TitoloInapplicabilita");
+
+                    b.Property<string>("Trattamento");
+
+                    b.Property<string>("VoceIva");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicazioneTemplateRigaList");
+                });
+
+            modelBuilder.Entity("SeacDigitTemplate.Models.TemplateDocumento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ApplicazioneTemplateDocumentoId");
+
+                    b.Property<string>("Caratteristica");
+
+                    b.Property<string>("CliforId");
+
+                    b.Property<string>("Numero");
+
+                    b.Property<string>("Protocollo");
+
+                    b.Property<string>("Registro");
+
+                    b.Property<string>("RiferimentoDocumentoId");
+
+                    b.Property<string>("RitenutaAcconto");
+
+                    b.Property<string>("Sospeso");
+
+                    b.Property<string>("Tipo");
+
+                    b.Property<string>("Totale");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicazioneTemplateDocumentoId");
+
+                    b.ToTable("TemplateDocumentoList");
                 });
 
             modelBuilder.Entity("SeacDigitTemplate.Models.TemplateEffetto", b =>
@@ -269,7 +443,49 @@ namespace SeacDigitTemplate.Migrations
 
                     b.HasIndex("ApplicazioneTemplateEffettoId");
 
-                    b.ToTable("TemplateEffettos");
+                    b.ToTable("TemplateEffettoList");
+                });
+
+            modelBuilder.Entity("SeacDigitTemplate.Models.TemplateRiga", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AliquotaIvaId");
+
+                    b.Property<int>("ApplicazioneTemplateRigaId");
+
+                    b.Property<string>("ContoAvereId");
+
+                    b.Property<string>("ContoDareId");
+
+                    b.Property<int?>("DocumentoId");
+
+                    b.Property<string>("Imponibile");
+
+                    b.Property<string>("Iva");
+
+                    b.Property<string>("Note");
+
+                    b.Property<string>("PercentualeAliquotaIva");
+
+                    b.Property<string>("PercentualeIndeducibilita");
+
+                    b.Property<string>("PercentualeIndetraibilita");
+
+                    b.Property<string>("Settore");
+
+                    b.Property<string>("TitoloInapplicabilitaId");
+
+                    b.Property<string>("Trattamento");
+
+                    b.Property<string>("VoceIvaId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicazioneTemplateRigaId");
+
+                    b.ToTable("TemplateEffettoRigaList");
                 });
 
             modelBuilder.Entity("SeacDigitTemplate.Models.TitoloInapplicabilita", b =>
@@ -289,6 +505,11 @@ namespace SeacDigitTemplate.Migrations
                     b.HasOne("SeacDigitTemplate.Model.Clifor", "Clifor")
                         .WithMany()
                         .HasForeignKey("CliforId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SeacDigitTemplate.Models.TemplateDocumento", "TemplateGenerazioneEffettoDocumento")
+                        .WithMany()
+                        .HasForeignKey("TemplateGenerazioneEffettoDocumentoId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
@@ -310,8 +531,13 @@ namespace SeacDigitTemplate.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SeacDigitTemplate.Model.Documento", "Documento")
-                        .WithMany("righeDigitate")
+                        .WithMany("rigaDigitataList")
                         .HasForeignKey("DocumentoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SeacDigitTemplate.Models.TemplateRiga", "TemplateGenerazioneEffettoRiga")
+                        .WithMany()
+                        .HasForeignKey("TemplateGenerazioneEffettoRigaId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SeacDigitTemplate.Models.TitoloInapplicabilita", "TitoloInapplicabilita")
@@ -346,11 +572,27 @@ namespace SeacDigitTemplate.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
+            modelBuilder.Entity("SeacDigitTemplate.Models.TemplateDocumento", b =>
+                {
+                    b.HasOne("SeacDigitTemplate.Models.ApplicazioneTemplateDocumento", "ApplicazioneTemplateDocumento")
+                        .WithMany("TemplateDocumento")
+                        .HasForeignKey("ApplicazioneTemplateDocumentoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("SeacDigitTemplate.Models.TemplateEffetto", b =>
                 {
                     b.HasOne("SeacDigitTemplate.Models.ApplicazioneTemplateEffetto", "ApplicazioneTemplateEffetto")
                         .WithMany("TemplateEffetto")
                         .HasForeignKey("ApplicazioneTemplateEffettoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SeacDigitTemplate.Models.TemplateRiga", b =>
+                {
+                    b.HasOne("SeacDigitTemplate.Models.ApplicazioneTemplateRiga", "ApplicazioneTemplateRiga")
+                        .WithMany("TemplateEffetto")
+                        .HasForeignKey("ApplicazioneTemplateRigaId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
