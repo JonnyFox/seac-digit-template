@@ -15,6 +15,8 @@ namespace SeacDigitTemplate.Services
 
         public Task<List<Feedback>> GetAll() => _ctx.FeedbackList.ToListAsync();
 
+        public Task<List<Feedback>> GetAllWithDocuments() => _ctx.FeedbackList.Include(f => f.Documento).ToListAsync();
+
         public Task<Feedback> GetByIdAsync(int id) => _ctx.FeedbackList.SingleOrDefaultAsync(i => i.Id == id);
 
         public async Task<int> DeleteByIdAsync(int id)

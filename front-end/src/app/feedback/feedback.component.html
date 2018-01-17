@@ -2,19 +2,23 @@
 
 <div class="example-container mat-elevation-z8 tableFeed">
 	<mat-table #table [dataSource]="dataSource">
-		<ng-container matColumnDef="descrizioneDoc">
-			<mat-header-cell *matHeaderCellDef> Descrizione documento </mat-header-cell>
-			<mat-cell *matCellDef="let element"> {{element.descrizioneDoc}} </mat-cell>
+		<ng-container matColumnDef="documentoId">
+			<mat-header-cell *matHeaderCellDef class="max-column-width-id"> Id Doc </mat-header-cell>
+			<mat-cell *matCellDef="let element" class="max-column-width-id"> {{element.documentoId}} </mat-cell>
+		</ng-container>
+		<ng-container matColumnDef="documentoDescrizione">
+			<mat-header-cell *matHeaderCellDef class="max-column-width-descrizione"> Descrizione documento </mat-header-cell>
+			<mat-cell *matCellDef="let element" class="max-column-width-descrizione"> {{element.documentoDescrizione}} </mat-cell>
 		</ng-container>
 
-		<ng-container  matColumnDef="descrizione">
-			<mat-header-cell *matHeaderCellDef> Segnalazione </mat-header-cell>
+		<ng-container matColumnDef="descrizione">
+			<mat-header-cell *matHeaderCellDef> Feedback </mat-header-cell>
 			<mat-cell class="hLimit" *matCellDef="let element"> {{element.descrizione}} </mat-cell>
 		</ng-container>
 
 		<ng-container matColumnDef="action">
 			<mat-header-cell class="alIcon" *matHeaderCellDef> </mat-header-cell>
-			<mat-cell class="alIcon"*matCellDef="let element">
+			<mat-cell class="alIcon" *matCellDef="let element">
 				<button mat-icon-button (click)="goToDocument(element)">
 					<mat-icon>search</mat-icon>
 				</button>

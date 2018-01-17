@@ -12,9 +12,10 @@ using System;
 namespace SeacDigitTemplate.Migrations
 {
     [DbContext(typeof(SeacDigitTemplateContext))]
-    partial class SeacDigitTemplateContextModelSnapshot : ModelSnapshot
+    [Migration("20180117101404_Updating-Feedback")]
+    partial class UpdatingFeedback
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

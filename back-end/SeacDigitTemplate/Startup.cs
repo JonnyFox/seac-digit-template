@@ -54,45 +54,55 @@ namespace SeacDigitTemplate
 
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
-            cfg.CreateMap<Documento, DocumentoDto>();
-            cfg.CreateMap<DocumentoDto, Documento>();
-            cfg.CreateMap<RigaDigitata, RigaDigitataDto>();
-            cfg.CreateMap<RigaDigitataDto, RigaDigitata>();
-            cfg.CreateMap<SituazioneVoceIva, SituazioneVoceIvaDto>();
-            cfg.CreateMap<SituazioneVoceIvaDto, SituazioneVoceIva>();
-            cfg.CreateMap<Conto, ContoDto>();
-            cfg.CreateMap<ContoDto, Conto>();
-            cfg.CreateMap<Clifor, CliforDto>();
-            cfg.CreateMap<CliforDto, Clifor>();
-            cfg.CreateMap<Feedback, FeedbackDto>();
-            cfg.CreateMap<FeedbackDto, Feedback>();
+                cfg.CreateMap<Documento, DocumentoDto>();
+                cfg.CreateMap<DocumentoDto, Documento>();
+
+                cfg.CreateMap<RigaDigitata, RigaDigitataDto>();
+                cfg.CreateMap<RigaDigitataDto, RigaDigitata>();
+
+                cfg.CreateMap<SituazioneVoceIva, SituazioneVoceIvaDto>();
+                cfg.CreateMap<SituazioneVoceIvaDto, SituazioneVoceIva>();
+
+                cfg.CreateMap<Conto, ContoDto>();
+                cfg.CreateMap<ContoDto, Conto>();
+
+                cfg.CreateMap<Clifor, CliforDto>();
+                cfg.CreateMap<CliforDto, Clifor>();
+
+                cfg.CreateMap<Feedback, FeedbackDto>()
+                 .ForMember(dest => dest.DocumentoDescrizione, opt => opt.MapFrom(src => src.Documento.Descrizione));
+                cfg.CreateMap<FeedbackDto, Feedback>();
 
                 cfg.CreateMap<AliquotaIva, AliquotaIvaDto>();
-            cfg.CreateMap<AliquotaIvaDto, AliquotaIva>();
-            cfg.CreateMap<Effetto, EffettoDto>();
-            cfg.CreateMap<EffettoDto, Effetto>();
-            cfg.CreateMap<RigaDigitata, EffettoRigaDto>();
-            cfg.CreateMap<EffettoRigaDto, RigaDigitata>();
-            
-            cfg.CreateMap<SituazioneConto, SituazioneContoDto>();
-            cfg.CreateMap<SituazioneContoDto, SituazioneConto>();
-            cfg.CreateMap<TitoloInapplicabilita, TitoloInapplicabilitaDto>();
-            cfg.CreateMap<TitoloInapplicabilitaDto, TitoloInapplicabilita>();
-            cfg.CreateMap<VoceIva, VoceIvaDto>();
-            cfg.CreateMap<VoceIvaDto, VoceIva>();
-            cfg.CreateMap<SituazioneVoceIva, SituazioneVoceIvaDto>();
-            cfg.CreateMap<SituazioneConto, SituazioneContoDto>();
-            
-            cfg.CreateMap<Effetto, SituazioneContoDto>();
-            cfg.CreateMap<Effetto, SituazioneVoceIvaDto>();
-            cfg.CreateMap<Effetto, EffettoContoDto>();
-            cfg.CreateMap<Effetto, EffettoIvaDto>();
-            
+                cfg.CreateMap<AliquotaIvaDto, AliquotaIva>();
 
-            
-            cfg.CreateMap<List<Effetto>, EffettoCalcoloDto>()
-                .ForMember(dest => dest.EffettoContos, opt => opt.MapFrom(src => src.Where(e => e.ContoAvereId != null || e.ContoDareId != null)))
-                .ForMember(dest => dest.EffettoIvas, opt => opt.MapFrom(src => src.Where(e => e.VoceIvaId != null)));
+                cfg.CreateMap<Effetto, EffettoDto>();
+                cfg.CreateMap<EffettoDto, Effetto>();
+
+                cfg.CreateMap<RigaDigitata, EffettoRigaDto>();
+                cfg.CreateMap<EffettoRigaDto, RigaDigitata>();
+
+                cfg.CreateMap<SituazioneConto, SituazioneContoDto>();
+                cfg.CreateMap<SituazioneContoDto, SituazioneConto>();
+
+                cfg.CreateMap<TitoloInapplicabilita, TitoloInapplicabilitaDto>();
+                cfg.CreateMap<TitoloInapplicabilitaDto, TitoloInapplicabilita>();
+
+                cfg.CreateMap<VoceIva, VoceIvaDto>();
+                cfg.CreateMap<VoceIvaDto, VoceIva>();
+
+                cfg.CreateMap<SituazioneVoceIva, SituazioneVoceIvaDto>();
+                cfg.CreateMap<SituazioneConto, SituazioneContoDto>();
+
+                cfg.CreateMap<Effetto, SituazioneContoDto>();
+                cfg.CreateMap<Effetto, SituazioneVoceIvaDto>();
+
+                cfg.CreateMap<Effetto, EffettoContoDto>();
+                cfg.CreateMap<Effetto, EffettoIvaDto>();
+
+                cfg.CreateMap<List<Effetto>, EffettoCalcoloDto>()
+                    .ForMember(dest => dest.EffettoContos, opt => opt.MapFrom(src => src.Where(e => e.ContoAvereId != null || e.ContoDareId != null)))
+                    .ForMember(dest => dest.EffettoIvas, opt => opt.MapFrom(src => src.Where(e => e.VoceIvaId != null)));
             });
 
             var mapper = config.CreateMapper();

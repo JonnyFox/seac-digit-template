@@ -249,8 +249,8 @@ export class DocumentComponent implements AfterViewInit {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result != null) {
-                this.feedback.idDoc = this.editDocumento.id;
-                this.feedback.descrizioneDoc = this.editDocumento.descrizione;
+                this.feedback.documentoId = this.editDocumento.id;
+                this.feedback.documentoDescrizione = this.editDocumento.descrizione;
                 this.feedback.descrizione = result;
                 this.effettoFeedback.documento = this.editDocumento;
                 this.effettoService.getEffettoList(this.editDocumento)
@@ -273,7 +273,7 @@ export class DocumentComponent implements AfterViewInit {
 
         this.feedback.effetto = JSON.stringify(this.effettoFeedback);
 
-        this.effettoService.sendFeedback(this.feedback).subscribe();
+        this.feedbackService.postFeedback(this.feedback).subscribe();
     }
 
     public goBackToDashboard() {

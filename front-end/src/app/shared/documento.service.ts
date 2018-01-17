@@ -15,21 +15,24 @@ import { stringify } from 'querystring';
 export class DocumentoService extends BaseService<Documento> {
 
     protected baseUrl = environment.apiUrl;
+    
     constructor(private http: HttpClient) {
         super();
         this.baseUrl += 'documento';
     }
+
     public match(effettoDocumentoList: Documento[], effettoRigaList: RigaDigitata[]): Documento[] {
-        for (const doc of effettoDocumentoList){
+        for (const doc of effettoDocumentoList) {
             doc.rigaDigitataList = new Array<RigaDigitata>();
-            for (const rig of effettoRigaList){
+            for (const rig of effettoRigaList) {
                 if (doc.id === rig.documentoId) {
-                doc.rigaDigitataList.push(rig);
+                    doc.rigaDigitataList.push(rig);
                 }
             }
         }
-    return effettoDocumentoList;
+        return effettoDocumentoList;
     }
+
     public SaveDocument(documento: Documento): Observable<any> {
         return <any>this.http.post(this.baseUrl + `/saveChanges`, documento, {
             observe: 'body',

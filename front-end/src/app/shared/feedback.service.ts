@@ -35,6 +35,15 @@ export class FeedbackService extends BaseService<Feedback> {
         x.situazioneVoceIvas = parsedData.situazioneVoceIvas;
         return x;
     }
+
+    public postFeedback(feedback: Feedback ): Observable<any> {
+        return <any>this.http.post(this.baseUrl + `/postFeedback`, feedback, {
+            observe: 'body',
+            headers: new HttpHeaders().set('Content-Type', 'application/json'),
+            responseType: 'text',
+            withCredentials: false
+        });
+    }
 }
 
 

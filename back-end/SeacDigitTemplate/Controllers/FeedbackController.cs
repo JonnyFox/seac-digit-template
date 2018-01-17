@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SeacDigitTemplate.Dtos;
 using SeacDigitTemplate.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SeacDigitTemplate.Model;
-using SeacDigitTemplate.Models;
 using SeacDigitTemplate.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace SeacDigitTemplate.Controllers
 {
@@ -27,12 +24,20 @@ namespace SeacDigitTemplate.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get() => Ok(_mapper.Map<List<FeedbackDto>>(await _feedbackService.GetAll()));
+        public async Task<IActionResult> Get() => Ok(_mapper.Map<List<FeedbackDto>>(await _feedbackService.GetAllWithDocuments()));
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             return Ok(_mapper.Map<FeedbackDto>(await _feedbackService.GetByIdAsync(id)));
+        }
+
+        [HttpPost("postFeedback")]
+        public IActionResult PostFeedback([FromBody] Feedback feedback)
+        {
+            _ctx.FeedbackList.Add(feedback);
+            _ctx.SaveChanges();
+            return Ok();
         }
     }
 }
