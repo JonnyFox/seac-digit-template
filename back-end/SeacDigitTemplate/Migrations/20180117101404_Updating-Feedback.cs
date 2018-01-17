@@ -13,7 +13,7 @@ namespace SeacDigitTemplate.Migrations
                 table: "FeedbackList",
                 type: "int",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: 1);
 
             migrationBuilder.CreateIndex(
                 name: "IX_FeedbackList_DocumentoId",

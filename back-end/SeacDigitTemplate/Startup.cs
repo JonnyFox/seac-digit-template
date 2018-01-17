@@ -70,7 +70,7 @@ namespace SeacDigitTemplate
                 cfg.CreateMap<CliforDto, Clifor>();
 
                 cfg.CreateMap<Feedback, FeedbackDto>()
-                 .ForMember(dest => dest.DescrizioneDoc, opt => opt.MapFrom(src => src.Documento.Descrizione));
+                 .ForMember(dest => dest.DocumentoDescrizione, opt => opt.MapFrom(src => src.Documento.Descrizione));
                 cfg.CreateMap<FeedbackDto, Feedback>();
 
                 cfg.CreateMap<AliquotaIva, AliquotaIvaDto>();

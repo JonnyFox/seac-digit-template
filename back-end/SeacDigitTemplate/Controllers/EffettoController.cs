@@ -81,12 +81,6 @@ namespace SeacDigitTemplate.Controllers
 
                 return Ok(effettoCalcoloDto);
         }
-        [HttpPost("sendFeedback")]
-        public IActionResult SendFeedback([FromBody] Feedback feedback)
-        {
-            _ctx.FeedbackList.Add(feedback);
-            _ctx.SaveChanges();
-            return Ok();
-        }
+       
     }
 }

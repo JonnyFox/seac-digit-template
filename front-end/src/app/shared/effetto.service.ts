@@ -25,13 +25,6 @@ export class EffettoService {
             withCredentials: false
         });
     }
-    public sendFeedback(feedback: Feedback ): Observable<any> {
-        return <any>this.http.post(this.baseUrl + `/sendFeedback`, feedback, {
-            observe: 'body',
-            headers: new HttpHeaders().set('Content-Type', 'application/json'),
-            responseType: 'text',
-            withCredentials: false
-        });
-    }
+   
 
 }
