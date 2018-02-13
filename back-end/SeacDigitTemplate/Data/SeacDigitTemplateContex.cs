@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeacDigitTemplate.Model;
 using SeacDigitTemplate.Models;
+using System;
 using System.Linq;
 
 namespace SeacDigitTemplate.Data
@@ -11,7 +12,7 @@ namespace SeacDigitTemplate.Data
         {
 
         }
-        
+
         public DbSet<Clifor> Clifors { get; set; }
         public DbSet<AliquotaIva> AliquotaIvas { get; set; }
         public DbSet<Conto> Contos { get; set; }
@@ -43,5 +44,7 @@ namespace SeacDigitTemplate.Data
             mb.Entity<SituazioneVoceIva>().HasKey(sv => sv.VoceIvaId);
 
         }
+
+
     }
 }

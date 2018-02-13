@@ -14,7 +14,7 @@ export abstract class BaseService<T> {
 
     constructor() {
         this.httpClient = AppInjector.get(HttpClient);
-     }
+    }
 
     public getAll(): Observable<T[]> {
         return this.httpClient.get<T[]>(this.baseUrl);

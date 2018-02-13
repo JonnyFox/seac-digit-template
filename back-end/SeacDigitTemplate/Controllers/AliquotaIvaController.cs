@@ -25,7 +25,7 @@ namespace SeacDigitTemplate.Controllers
         {
             return Ok(_mapper.Map<List<AliquotaIvaDto>>(await _aliquotaIvaService.GetAll()));
         }
-        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

@@ -25,7 +25,7 @@ namespace SeacDigitTemplate.Controllers
         private readonly IMapper _mapper;
         private SeacDigitTemplateContext _ctx;
 
-        public EffettoController(SeacDigitTemplateContext context,EffettoService effettoService, RigaDigitataService rigaDigitataService, DocumentoService documentoService,EffettoDocumentoService effettoDocumentoService,EffettoRigaService effettoRigaService, IMapper mapper)
+        public EffettoController(SeacDigitTemplateContext context, EffettoService effettoService, RigaDigitataService rigaDigitataService, DocumentoService documentoService, EffettoDocumentoService effettoDocumentoService, EffettoRigaService effettoRigaService, IMapper mapper)
         {
             _ctx = context;
             _effettoRigaService = effettoRigaService;
@@ -39,19 +39,18 @@ namespace SeacDigitTemplate.Controllers
         [HttpGet("documento /{id}")]
         public async Task<IActionResult> GetEffetto(int id)
         {
-            return Ok( await _documentoService.GetByIdAsync(id));
+            return Ok(await _documentoService.GetByIdAsync(id));
         }
 
-        [HttpGet("calculate/{id}")]
-        public async Task<IActionResult> GetEffettos(int id)
+        [HttpPost("calculatePost")]
+        public async Task<IActionResult> GetEffettosFromRigaDigitatas([FromBody] Documento documento)
         {
-            var documento = await _documentoService.GetByIdAsync(id);
-            var righe = await _rigaDigitataService.GetByDocumentoIdAsync(id);
-            var EffettoList = await _effettoService.GetEffettosFromInputListAsync(documento, righe);
+            var EffettoList = await _effettoService.GetEffettosFromInputListAsync(documento, documento.rigaDigitataList);
             var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(documento, EffettoList);
             var situazioneContos = _effettoService.GetSituazioneConto(documento, EffettoList);
             var EffettoDocumentoList = await _effettoDocumentoService.GetDocumentoListFromInputListAsync(documento, documento.rigaDigitataList);
             var EffettoRigaList = await _effettoRigaService.GetEffettoRigaListFromInputListAsync(documento, documento.rigaDigitataList, EffettoDocumentoList);
+
 
             var effettoCalcoloDto = _mapper.Map<EffettoCalcoloDto>(EffettoList);
             effettoCalcoloDto.SituazioneContos = _mapper.Map<List<SituazioneContoDto>>(situazioneContos);
@@ -59,28 +58,9 @@ namespace SeacDigitTemplate.Controllers
             effettoCalcoloDto.EffettoDocumentoList = _mapper.Map<List<DocumentoDto>>(EffettoDocumentoList);
             effettoCalcoloDto.EffettoRigaList = _mapper.Map<List<RigaDigitataDto>>(EffettoRigaList);
 
+
             return Ok(effettoCalcoloDto);
         }
 
-        [HttpPost("calculatePost")]
-        public async Task<IActionResult> GetEffettosFromRigaDigitatas([FromBody] Documento documento)
-        {
-                var EffettoList = await _effettoService.GetEffettosFromInputListAsync(documento, documento.rigaDigitataList);
-                var situazioneVoceIvas = _effettoService.GetSituazioneVoceIva(documento, EffettoList);
-                var situazioneContos = _effettoService.GetSituazioneConto(documento, EffettoList);
-                var EffettoDocumentoList = await _effettoDocumentoService.GetDocumentoListFromInputListAsync(documento, documento.rigaDigitataList);
-                var EffettoRigaList = await _effettoRigaService.GetEffettoRigaListFromInputListAsync(documento, documento.rigaDigitataList, EffettoDocumentoList);
-
-
-                var effettoCalcoloDto = _mapper.Map<EffettoCalcoloDto>(EffettoList);
-                effettoCalcoloDto.SituazioneContos = _mapper.Map<List<SituazioneContoDto>>(situazioneContos);
-                effettoCalcoloDto.SituazioneVoceIvas = _mapper.Map<List<SituazioneVoceIvaDto>>(situazioneVoceIvas);
-                effettoCalcoloDto.EffettoDocumentoList = _mapper.Map<List<DocumentoDto>>(EffettoDocumentoList);
-                effettoCalcoloDto.EffettoRigaList = _mapper.Map<List<RigaDigitataDto>>(EffettoRigaList);
-
-
-                return Ok(effettoCalcoloDto);
-        }
-       
     }
 }

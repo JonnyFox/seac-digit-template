@@ -36,14 +36,10 @@ namespace SeacDigitTemplate.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteById(int id)
+        public IActionResult DeleteById(int id)
         {
-            var result = await _documentoService.DeleteByIdAsync(id);
-            if (result == 0)
-            {
-                return NotFound();
-            }
-            return Ok();
+            _documentoService.DeleteByIdAsync(id);
+            return NoContent();
         }
         [HttpPost("saveChanges")]
         public IActionResult SaveDocument([FromBody] Documento documento)

@@ -96,7 +96,7 @@ namespace SeacDigitTemplate.Services
         }
 
 
-        public int x=1;
+        public int x = 1;
         public RigaDigitata empty = new RigaDigitata();
 
         public EffettoDocumentoService(SeacDigitTemplateContext context, ApplicazioneTemplateEffettoService applicazioneTemplateEffettoService, TemplateDocumentoService templateDocumentoService, ApplicazioneTemplateDocumentoService applicazioneTemplateDocumentoService)
@@ -110,7 +110,7 @@ namespace SeacDigitTemplate.Services
 
         public async Task<List<Documento>> GetDocumentoListFromInputListAsync(Documento documento, List<RigaDigitata> rigaDigitataList)
         {
-            
+
             var effettoDocumentoList = new List<Documento>();
 
             foreach (var rd in rigaDigitataList)
@@ -118,7 +118,7 @@ namespace SeacDigitTemplate.Services
 
                 effettoDocumentoList.AddRange(await GetEffettoDocumentoListFromInputAsync(rd, documento));
             }
-            
+
             //Faccio la stessa cosa passando solo il documento cosi vedo se il documento da solo può generare altri documenti
             effettoDocumentoList.AddRange(await GetEffettoDocumentoListFromInputAsync(empty, documento));
 
@@ -168,7 +168,7 @@ namespace SeacDigitTemplate.Services
                         {
                             value = templateEffettoFieldValue.Substring(1).ToNullableInt();
                         }
-                        else if(currentEffettoProperty.PropertyType == typeof(decimal) || currentEffettoProperty.PropertyType == typeof(decimal?))
+                        else if (currentEffettoProperty.PropertyType == typeof(decimal) || currentEffettoProperty.PropertyType == typeof(decimal?))
                         {
                             value = Convert.ToDecimal(templateEffettoFieldValue.Substring(1));
                         }
