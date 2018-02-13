@@ -22,8 +22,8 @@ namespace SeacDigitTemplate.Services
             var document = this.GetById(id);
 
             _ctx.RigaDigitatas.RemoveRange(_ctx.RigaDigitatas.Where(k => k.DocumentoId == document.Id));
+            _ctx.FeedbackList.RemoveRange(_ctx.FeedbackList.Where(k => k.DocumentoId == document.Id));
             _ctx.SaveChanges();
-
             _ctx.Documentos.Remove(document);
             _ctx.SaveChanges();
 

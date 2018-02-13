@@ -51,7 +51,10 @@ export class DashboardComponent implements OnInit {
     }
 
     public deleteDocument(id: number) {
-        this.documentService.delete(id).subscribe();
+        this.documentService.delete(id).subscribe( any => {
+            this.documentService.getAll().subscribe(x => this._Documento$.next(x));
+            this.dataSource.connect();
+        });
     }
 
     public addDocument() {
@@ -70,4 +73,5 @@ export class ExampleDataSource extends DataSource<any> {
     }
 
     disconnect() { }
+
 }

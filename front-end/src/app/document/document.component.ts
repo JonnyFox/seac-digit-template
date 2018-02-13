@@ -245,6 +245,7 @@ export class DocumentComponent implements AfterViewInit {
         });
     }
 
+
     public openDialog(): void {
         const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
             width: '1000px',
