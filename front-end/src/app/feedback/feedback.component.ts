@@ -21,7 +21,7 @@ export class FeedbackComponent implements OnInit {
     private _Feedback$: BehaviorSubject<Feedback[]> = new BehaviorSubject(new Array<Feedback>());
     public Feedback$: Observable<Feedback[]> = this._Feedback$.asObservable();
 
-    public displayedColumns = ['documentoId', 'documentoDescrizione', 'descrizione',  'action'];
+    public displayedColumns = ['documentoId', 'documentoDescrizione', 'descrizione', 'action'];
 
     constructor(private feedbackservice: FeedbackService, private router: Router) {
         this.feedbackservice.getAll().subscribe(x => this._Feedback$.next(x));

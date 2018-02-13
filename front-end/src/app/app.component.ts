@@ -12,4 +12,4 @@ export class AppComponent {
     constructor(injector: Injector) {
         AppInjector = injector;
     }
- }
+}

@@ -1,9 +1,8 @@
-
-<form [formGroup]="editItemForm" novalidate class ="padBot">
+<form [formGroup]="editItemForm" novalidate class="padBot">
 	<mat-card [ngClass]="{'docEffettiComponent': (isGenerated$ | async) }">
 		<mat-card-title>
-			<span *ngIf="(isGenerated$ | async)">Documento generato</span> 
-            <input *ngIf="!(isGenerated$ | async)" type="text" matInput formControlName="descrizione">
+			<span *ngIf="(isGenerated$ | async)">Documento generato</span>
+			<input *ngIf="!(isGenerated$ | async)" type="text" matInput formControlName="descrizione">
 		</mat-card-title>
 		<mat-card-content>
 			<mat-form-field class="form-field-small">
@@ -33,9 +32,6 @@
 					<mat-option *ngFor="let option of documentoCaratteristicaEnumValues; let i = index" [value]="i">{{option}}</mat-option>
 				</mat-select>
 			</mat-form-field>
-			<mat-form-field>
-				<input type="number" matInput placeholder="Clifor id" formControlName="cliforId">
-			</mat-form-field>
 			<mat-form-field class="form-field-small">
 				<mat-select placeholder="Registro" formControlName="registro">
 					<mat-option *ngFor="let option of registroTipoEnumEnumValues; let i = index" [value]="i">{{option}}</mat-option>
@@ -44,70 +40,76 @@
 		</mat-card-content>
 	</mat-card>
 	<div class="some-left">
-	<mat-card class="some-top" [ngClass]="{'docEffettiComponent': (isGenerated$ | async) }">
-		<mat-card-title style>
-			<span style="align-self: center;">Righe digitate</span>
-			<button mat-icon-button (click)="addRigaDigitata()" class="icon-button">
-				<mat-icon>add</mat-icon>
-			</button>
-		</mat-card-title>
-		<mat-card-content formArrayName="rigaDigitataList">
-			<div *ngFor="let riga of rigaDigitataList.controls; let i=index" [formGroupName]="i">
-				<button mat-icon-button (click)="deleteRigaDigitata(i)" class="icon-button">
-					<mat-icon>delete</mat-icon>
+		<mat-card class="some-top" [ngClass]="{'docEffettiComponent': (isGenerated$ | async) }">
+			<mat-card-title style>
+				<span style="align-self: center;">Righe digitate</span>
+				<button mat-icon-button (click)="addRigaDigitata()" class="icon-button">
+					<mat-icon>add</mat-icon>
 				</button>
-				<mat-form-field class="form-field-small">
-					<mat-select placeholder="Conto dare" formControlName="contoDareId">
-						<mat-option *ngFor="let option of contoList" [value]="option.id">{{option.nome}}</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field class="form-field-small">
-					<mat-select placeholder="Conto  Avere" formControlName="contoAvereId">
-						<mat-option *ngFor="let option of contoList" [value]="option.id">{{option.nome}}</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field class="form-field-small">
-					<mat-select placeholder="Voce IVA" formControlName="voceIvaId">
-						<mat-option *ngFor="let option of voceIvaList" [value]="option.id">{{option.nome}}</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field class="form-field-small">
-					<mat-select placeholder="Trattamento" formControlName="trattamento">
-						<mat-option *ngFor="let option of trattamentoEnumValues; let i = index" [value]="i+1">{{option}}</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field class="form-field-small">
-					<mat-select placeholder="Titolo inapplicabilità" formControlName="titoloInapplicabilitaId">
-						<mat-option *ngFor="let option of titoloInapplicabilitaList" [value]="option.id">{{option.nome}}</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field class="form-field-small">
-					<mat-select placeholder="Aliquota" formControlName="aliquotaIvaId">
-						<mat-option *ngFor="let option of aliquotaIvaList" [value]="option.id">{{option.percentuale}}</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field class="form-field-small">
-					<input type="number" matInput placeholder="Imponibile" formControlName="imponibile">
-				</mat-form-field>
-				<mat-form-field class="form-field-small">
-					<input type="number" matInput placeholder="IVA" formControlName="iva">
-				</mat-form-field>
-				<mat-form-field class="form-field-small">
-					<input type="number" matInput placeholder="% indetraibiltà" formControlName="percentualeIndetraibilita" min="0" empty="false">
-				</mat-form-field>
-				<mat-form-field class="form-field-small">
-					<input type="number" matInput placeholder="% indeducibilità" formControlName="percentualeIndeducibilita" min="0">
-				</mat-form-field>
-				<mat-form-field class="form-field-small">
-					<mat-select placeholder="Settore" formControlName="settore">
-						<mat-option *ngFor="let option of [0,1,2]" [value]="option">{{option}}</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field class="form-field-small">
-					<input type="text" matInput placeholder="Note" formControlName="note">
-				</mat-form-field>
-			</div>
-		</mat-card-content>
-	</mat-card>
+			</mat-card-title>
+			<mat-card-content formArrayName="rigaDigitataList">
+				<div *ngFor="let riga of rigaDigitataList.controls; let i=index" [formGroupName]="i">
+					<button mat-icon-button (click)="deleteRigaDigitata(i)" class="icon-button">
+						<mat-icon>delete</mat-icon>
+					</button>
+					<mat-form-field class="form-field-small">
+						<mat-select placeholder="Conto dare" formControlName="contoDareId">
+							<mat-option>None</mat-option>
+							<mat-option *ngFor="let option of contoList" [value]="option.id">{{option.nome}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<mat-form-field class="form-field-small">
+						<mat-select placeholder="Conto  Avere" formControlName="contoAvereId">
+							<mat-option>None</mat-option>
+							<mat-option *ngFor="let option of contoList" [value]="option.id">{{option.nome}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<mat-form-field class="form-field-small">
+						<mat-select placeholder="Voce IVA" formControlName="voceIvaId">
+							<mat-option>None</mat-option>
+							<mat-option *ngFor="let option of voceIvaList" [value]="option.id">{{option.nome}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<mat-form-field class="form-field-small">
+						<mat-select placeholder="Trattamento" formControlName="trattamento">
+							<mat-option>None</mat-option>
+							<mat-option *ngFor="let option of trattamentoEnumValues; let i = index" [value]="i+1">{{option}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<mat-form-field class="form-field-small">
+						<mat-select placeholder="Titolo inapplicabilità" formControlName="titoloInapplicabilitaId">
+							<mat-option>None</mat-option>
+							<mat-option *ngFor="let option of titoloInapplicabilitaList" [value]="option.id">{{option.nome}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<mat-form-field class="form-field-small">
+						<mat-select placeholder="Aliquota" formControlName="aliquotaIvaId">
+							<mat-option>None</mat-option>
+							<mat-option *ngFor="let option of aliquotaIvaList" [value]="option.id">{{option.percentuale}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<mat-form-field class="form-field-small">
+						<input type="number" matInput placeholder="Imponibile" formControlName="imponibile">
+					</mat-form-field>
+					<mat-form-field class="form-field-small">
+						<input type="number" matInput placeholder="IVA" formControlName="iva">
+					</mat-form-field>
+					<mat-form-field class="form-field-small">
+						<input type="number" matInput placeholder="% indetraibiltà" formControlName="percentualeIndetraibilita" min="0" empty="false">
+					</mat-form-field>
+					<mat-form-field class="form-field-small">
+						<input type="number" matInput placeholder="% indeducibilità" formControlName="percentualeIndeducibilita" min="0">
+					</mat-form-field>
+					<mat-form-field class="form-field-small">
+						<mat-select placeholder="Settore" formControlName="settore">
+							<mat-option *ngFor="let option of [0,1,2]" [value]="option">{{option}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<mat-form-field class="form-field-small">
+						<input type="text" matInput placeholder="Note" formControlName="note">
+					</mat-form-field>
+				</div>
+			</mat-card-content>
+		</mat-card>
 	</div>
 </form>

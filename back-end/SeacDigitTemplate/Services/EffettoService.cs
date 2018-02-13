@@ -104,18 +104,18 @@ namespace SeacDigitTemplate.Services
             _applicazioneTemplateEffettoService = applicazioneTemplateEffettoService;
             _templateEffettoService = templateEffettoService;
             _ctx = context;
-            
+
         }
 
         public async Task<List<Effetto>> GetEffettosFromInputListAsync(Documento documento, List<RigaDigitata> rigaDigitataList)
         {
-            
+
             var effettoList = new List<Effetto>();
             var effettoDocumentoList = new List<Documento>();
 
             foreach (var rd in rigaDigitataList)
             {
-                effettoList.AddRange(await GetEffettoListFromInputAsync(rd,documento));
+                effettoList.AddRange(await GetEffettoListFromInputAsync(rd, documento));
             }
 
             effettoList.AddRange(await GetEffettoListFromInputAsync(empty, documento));
@@ -132,7 +132,7 @@ namespace SeacDigitTemplate.Services
             {
                 return effettoList;
             }
-            
+
             var templatesRiga = await _templateEffettoService.GetTemplateEffettoAsync(applicationTemplate);
 
             templatesRiga.ForEach(tr => effettoList.Add(CreateEffetto(rigaDigitata, tr, documento)));
@@ -206,7 +206,7 @@ namespace SeacDigitTemplate.Services
             return newEffetto;
         }
 
-        public List<SituazioneConto> GetSituazioneConto(Documento documento ,List<Effetto> effettoList)
+        public List<SituazioneConto> GetSituazioneConto(Documento documento, List<Effetto> effettoList)
         {
 
             var contoDareResult = effettoList
@@ -223,7 +223,7 @@ namespace SeacDigitTemplate.Services
                             Sospeso = kvp.Sum(v => v.Valore),
                             VariazioneFiscale = kvp.Sum(v => v.VariazioneFiscale)
                         };
-                        
+
                     }
                     else
                     {
@@ -294,7 +294,7 @@ namespace SeacDigitTemplate.Services
                 .Where(g => g.Key.VoceIvaId != null)
                 .Select(kvp =>
                 {
-                    if ((int)documento.Sospeso == 0 || (int)documento.Sospeso == 2 )
+                    if ((int)documento.Sospeso == 0 || (int)documento.Sospeso == 2)
                     {
                         return new SituazioneVoceIva
                         {

@@ -15,7 +15,6 @@ import { stringify } from 'querystring';
 export class DocumentoService extends BaseService<Documento> {
 
     protected baseUrl = environment.apiUrl;
-    
     constructor(private http: HttpClient) {
         super();
         this.baseUrl += 'documento';

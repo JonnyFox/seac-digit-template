@@ -111,6 +111,8 @@ namespace SeacDigitTemplate
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
+
             var builder = new ConfigurationBuilder()
                .SetBasePath(env.ContentRootPath)
                .AddJsonFile("connectionParams.json", optional: true, reloadOnChange: true);

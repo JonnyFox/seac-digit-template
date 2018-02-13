@@ -79,6 +79,9 @@ export class DocumentComponent implements AfterViewInit {
     private _document$: Subject<Documento> = new Subject();
     public document$: Observable<Documento> = this._document$.asObservable();
 
+    private _isNewDocument$: BehaviorSubject<Boolean> = new BehaviorSubject(false);
+    public isNewDocument$: Observable<Boolean> = this._isNewDocument$.asObservable();
+
     private _isSync$: BehaviorSubject<boolean> = new BehaviorSubject(true);
     public isSync$: Observable<boolean> = this._isSync$.asObservable();
 
@@ -124,6 +127,7 @@ export class DocumentComponent implements AfterViewInit {
         .map(([s, v]) => s && v);
 
     private isFeedbackMode = false;
+    private feedbackData = this.route.snapshot.data['feedback'] as Feedback;
 
     constructor(
         private route: ActivatedRoute,
@@ -137,9 +141,7 @@ export class DocumentComponent implements AfterViewInit {
         private router: Router,
         private zone: NgZone
     ) {
-
-        const feedback = this.route.snapshot.data['feedback'] as Feedback;
-        this.isFeedbackMode = feedback !== undefined;
+        this.isFeedbackMode = this.feedbackData !== undefined;
 
         if (!this.isFeedbackMode) {
             this.populateDocument();
@@ -157,8 +159,7 @@ export class DocumentComponent implements AfterViewInit {
                 });
 
         } else {
-
-            this.populateFeedbackDocument(feedback.effetto, feedback.descrizione);
+            this.populateFeedbackDocument(this.feedbackData.effetto, this.feedbackData.descrizione);
         }
 
         this.aliquotaIvaList = this.route.snapshot.data['aliquotaIvaList'];
@@ -191,6 +192,7 @@ export class DocumentComponent implements AfterViewInit {
             .switchMap((params: ParamMap) => {
                 const documentId = +params.get('id');
                 if (!documentId) {
+                    this._isNewDocument$.next(true);
                     const newDocument = new Documento;
                     newDocument.id = documentId;
                     newDocument.caratteristica = DocumentoCaratteristicaEnum.Normale;
@@ -204,8 +206,10 @@ export class DocumentComponent implements AfterViewInit {
                     newDocument.tipo = DocumentoTipoEnum.Fattura;
                     newDocument.totale = 0;
                     return Observable.of(newDocument);
+                } else {
+                    this._isNewDocument$.next(false);
+                    return this.documentoService.getById(+params.get('id'));
                 }
-                return this.documentoService.getById(+params.get('id'));
             })
             .first()
             .switchMap((d: Documento) => {
@@ -299,7 +303,6 @@ export class DocumentComponent implements AfterViewInit {
     public getAliquotaDescription(id: number): string {
         return id == null ? '' : this.aliquotaIvaList.find(c => c.id === id).percentuale + '%';
     }
-
 
 }
 export class DataSourceEffettoConto extends DataSource<any> {

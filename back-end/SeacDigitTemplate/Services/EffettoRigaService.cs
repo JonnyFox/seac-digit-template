@@ -124,7 +124,7 @@ namespace SeacDigitTemplate.Services
 
         }
 
-        public int x=1;
+        public int x = 1;
 
         public async Task<List<RigaDigitata>> GetEffettoRigaListFromInputListAsync(Documento documento, List<RigaDigitata> rigaDigitataList, List<Documento> effettoDocumentoList)
         {
@@ -146,7 +146,7 @@ namespace SeacDigitTemplate.Services
         {
             var RigaList = new List<RigaDigitata>();
 
-            var applicationTemplate = await _applicazioneTemplateRigaService.GetTemplateAsync(effettoDocumento, rigaDigitata ,documento);
+            var applicationTemplate = await _applicazioneTemplateRigaService.GetTemplateAsync(effettoDocumento, rigaDigitata, documento);
 
             if (applicationTemplate == null)
             {
@@ -155,7 +155,7 @@ namespace SeacDigitTemplate.Services
 
             var templatesRiga = await _templateRigaService.GetTemplateRigaAsync(applicationTemplate);
 
-            templatesRiga.ForEach(tr => RigaList.Add(CreateEffettoRiga(rigaDigitata, tr, documento,effettoDocumento)));
+            templatesRiga.ForEach(tr => RigaList.Add(CreateEffettoRiga(rigaDigitata, tr, documento, effettoDocumento)));
 
             return RigaList;
         }
@@ -241,6 +241,6 @@ namespace SeacDigitTemplate.Services
             }
             return newEffettoRiga;
         }
-        
+
     }
 }

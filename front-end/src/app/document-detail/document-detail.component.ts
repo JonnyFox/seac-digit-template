@@ -67,8 +67,8 @@ export class DocumentDetailComponent implements OnInit {
         this.isValid = this.editItemForm.statusChanges.map(v => !!v && v !== 'INVALID');
         this.isValid = this.editItemForm.valueChanges.map(v => {
             const isOk = this.editItemForm.valid
-                        && this.editItemForm.value.rigaDigitataList
-                        && this.editItemForm.value.rigaDigitataList.length;
+                && this.editItemForm.value.rigaDigitataList
+                && this.editItemForm.value.rigaDigitataList.length;
             return isOk;
         });
     }
@@ -79,25 +79,25 @@ export class DocumentDetailComponent implements OnInit {
 
     private createForm(): void {
         this.editItemForm = this.fb.group({
-            id : [],
+            id: [],
             numero: [],
             protocollo: [],
+            cliforId: [],
             totale: ['', Validators.required],
             ritenutaAcconto: ['', Validators.required],
             sospeso: [],
             tipo: [],
             caratteristica: [],
-            cliforId: [],
             registro: [],
             descrizione: [],
             rigaDigitataList: this.fb.array([])
-        }, { updateOn: 'blur'});
+        }, { updateOn: 'blur' });
     }
 
     private createRigaDigitataFormGroup(rd: RigaDigitata): FormGroup {
 
         const group = this.fb.group({
-            id : [],
+            id: [],
             documentoId: [],
             contoDareId: [],
             contoAvereId: [],
@@ -112,7 +112,7 @@ export class DocumentDetailComponent implements OnInit {
             settore: [],
             note: [],
             toAdd: [],
-        }, { updateOn: 'blur'});
+        }, { updateOn: 'blur' });
 
         if (rd) {
             group.patchValue(rd);
@@ -141,7 +141,7 @@ export class DocumentDetailComponent implements OnInit {
 
     public ceckGenerated(editItem: Documento): void {
         if (!editItem.isGenerated) {
-        this._isGenerated$.next(!this._isGenerated$.value);
+            this._isGenerated$.next(!this._isGenerated$.value);
         }
     }
 
@@ -158,17 +158,10 @@ export class DocumentDetailComponent implements OnInit {
         newRigaDigitata.toAdd = true;
         newRigaDigitata.id = 0;
 
-
         const currentRigaDigitata = (this.rigaDigitataList.length > 0 ? this.rigaDigitataList.value[0] : null) as RigaDigitata;
         if (currentRigaDigitata) {
-            newRigaDigitata.contoAvereId = currentRigaDigitata.contoAvereId;
-            newRigaDigitata.contoDareId = currentRigaDigitata.contoDareId;
-            newRigaDigitata.aliquotaIvaId = currentRigaDigitata.aliquotaIvaId;
-            newRigaDigitata.titoloInapplicabilitaId = currentRigaDigitata.titoloInapplicabilitaId;
-            newRigaDigitata.trattamento = currentRigaDigitata.trattamento;
-            newRigaDigitata.voceIvaId = currentRigaDigitata.voceIvaId;
+            newRigaDigitata.trattamento = TrattamentoEnum.Detraibile;
         }
-
         this.rigaDigitataList.push(this.createRigaDigitataFormGroup(newRigaDigitata));
     }
 

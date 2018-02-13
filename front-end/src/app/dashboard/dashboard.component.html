@@ -1,67 +1,67 @@
 <h1 class="textline">Documents</h1>
-<button mat-icon-button (click)="addDocument()">
-  <mat-icon >add</mat-icon>
-</button>
 <div class="example-container mat-elevation-z8">
-  <mat-table #table [dataSource]="dataSource">
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
-    </ng-container>
+    <mat-table #table [dataSource]="dataSource">
+        <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="numero">
-      <mat-header-cell *matHeaderCellDef> Numero </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.numero}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="numero">
+            <mat-header-cell *matHeaderCellDef> Numero </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.numero}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="protocollo">
-      <mat-header-cell *matHeaderCellDef> Protocollo </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.protocollo}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="protocollo">
+            <mat-header-cell *matHeaderCellDef> Protocollo </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.protocollo}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="sospeso">
-      <mat-header-cell *matHeaderCellDef> Sospeso </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{sospeso[element.sospeso]}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="sospeso">
+            <mat-header-cell *matHeaderCellDef> Sospeso </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{sospeso[element.sospeso]}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="tipo">
-      <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{tipo[element.tipo]}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="tipo">
+            <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{tipo[element.tipo]}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="caratteristica">
-      <mat-header-cell *matHeaderCellDef> Caratteristica </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{caratteristica[element.caratteristica]}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="caratteristica">
+            <mat-header-cell *matHeaderCellDef> Caratteristica </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{caratteristica[element.caratteristica]}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="registro">
-      <mat-header-cell *matHeaderCellDef> Registro </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{registro[element.registro]}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="registro">
+            <mat-header-cell *matHeaderCellDef> Registro </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{registro[element.registro]}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="totale">
-      <mat-header-cell *matHeaderCellDef> Totale </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.totale}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="totale">
+            <mat-header-cell *matHeaderCellDef> Totale </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.totale}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="descrizione">
-      <mat-header-cell *matHeaderCellDef> Descrizione </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.descrizione}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="descrizione">
+            <mat-header-cell *matHeaderCellDef> Descrizione </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.descrizione}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="action">
-      <mat-header-cell *matHeaderCellDef> </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <button mat-icon-button (click)="editDocument(element.id)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <!-- <button mat-icon-button (click)="deleteDocument(element.id)">
-          <mat-icon>delete</mat-icon>
-        </button> -->
-      </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <button mat-icon-button (click)="editDocument(element.id)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            <!--<button mat-icon-button (click)="deleteDocument(element.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>--> 
+            </mat-cell>
+        </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
 </div>
+<button mat-fab (click)="addDocument()">
+    <mat-icon>add</mat-icon>
+</button>

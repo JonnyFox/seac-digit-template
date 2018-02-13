@@ -15,47 +15,37 @@ namespace SeacDigitTemplate.Services
         public Task<List<Documento>> GetAll() => _ctx.Documentos.ToListAsync();
 
         public Task<Documento> GetByIdAsync(int id) => _ctx.Documentos.SingleOrDefaultAsync(i => i.Id == id);
+        public Documento GetById(int id) => _ctx.Documentos.SingleOrDefault(i => i.Id == id);
 
-        public async Task<int> DeleteByIdAsync(int id)
+        public void DeleteByIdAsync(int id)
         {
-            var document = await this.GetByIdAsync(id);
-            if (document == null)
-            {
-                return 0;
-            }
+            var document = this.GetById(id);
+
+            _ctx.RigaDigitatas.RemoveRange(_ctx.RigaDigitatas.Where(k => k.DocumentoId == document.Id));
+            _ctx.SaveChanges();
+
             _ctx.Documentos.Remove(document);
-            return await _ctx.SaveChangesAsync();
+            _ctx.SaveChanges();
+
         }
 
         public void SaveDocument(Documento documento)
         {
-            var lastDoc = _ctx.Documentos.LastAsync().Result;
-            var tmp = _ctx.Documentos.Find(documento.Id);
-            // Per controllare se devo aggiungere il nuovo documento al db
-            if (lastDoc.isGenerated != null)
+            
+            var tmpDoc = _ctx.Documentos.Find(documento.Id);
+
+            if (tmpDoc == null)
             {
-                if (tmp == null)
-                {
-                    //documento.isGenerated = false;
-                    _ctx.Documentos.Add(documento);
-                    _ctx.SaveChanges();
-                }
-                else
-                {
-                    _ctx.Entry(tmp).CurrentValues.SetValues(documento);
-                    _ctx.SaveChanges();
-                }
-            }
-            else if (tmp != null)
-            {
-                _ctx.Entry(tmp).CurrentValues.SetValues(documento);
+                _ctx.Documentos.Add(documento);
                 _ctx.SaveChanges();
             }
-            
-            lastDoc.isGenerated = false;
-            lastDoc = _ctx.Documentos.LastAsync().Result;
-            
-            
+            else
+            {
+                _ctx.Entry(tmpDoc).CurrentValues.SetValues(documento);
+                _ctx.SaveChanges();
+            }
+            var lastDoc = _ctx.Documentos.LastAsync();
+
             //Ciclo per assegnare gli id alle righe
             for (int i = 0; i < documento.rigaDigitataList.Count; i++)
             {
@@ -68,6 +58,7 @@ namespace SeacDigitTemplate.Services
                 // Per controllare se devo aggiungere una nuova riga al db
                 if (tmpriga == null)
                 {
+                    documento.rigaDigitataList[i].toAdd = null;
                     _ctx.RigaDigitatas.Add(documento.rigaDigitataList[i]);
                     _ctx.SaveChanges();
                 }
