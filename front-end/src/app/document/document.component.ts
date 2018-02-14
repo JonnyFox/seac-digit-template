@@ -242,6 +242,12 @@ export class DocumentComponent implements AfterViewInit {
             if (this.editDocumento.id === 0) {
                 this.goBackToDashboard();
             }
+            // this.populateDocument();
+            return this.rigaDigitataService.getByDocumentoId(this.editDocumento.id).subscribe(evt => {
+                this.editItem.rigaDigitataList = evt;
+                this.editDocumento.rigaDigitataList = evt;
+            }
+            );
         });
     }
 

@@ -27,8 +27,8 @@ export class DashboardComponent implements OnInit {
     public sospeso = DocumentoSospensioneEnum;
     public registro = RegistroTipoEnum;
 
-    private _Documento$: BehaviorSubject<Documento[]> = new BehaviorSubject(new Array<Documento>());
-    public Documento$: Observable<Documento[]> = this._Documento$.asObservable();
+    private _documento$: BehaviorSubject<Documento[]> = new BehaviorSubject(new Array<Documento>());
+    public documento$: Observable<Documento[]> = this._documento$.asObservable();
 
     public displayedColumns = ['numero', 'protocollo', 'tipo', 'caratteristica', 'sospeso',
         'registro', 'totale', 'action', 'descrizione'];
@@ -39,11 +39,11 @@ export class DashboardComponent implements OnInit {
         private documentService: DocumentoService,
         private router: Router,
     ) {
-        this.documentService.getAll().subscribe(x => this._Documento$.next(x));
+        this.documentService.getAll().subscribe(x => this._documento$.next(x));
     }
 
     ngOnInit() {
-        this.dataSource = new ExampleDataSource(this.Documento$);
+        this.dataSource = new ExampleDataSource(this.documento$);
     }
 
     public editDocument(id: number) {
@@ -52,8 +52,7 @@ export class DashboardComponent implements OnInit {
 
     public deleteDocument(id: number) {
         this.documentService.delete(id).subscribe( any => {
-            this.documentService.getAll().subscribe(x => this._Documento$.next(x));
-            this.dataSource.connect();
+            this.documentService.getAll().subscribe(x => this._documento$.next(x));
         });
     }
 

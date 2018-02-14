@@ -1,6 +1,6 @@
 {
     "ConnectionStrings": {
-            "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=Seac-Contabilita-Poc;Trusted_Connection=True;MultipleActiveResultSets=true"
+        "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=SeacDigitTemplate;Trusted_Connection=True;MultipleActiveResultSets=true"
         //  "DefaultConnection": "Server=tcp:seac-contabilita-database-server.database.windows.net,1433;Initial Catalog=Seac-Contabilita-Poc;Persist Security Info=False;User ID=db-admin;Password=Seac38100TN;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
         //  "DefaultConnection": "Data Source=localhost;Initial Catalog=SeacDigitTemplate;Integrated Security=False;User Id=sa;Password=factorymind01!;MultipleActiveResultSets=True"
     }

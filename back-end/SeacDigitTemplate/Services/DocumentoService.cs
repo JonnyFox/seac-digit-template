@@ -29,7 +29,7 @@ namespace SeacDigitTemplate.Services
 
         }
 
-        public void SaveDocument(Documento documento)
+        public async void SaveDocument(Documento documento)
         {
             
             var tmpDoc = _ctx.Documentos.Find(documento.Id);
@@ -54,21 +54,23 @@ namespace SeacDigitTemplate.Services
                 {
                     documento.rigaDigitataList[i].DocumentoId = lastDoc.Id;
                 }
-                var tmpriga = _ctx.RigaDigitatas.Find(documento.rigaDigitataList[i].Id);
+                //var tmpriga = await _ctx.RigaDigitatas.FindAsync(documento.rigaDigitataList[i].Id);
                 // Per controllare se devo aggiungere una nuova riga al db
-                if (tmpriga == null)
+                switch (documento.rigaDigitataList[i].toAdd)
                 {
-                    documento.rigaDigitataList[i].toAdd = null;
-                    _ctx.RigaDigitatas.Add(documento.rigaDigitataList[i]);
-                    _ctx.SaveChanges();
-                }
-                else if (documento.rigaDigitataList[i].toAdd == false)
-                {
-                    _ctx.RigaDigitatas.Remove(tmpriga);
-                }
-                else
-                {
-                    _ctx.Entry(tmpriga).CurrentValues.SetValues(documento.rigaDigitataList[i]);
+                    case true:
+                        documento.rigaDigitataList[i].toAdd = null;
+                        _ctx.RigaDigitatas.Add(documento.rigaDigitataList[i]);
+                        _ctx.SaveChanges();
+                        break;
+                    case false:
+                        _ctx.RigaDigitatas.Remove(_ctx.RigaDigitatas.Find(documento.rigaDigitataList[i].Id));
+                        _ctx.SaveChanges();
+                        break;
+                    case null:
+                        _ctx.Entry(_ctx.RigaDigitatas.Find(documento.rigaDigitataList[i].Id)).CurrentValues.SetValues(documento.rigaDigitataList[i]);
+                        _ctx.SaveChanges();
+                        break;
                 }
             }
             _ctx.SaveChanges();

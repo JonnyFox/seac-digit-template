@@ -38,7 +38,13 @@ export class DocumentDetailComponent implements OnInit {
     private _isGenerated$: BehaviorSubject<boolean> = new BehaviorSubject(true);
     public isGenerated$: Observable<boolean> = this._isGenerated$.asObservable();
 
+
     public editItemForm: FormGroup;
+    public rigaDigitataForm: FormGroup;
+    public onChangeRiga: Observable<RigaDigitata[]>;
+
+    public tert: Array<RigaDigitata>;
+
     public trattamento = TrattamentoEnum;
 
     public rigaDigitataList: FormArray = new FormArray([]);
@@ -75,6 +81,7 @@ export class DocumentDetailComponent implements OnInit {
 
     ngOnInit() {
         this.setFormValues();
+        this.editItemForm.get('rigaDigitataList').valueChanges.subscribe(form => console.log(JSON.stringify(form.value.imponibile)));
     }
 
     private createForm(): void {
@@ -96,7 +103,7 @@ export class DocumentDetailComponent implements OnInit {
 
     private createRigaDigitataFormGroup(rd: RigaDigitata): FormGroup {
 
-        const group = this.fb.group({
+        this.rigaDigitataForm = this.fb.group({
             id: [],
             documentoId: [],
             contoDareId: [],
@@ -113,12 +120,11 @@ export class DocumentDetailComponent implements OnInit {
             note: [],
             toAdd: [],
         }, { updateOn: 'blur' });
-
         if (rd) {
-            group.patchValue(rd);
+            this.rigaDigitataForm.patchValue(rd);
         }
 
-        return group;
+        return this.rigaDigitataForm;
     }
 
     private setFormValues(): void {
@@ -157,11 +163,8 @@ export class DocumentDetailComponent implements OnInit {
         newRigaDigitata.documentoId = this.editItem.id;
         newRigaDigitata.toAdd = true;
         newRigaDigitata.id = 0;
+        newRigaDigitata.imponibile = 0;
 
-        const currentRigaDigitata = (this.rigaDigitataList.length > 0 ? this.rigaDigitataList.value[0] : null) as RigaDigitata;
-        if (currentRigaDigitata) {
-            newRigaDigitata.trattamento = TrattamentoEnum.Detraibile;
-        }
         this.rigaDigitataList.push(this.createRigaDigitataFormGroup(newRigaDigitata));
     }
 
