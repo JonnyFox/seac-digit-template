@@ -233,7 +233,7 @@ namespace SeacDigitTemplate.Data
                     PercentualeAliquotaIva = aliquotas[2].Percentuale,
                     Trattamento = TrattamentoEnum.Detraibile,
                     Imponibile = 1000.0m,
-                    Iva = 220.0m
+                    Iva = 0
                 },
                 new RigaDigitata{
                     Documento = documentos[0],
@@ -244,7 +244,7 @@ namespace SeacDigitTemplate.Data
                     PercentualeAliquotaIva = aliquotas[1].Percentuale,
                     Trattamento = TrattamentoEnum.Detraibile,
                     Imponibile = 1000.0m,
-                    Iva = 100
+                    Iva = 0
                 },
                 new RigaDigitata{
                     Documento = documentos[0],
@@ -253,7 +253,7 @@ namespace SeacDigitTemplate.Data
                     VoceIva = voceivas[0],
                     Trattamento = TrattamentoEnum.Esente,
                     TitoloInapplicabilita = titoloInapplicabilitas[0],
-                    Imponibile = 2.0m
+                    Imponibile = 0
                 },
                 //Documento 2
                 new RigaDigitata{
